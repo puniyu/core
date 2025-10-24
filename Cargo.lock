@@ -1563,7 +1563,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "puniyu_core",
  "tokio",
@@ -1571,7 +1571,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "async-trait",
  "puniyu_adapter_api",
@@ -1666,7 +1666,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_core"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "async-trait",
  "convert_case",
@@ -1779,7 +1779,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "async-trait",
  "inventory",
