@@ -1,11 +1,10 @@
 use super::{RawMessage, TextMessage};
 use serde::{Deserialize, Serialize};
 
+/// TODO: 重写raw
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AtElement {
-	/// at元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// at元素目标id
 	pub target_id: String,
 	/// at元素目标名称
@@ -27,9 +26,6 @@ impl RawMessage for AtElement {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FaceElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// 表情元素id
 	pub id: u64,
 }
@@ -41,14 +37,8 @@ impl RawMessage for FaceElement {
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
-	/// 文件元素id
-	///  - 文件网络url
-	///  - 文件绝对路径
-	///  - base64
-	pub file: String,
+	/// 文件元素
+	pub file: Vec<u8>,
 	/// 文件id
 	pub file_id: String,
 	/// 文件大小, 单位字节
@@ -59,25 +49,13 @@ pub struct FileElement {
 
 impl RawMessage for FileElement {
 	fn raw(&self) -> String {
-		if self.file.starts_with("http") || self.file.starts_with("file") {
-			format!("[file:{}, fid:{}]", self.file, self.file_id)
-		} else if self.file.starts_with("base64://") {
-			format!("[file:base64://..., fid:{}", self.file_id)
-		} else {
-			format!("[file:{}, fid:{}]", self.file, self.file_id)
-		}
+		format!("[file:{}]", self.file_id)
 	}
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ImageElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
-	/// 图片元素id
-	///  - 图片网络url
-	///  - 图片绝对路径
-	///  - base64
-	pub file: String,
+	/// 图片元素
+	pub file: Vec<u8>,
 	/// 是否为闪照
 	pub is_flash: bool,
 	/// 图片外显
@@ -86,19 +64,12 @@ pub struct ImageElement {
 
 impl RawMessage for ImageElement {
 	fn raw(&self) -> String {
-		if self.file.starts_with("http") || self.file.starts_with("file") {
-			format!("[image:{}]", self.file)
-		} else {
-			String::from("[image:base64://...]")
-		}
+		format!("[image:{}]", self.summary.clone().unwrap_or(String::from("图片")))
 	}
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JsonElement {
-	/// json元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// Json数据，未序列化
 	pub data: serde_json::Value,
 }
@@ -111,55 +82,32 @@ impl RawMessage for JsonElement {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VideoElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
-	/// 视频元素id
-	///  - 视频网络url
-	///  - 视频绝对路径
-	///  - base64
-	pub file: String,
+	/// 视频元素
+	pub file: Vec<u8>,
 	/// 视频文件名
 	pub file_name: String,
 }
 
 impl RawMessage for VideoElement {
 	fn raw(&self) -> String {
-		if self.file.starts_with("http") || self.file.starts_with("file") {
-			format!("[video:{}]", self.file)
-		} else {
-			String::from("[video:base64://...]")
-		}
+		format!("[video:{}]", self.file_name)
 	}
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RecordElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// 语言元素
-	///  - 语音网络url
-	///  - 语音绝对路径
-	///  - base64
-	pub file: String,
+	pub file: Vec<u8>,
 }
 
 impl RawMessage for RecordElement {
 	fn raw(&self) -> String {
-		if self.file.starts_with("http") || self.file.starts_with("file") {
-			format!("[record:{}]", self.file)
-		} else {
-			String::from("[record:base64://...]")
-		}
+		format!("[record:{}]", "语音消息")
 	}
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReplyElement {
-	/// 元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// 回复元素id
 	#[serde(rename = "messageId")]
 	pub message_id: String,
@@ -173,9 +121,6 @@ impl RawMessage for ReplyElement {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TextElement {
-	/// 文本元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// 文本元素内容
 	pub text: String,
 }
@@ -194,9 +139,6 @@ impl TextMessage for TextElement {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct XmlElement {
-	/// xml元素类型
-	#[serde(rename = "type")]
-	pub r#type: String,
 	/// Xml数据，未序列化
 	pub data: String,
 }

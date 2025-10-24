@@ -51,31 +51,31 @@ pub trait MessageBase: Send + Sync + EventBase {
 	}
 
 	/// 获取图片元素
-	fn get_image(&self) -> Vec<String> {
+	fn get_image(&self) -> Option<Vec<u8>> {
 		self.elements()
-			.iter()
+			.into_iter()
 			.filter_map(|e| match e {
-				Elements::Image(image) => Some(image.file.to_string()),
+				Elements::Image(image) => Some(image.file),
 				_ => None,
 			})
-			.collect()
+			.next()
 	}
 
-	fn get_record(&self) -> Vec<String> {
+	fn get_record(&self) -> Option<Vec<u8>> {
 		self.elements()
-			.iter()
+			.into_iter()
 			.filter_map(|e| match e {
-				Elements::Record(record) => Some(record.file.to_string()),
+				Elements::Record(record) => Some(record.file),
 				_ => None,
 			})
-			.collect()
+			.next()
 	}
 
 	fn get_reply_id(&self) -> Option<String> {
 		self.elements()
 			.iter()
 			.filter_map(|e| match e {
-				Elements::Reply(reply) => Some(reply.message_id.to_string()),
+				Elements::Reply(reply) => Some(reply.message_id.clone()),
 				_ => None,
 			})
 			.next()

@@ -1565,7 +1565,7 @@ dependencies = [
 name = "puniyu"
 version = "0.1.0"
 dependencies = [
-    "puniyu_core",
+ "puniyu_core",
  "tokio",
 ]
 
@@ -1575,13 +1575,13 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "puniyu_adapter_api",
-    "puniyu_bot",
+ "puniyu_bot",
  "puniyu_builder",
  "puniyu_common",
  "puniyu_contact",
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_event",
-    "puniyu_event_bus",
+ "puniyu_event_bus",
  "puniyu_logger",
  "puniyu_macros",
  "puniyu_sender",
@@ -1594,7 +1594,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "puniyu_contact",
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_sender",
  "serde",
 ]
@@ -1606,7 +1606,7 @@ dependencies = [
  "puniyu_adapter_api",
  "puniyu_builder",
  "puniyu_contact",
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_logger",
 ]
 
@@ -1621,7 +1621,7 @@ dependencies = [
  "async-trait",
  "puniyu_adapter_api",
  "puniyu_command",
-    "puniyu_element",
+ "puniyu_element",
  "serde",
  "strum",
 ]
@@ -1673,15 +1673,15 @@ dependencies = [
  "figlet-rs",
  "glob",
  "inventory",
-    "puniyu_bot",
-    "puniyu_build",
+ "puniyu_bot",
+ "puniyu_build",
  "puniyu_builder",
  "puniyu_common",
  "puniyu_config",
-    "puniyu_event_bus",
+ "puniyu_event_bus",
  "puniyu_logger",
  "puniyu_registry",
-    "puniyu_server",
+ "puniyu_server",
  "puniyu_task",
  "thiserror 2.0.17",
  "tokio",
@@ -1703,7 +1703,7 @@ dependencies = [
  "puniyu_adapter_api",
  "puniyu_config",
  "puniyu_contact",
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_sender",
  "strum",
 ]
@@ -1772,7 +1772,7 @@ dependencies = [
 name = "puniyu_matcher"
 version = "0.1.0"
 dependencies = [
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_event",
  "puniyu_logger",
 ]
@@ -1788,7 +1788,7 @@ dependencies = [
  "puniyu_command",
  "puniyu_common",
  "puniyu_contact",
-    "puniyu_element",
+ "puniyu_element",
  "puniyu_event",
  "puniyu_logger",
  "puniyu_macros",
@@ -1800,13 +1800,13 @@ name = "puniyu_registry"
 version = "0.1.0"
 dependencies = [
  "futures",
-    "puniyu_bot",
+ "puniyu_bot",
  "puniyu_builder",
  "puniyu_command",
  "puniyu_common",
  "puniyu_config",
-    "puniyu_event_bus",
-    "puniyu_library",
+ "puniyu_event_bus",
+ "puniyu_library",
  "puniyu_logger",
  "puniyu_task",
  "thiserror 2.0.17",
