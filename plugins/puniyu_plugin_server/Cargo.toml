@@ -18,6 +18,8 @@ actix-web.workspace = true
 serde_json.workspace = true
 
 puniyu_plugin = { version = "0.6.0", path = "../../packages/puniyu_plugin" }
+actix-ws = "0.3.0"
+futures-util = "0.3.31"
 
 [features]
 default = []
