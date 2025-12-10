@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_bus"
-version = "0.6.0"
+version = "0.7.0"
 description = "puniyu 事件总线库"
 authors.workspace = true
 license.workspace = true
@@ -14,10 +14,10 @@ rust-version.workspace = true
 tokio = { workspace = true, features = ["macros"] }
 puniyu_logger.workspace = true
 
-puniyu_types = { version = "0.6.0", path = "../puniyu_types", default-features = false, features = [
+puniyu_types = { version = "0.7.0", path = "../puniyu_types", default-features = false, features = [
   "bus",
   "matcher",
   "handler",
 ] }
-puniyu_matcher_command = { version = "0.6.0", path = "../puniyu_matcher_command" }
-puniyu_handler_command = { version = "0.6.0", path = "../puniyu_handler_command" }
+puniyu_matcher_command = { version = "0.7.0", path = "../puniyu_matcher_command" }
+puniyu_handler_command = { version = "0.7.0", path = "../puniyu_handler_command" }

@@ -1,5 +1,27 @@
 # 变更日志
 
+## [0.7.0](https://github.com/puniyu/puniyu/compare/event-bus-v0.6.0...event-bus-v0.7.0) (2025-12-10)
+
+
+### ✨ 新功能
+
+* **command:** 添加命令权限控制功能 ([cc0013a](https://github.com/puniyu/puniyu/commit/cc0013aff04d8efea0b9cdda3f11eae4d1eac97b))
+* **plugin:** 新增服务端插件支持 ([7f15acf](https://github.com/puniyu/puniyu/commit/7f15acf148d002e33ef246b3a65a08866a44393f))
+
+
+### ♻️ 代码重构
+
+* **bus:** 重构事件总线模块 ([7f53e97](https://github.com/puniyu/puniyu/commit/7f53e9731a5f58831c758c372ef46171a8e5208b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * puniyu_types bumped from 0.6.0 to 0.7.0
+    * puniyu_matcher_command bumped from 0.6.0 to 0.7.0
+    * puniyu_handler_command bumped from 0.6.0 to 0.7.0
+
 ## [0.6.0](https://github.com/puniyu/puniyu/compare/event-bus-v0.5.12...event-bus-v0.6.0) (2025-12-02)
 
 

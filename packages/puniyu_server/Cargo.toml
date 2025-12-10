@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_server"
-version = "0.6.0"
+version = "0.7.0"
 description = "puniyu 的服务器模块"
 readme = "README.md"
 authors.workspace = true
@@ -24,11 +24,11 @@ futures-util = "0.3.31"
 flume.workspace = true
 clap = { workspace = true, optional = true, features = ["derive", "help"] }
 
-puniyu_common = { version = "0.6.0", path = "../../crates/puniyu_common" }
-puniyu_types = { version = "0.6.0", path = "../../crates/puniyu_types", default-features = false, features = [
+puniyu_common = { version = "0.7.0", path = "../../crates/puniyu_common" }
+puniyu_types = { version = "0.7.0", path = "../../crates/puniyu_types", default-features = false, features = [
   "server",
 ] }
-puniyu_registry = { version = "0.6.0", path = "../../crates/puniyu_registry", default-features = false, features = [
+puniyu_registry = { version = "0.7.0", path = "../../crates/puniyu_registry", default-features = false, features = [
   "server",
 ] }
 

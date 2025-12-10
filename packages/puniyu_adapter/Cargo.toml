@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_adapter"
-version = "0.6.0"
+version = "0.7.0"
 description = "puniyu 的适配器模块"
 readme = "README.md"
 authors.workspace = true
@@ -20,17 +20,17 @@ toml.workspace = true
 actix-web.workspace = true
 convert_case.workspace = true
 
-puniyu_config = { version = "0.6.0", path = "../../crates/puniyu_config" }
-puniyu_macros = { version = "0.6.0", path = "../../crates/puniyu_macros", features = [
+puniyu_config = { version = "0.7.0", path = "../../crates/puniyu_config" }
+puniyu_macros = { version = "0.7.0", path = "../../crates/puniyu_macros", features = [
   "adapter",
 ] }
-puniyu_common = { version = "0.6.0", path = "../../crates/puniyu_common" }
-puniyu_types = { version = "0.6.0", path = "../../crates/puniyu_types", default-features = false, features = [
+puniyu_common = { version = "0.7.0", path = "../../crates/puniyu_common" }
+puniyu_types = { version = "0.7.0", path = "../../crates/puniyu_types", default-features = false, features = [
   "adapter",
   "event",
   "bot",
 ] }
-puniyu_registry = { version = "0.6.0", path = "../../crates/puniyu_registry", default-features = false, features = [
+puniyu_registry = { version = "0.7.0", path = "../../crates/puniyu_registry", default-features = false, features = [
   "adapter",
 ] }
-puniyu_bus = { version = "0.6.0", path = "../../crates/puniyu_bus" }
+puniyu_bus = { version = "0.7.0", path = "../../crates/puniyu_bus" }

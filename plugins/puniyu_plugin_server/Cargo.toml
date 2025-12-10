@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_plugin_server"
-version = "0.1.0"
+version = "0.2.0"
 description = "puniyu的服务端实现，可作为服务端使用"
 authors.workspace = true
 license.workspace = true
@@ -17,7 +17,7 @@ crate-type = ["cdylib", "rlib"]
 actix-web.workspace = true
 serde_json.workspace = true
 
-puniyu_plugin = { version = "0.6.0", path = "../../packages/puniyu_plugin" }
+puniyu_plugin = { version = "0.7.0", path = "../../packages/puniyu_plugin" }
 
 [features]
 default = []

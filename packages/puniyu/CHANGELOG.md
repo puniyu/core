@@ -1,5 +1,18 @@
 # 变更日志
 
+## [0.7.0](https://github.com/puniyu/puniyu/compare/puniyu-v0.6.0...puniyu-v0.7.0) (2025-12-10)
+
+
+### ✨ 新功能
+
+* **plugin:** 新增服务端插件支持 ([7f15acf](https://github.com/puniyu/puniyu/commit/7f15acf148d002e33ef246b3a65a08866a44393f))
+* **plugin:** 添加基础插件及状态命令功能 ([2503696](https://github.com/puniyu/puniyu/commit/2503696fa293909244f5110e8504ae00bf8b962b))
+
+
+### ♻️ 代码重构
+
+* **adapter:** 重命名控制台适配器模块路径 ([5f9dcf3](https://github.com/puniyu/puniyu/commit/5f9dcf3c448225e54f1b3349b4746fb86fdf9897))
+
 ## [0.6.0](https://github.com/puniyu/puniyu/compare/puniyu-v0.5.12...puniyu-v0.6.0) (2025-12-02)
 
 

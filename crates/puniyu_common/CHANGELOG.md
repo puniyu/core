@@ -1,5 +1,19 @@
 # 变更日志
 
+## [0.7.0](https://github.com/puniyu/puniyu/compare/common-v0.6.0...common-v0.7.0) (2025-12-10)
+
+
+### ✨ 新功能
+
+* **core:** 引入系统信息模块并优化运行时间获取逻辑 ([f0dd848](https://github.com/puniyu/puniyu/commit/f0dd8488d25708e9d01485d28193f1b17cb94dba))
+
+
+### ♻️ 代码重构
+
+* **puniyu_common:** 添加 stable 特性并重构版本信息模块 ([5509982](https://github.com/puniyu/puniyu/commit/550998233d7ee02150b15c16f7ef3fa139086137))
+* **puniyu_core:** 移除重复的 version 模块引用 ([5509982](https://github.com/puniyu/puniyu/commit/550998233d7ee02150b15c16f7ef3fa139086137))
+* **puniyu_server:** 优化 API 路由结构与响应类型泛型化 ([5509982](https://github.com/puniyu/puniyu/commit/550998233d7ee02150b15c16f7ef3fa139086137))
+
 ## [0.6.0](https://github.com/puniyu/puniyu/compare/common-v0.5.12...common-v0.6.0) (2025-12-02)
 
 

@@ -1,5 +1,12 @@
 # 变更日志
 
+## [0.5.2](https://github.com/puniyu/puniyu/compare/library-v0.5.1...library-v0.5.2) (2025-12-10)
+
+
+### ♻️ 代码重构
+
+* **library:** 优化库管理逻辑并增强错误处理 ([b9fcc14](https://github.com/puniyu/puniyu/commit/b9fcc14e50d80b6a637074ffcb097279363b7394))
+
 ## [0.5.1](https://github.com/puniyu/puniyu/compare/library-v0.5.0...library-v0.5.1) (2025-12-02)
 
 

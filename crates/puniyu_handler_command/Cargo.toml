@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_handler_command"
-version = "0.6.0"
+version = "0.7.0"
 description = "Puniyu handler command"
 authors.workspace = true
 license.workspace = true
@@ -15,6 +15,6 @@ async-trait.workspace = true
 puniyu_logger.workspace = true
 clap = { workspace = true, features = ["string", "error-context"] }
 
-puniyu_matcher_command = { version = "0.6.0", path = "../puniyu_matcher_command" }
-puniyu_registry = { version = "0.6.0", path = "../puniyu_registry", default-features = false, features = ["command"] }
-puniyu_types = { version = "0.6.0", path = "../puniyu_types", default-features = false, features = ["handler"] }
+puniyu_matcher_command = { version = "0.7.0", path = "../puniyu_matcher_command" }
+puniyu_registry = { version = "0.7.0", path = "../puniyu_registry", default-features = false, features = ["command"] }
+puniyu_types = { version = "0.7.0", path = "../puniyu_types", default-features = false, features = ["handler"] }
