@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_matcher_command"
-version = "0.6.0"
+version = "0.7.0"
 description = "Puniyu Matcher Command"
 authors.workspace = true
 license.workspace = true
@@ -13,12 +13,12 @@ rust-version.workspace = true
 [dependencies]
 puniyu_logger.workspace = true
 
-puniyu_config = { version = "0.6.0", path = "../puniyu_config" }
-puniyu_registry = { version = "0.6.0", path = "../puniyu_registry", default-features = false, features = [
+puniyu_config = { version = "0.7.0", path = "../puniyu_config" }
+puniyu_registry = { version = "0.7.0", path = "../puniyu_registry", default-features = false, features = [
   "command",
   "cooldown",
 ] }
-puniyu_types = { version = "0.6.0", path = "../puniyu_types", default-features = false, features = [
+puniyu_types = { version = "0.7.0", path = "../puniyu_types", default-features = false, features = [
   "matcher",
   "element",
   "event",

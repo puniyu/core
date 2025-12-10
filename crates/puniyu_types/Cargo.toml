@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_types"
-version = "0.6.0"
+version = "0.7.0"
 description = "puniyu 通用类型库"
 authors.workspace = true
 license.workspace = true
@@ -21,7 +21,7 @@ reqwest = { workspace = true, optional = true }
 async-trait = { workspace = true, optional = true }
 actix-web = { workspace = true, optional = true }
 flume = { workspace = true, optional = true }
-puniyu_config = { version = "0.6.0", path = "../puniyu_config", optional = true }
+puniyu_config = { version = "0.7.0", path = "../puniyu_config", optional = true }
 derive_builder = { workspace = true, optional = true }
 tokio = { workspace = true, optional = true }
 
