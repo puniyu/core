@@ -28,7 +28,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@5538133d5d4c4f62391aa26fc8934b441fa1d58e # main
+        uses: puniyu/setup-rust@f3918cbdc92e873ff107fadaf12fe116f1b516b9 # main
         with:
           target: ${{ matrix.platform.target }}
           cache: true
@@ -66,7 +66,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@5538133d5d4c4f62391aa26fc8934b441fa1d58e # main
+        uses: puniyu/setup-rust@f3918cbdc92e873ff107fadaf12fe116f1b516b9 # main
         with:
           target: ${{ matrix.platform.target }}
           cache: true
@@ -105,7 +105,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@5538133d5d4c4f62391aa26fc8934b441fa1d58e # main
+        uses: puniyu/setup-rust@f3918cbdc92e873ff107fadaf12fe116f1b516b9 # main
         with:
           target: ${{ matrix.platform.target }}
           cache: true
