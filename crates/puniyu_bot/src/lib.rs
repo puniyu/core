@@ -23,7 +23,7 @@ use puniyu_adapter_types::AdapterInfo;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
-pub use puniyu_runtime::AdapterRuntime;
+pub use puniyu_runtime::{AdapterRuntime, Runtime};
 use std::sync::Arc;
 
 #[derive(Clone)]
@@ -38,13 +38,14 @@ impl Bot {
 	}
 
 	/// 获取适配器 Runtime
-	pub fn runtime(&self) -> &dyn AdapterRuntime {
-		self.adapter.as_ref()
+	pub fn runtime<T: Runtime>(&self) -> Option<&T> {
+		let runtime: &dyn Runtime = self.adapter.as_ref();
+		runtime.downcast_ref()
 	}
 
 	/// 返回适配器信息。
 	pub fn adapter_info(&self) -> &AdapterInfo {
-		self.runtime().adapter_info()
+		self.adapter.adapter_info()
 	}
 
 	/// 返回账户信息。
@@ -65,7 +66,7 @@ impl Bot {
 			ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
 		};
 		debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
-		self.runtime().send_message(contact, message).await
+		self.adapter.send_message(contact, message).await
 	}
 }
 

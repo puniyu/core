@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "adapters/*", "plugins/*", "packages/*"]
+members = ["crates/*"]
 resolver = "2"
 
 [workspace.lints.clippy]
@@ -9,8 +9,8 @@ unwrap_used = "deny"
 authors = ["wuliya <3369906077@qq.com>"]
 license = "LGPL-3.0-only"
 readme = "README.md"
-homepage = "https://github.com/puniyu/puniyu"
-repository = "https://github.com/puniyu/puniyu"
+homepage = "https://github.com/puniyu/core"
+repository = "https://github.com/puniyu/core"
 edition = "2024"
 rust-version = "1.88.0"
 
