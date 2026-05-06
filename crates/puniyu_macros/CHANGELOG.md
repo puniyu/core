@@ -1,5 +1,13 @@
 # 变更日志
 
+## [0.8.1](https://github.com/puniyu/core/compare/puniyu_macros-v0.8.0...puniyu_macros-v0.8.1)
+
+### ⚙️ 杂项
+
+
+- 更新项目配置 - ([548e4d9](https://github.com/puniyu/core/commit/548e4d9166f6bcb7b36d936e73015966e6927462))
+
+
 ## [0.8.0]
 
 ### ⛰️ 新功能

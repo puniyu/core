@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_version"
-version = "0.8.0"
+version = "0.8.1"
 description = "puniyu 轻量版本号类型，提供三段式语义版本表示与 semver 互转"
 authors.workspace = true
 license.workspace = true
