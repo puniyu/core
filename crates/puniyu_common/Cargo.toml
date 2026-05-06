@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_common"
-version = "0.8.0"
+version = "0.8.1"
 description = "puniyu crate for common"
 readme = "README.md"
 authors.workspace = true

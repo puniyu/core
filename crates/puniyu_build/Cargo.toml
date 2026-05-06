@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_build"
-version = "0.8.0"
+version = "0.8.1"
 description = "puniyu 的构建模块"
 readme = "README.md"
 authors.workspace = true
