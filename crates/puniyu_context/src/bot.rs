@@ -3,7 +3,7 @@ use puniyu_adapter_types::{AdapterInfo, SendMsgType};
 use puniyu_bot::Bot;
 use puniyu_contact::ContactType;
 use puniyu_message::Message;
-use puniyu_runtime::AdapterRuntime;
+use puniyu_runtime::Runtime;
 
 /// 机器人上下文
 #[derive(Clone, Copy)]
@@ -20,7 +20,8 @@ impl<'c> BotContext<'c> {
 		self.inner.adapter_info()
 	}
 
-	pub fn runtime(&self) -> &dyn AdapterRuntime {
+
+	pub fn runtime<T: Runtime>(&self) -> Option<&T> {
 		self.inner.runtime()
 	}
 

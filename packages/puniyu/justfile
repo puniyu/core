@@ -1,7 +1,0 @@
-set windows-shell := ["powershell.exe", "-c"]
-set shell := ["bash", "-cu"]
-
-run:
-   cargo run
-build:
-    cargo build --release

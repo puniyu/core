@@ -195,9 +195,6 @@ changelog_include = ["puniyu_common", "puniyu_version", "puniyu_path", "puniyu_e
 name = "puniyu_task"
 changelog_include = ["puniyu_error"]
 
-[[package]]
-name = "puniyu_cooldown"
-changelog_include = ["puniyu_error"]
 
 [[package]]
 name = "puniyu_context"
@@ -230,21 +227,6 @@ changelog_include = ["puniyu_command_types", "puniyu_command", "puniyu_context",
 name = "puniyu_dispatch"
 changelog_include = ["puniyu_event", "puniyu_handler"]
 
-[[package]]
-name = "puniyu_handler_command"
-changelog_include = [
-    "puniyu_event", "puniyu_message", "puniyu_element", "puniyu_context",
-    "puniyu_handler", "puniyu_cooldown", "puniyu_error", "puniyu_plugin_core",
-    "puniyu_command", "puniyu_command_parser"
-]
-
-[[package]]
-name = "puniyu_handler_hook"
-changelog_include = ["puniyu_hook", "puniyu_handler", "puniyu_event", "puniyu_error", "puniyu_context"]
-
-# ============================================
-# 第五层：插件系统
-# ============================================
 [[package]]
 name = "puniyu_plugin_core"
 changelog_include = ["puniyu_error", "puniyu_version", "puniyu_hook", "puniyu_config", "puniyu_common", "puniyu_command", "puniyu_task", "puniyu_server"]
@@ -297,29 +279,12 @@ name = "puniyu_macros"
 [[package]]
 name = "puniyu_core"
 git_tag_enable = true
-git_tag_name = "core-v{{ version }}"
-version_group = "puniyu"
+git_tag_name = "v{{ version }}"
+git_release_enable = true
+git_release_latest = true
 changelog_include = [
     "puniyu_common", "puniyu_path", "puniyu_dispatch", "puniyu_config",
     "puniyu_api", "puniyu_error", "puniyu_hook", "puniyu_command",
     "puniyu_task", "puniyu_plugin_core", "puniyu_loader", "puniyu_handler",
     "puniyu_adapter_core", "puniyu_server", "puniyu_version"
 ]
-
-[[package]]
-name = "puniyu_adapter_console"
-
-[[package]]
-name = "puniyu_plugin_basic"
-changelog_include = ["puniyu_plugin", "puniyu_common"]
-
-[[package]]
-name = "puniyu"
-publish = false
-git_tag_enable = true
-git_tag_name = "v{{ version }}"
-git_only = true
-git_release_name = "v{{ version }}"
-git_release_latest = true
-version_group = "puniyu"
-changelog_include = ["puniyu_core"]

@@ -1,14 +1,10 @@
-name: release
+name: Release
 on:
   push:
     branches:
       - main
-  pull_request_target:
   workflow_dispatch:
 
-
-env:
-  APP_NAME: puniyu
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -16,41 +12,8 @@ concurrency:
 
 
 jobs:
-  release-pr:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !github.event.pull_request }}
-    runs-on: ubuntu-latest
-    outputs:
-      prs_created: ${{ steps.release-plz.outputs.prs_created }}
-    steps:
-      - name: 检出仓库
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
-          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          fetch-depth: 0
-
-      - name: 获取token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
-        id: app-token
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
-      - name: 运行 release-plz
-        id: release-plz
-        uses: release-plz/action@1528104d2ca23787631a1c1f022abb64b34c1e11 # v0.5
-        with:
-          command: release-pr
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
-
   release:
-    needs: release-pr
-    if: ${{ needs.release-pr.outputs.prs_created == 'false'  }}
     runs-on: ubuntu-latest
-    outputs:
-      releases: ${{ steps.release-plz.outputs.releases  }}
     steps:
       - name: 检出仓库
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -67,71 +30,17 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: 运行 release-plz
-        id: release-plz
         uses: release-plz/action@1528104d2ca23787631a1c1f022abb64b34c1e11 # v0.5
         with:
           command: release
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
-
-  test:
-    runs-on: ubuntu-latest
-    if: "!startsWith(github.head_ref, 'release')"
-    steps:
-      - name: 检出代码
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
-          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-
-      - name: 设置 rust
-        uses: puniyu/setup-rust@f3918cbdc92e873ff107fadaf12fe116f1b516b9 # main
-        with:
-          tools: just
-          cache: true
-          prefix-key: ${{ env.APP_NAME }}
-
-      - name: 单元测试
-        run: |
-          just test
-
-
-  build:
-    needs: [ test ]
-    uses: ./.github/workflows/build.yaml
-
-  publish-github-release:
-    needs: [ release-pr, release, build ]
-    if: ${{ needs.release-pr.outputs.prs_created == 'false' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 获取token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
-        id: app-token
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
-      - name: 下载构建产物
-        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
-        with:
-          name: "^${{ env.APP_NAME }}.*"
-          name_is_regexp: true
-          skip_unpack: true
-
-      - name: 获取包的标签
-        id: get-tag
-        run: |
-          puniyu_tag=$(echo '${{ needs.release.outputs.releases }}' | jq -r '.[] | select(.package_name == "puniyu") | .tag')
-          echo "puniyu_tag=$puniyu_tag" >> $GITHUB_OUTPUT
-
           
-
-      - name: 上传主程序 Release
-        if: ${{ steps.get-tag.outputs.puniyu_tag }}
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+      - name: 运行 release-plz
+        uses: release-plz/action@1528104d2ca23787631a1c1f022abb64b34c1e11 # v0.5
         with:
-          token: ${{ steps.app-token.outputs.token }}
-          files: ${{ env.APP_NAME }}-*
-          tag_name: ${{ steps.get-tag.outputs.puniyu_tag }}
+          command: release-pr
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
