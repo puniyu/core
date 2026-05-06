@@ -2,6 +2,7 @@ pub use puniyu_account::account_info;
 pub use puniyu_api::pkg_name;
 pub use puniyu_contact::{contact, contact_friend, contact_group, contact_group_temp};
 pub use puniyu_macros::command;
+pub use puniyu_macros::arg;
 pub use puniyu_macros::plugin;
 pub use puniyu_macros::plugin_config as config;
 pub use puniyu_macros::plugin_hook as hook;
