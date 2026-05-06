@@ -1,5 +1,13 @@
 # 变更日志
 
+## [0.8.1](https://github.com/puniyu/core/compare/puniyu_protobuf-v0.8.0...puniyu_protobuf-v0.8.1)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_account, puniyu_contact, puniyu_element, puniyu_sender, puniyu_version, puniyu_adapter_types, puniyu_bot - ([0000000](https://github.com/puniyu/core/commit/0000000))
+
+
 ## [0.8.0]
 
 ### ⛰️ 新功能

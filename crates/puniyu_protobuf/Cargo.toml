@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_protobuf"
-version = "0.8.0"
+version = "0.8.1"
 description = "puniyu protobuf协议定义"
 authors.workspace = true
 license.workspace = true
