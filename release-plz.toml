@@ -281,6 +281,7 @@ name = "puniyu_core"
 git_tag_enable = true
 git_tag_name = "v{{ version }}"
 git_release_enable = true
+git_release_name = "v{{ version }}"
 git_release_latest = true
 changelog_include = [
     "puniyu_common", "puniyu_path", "puniyu_dispatch", "puniyu_config",
