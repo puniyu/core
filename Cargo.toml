@@ -64,7 +64,7 @@ puniyu_context = { version = "0.8.1", path = "./crates/puniyu_context" }
 
 puniyu_config = { version = "0.8.1", path = "./crates/puniyu_config" }
 
-puniyu_adapter = { version = "0.8.1", path = "./crates/puniyu_adapter" }
+puniyu_adapter = { version = "0.8.2", path = "./crates/puniyu_adapter" }
 puniyu_adapter_core = { version = "0.8.1", path = "./crates/puniyu_adapter_core" }
 puniyu_adapter_types = { version = "0.8.1", path = "./crates/puniyu_adapter_types" }
 puniyu_runtime = { version = "0.8.1", path = "./crates/puniyu_runtime" }
@@ -82,12 +82,12 @@ puniyu_hook = { version = "0.8.1", path = "./crates/puniyu_hook" }
 puniyu_handler = { version = "0.8.1", path = "./crates/puniyu_handler" }
 puniyu_handler_command = { version = "0.8.0", path = "./crates/puniyu_handler_command" }
 puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook" }
-puniyu_plugin = { version = "0.8.1", path = "./crates/puniyu_plugin" }
-puniyu_plugin_core = { version = "0.8.1", path = "./crates/puniyu_plugin_core" }
+puniyu_plugin = { version = "0.8.2", path = "./crates/puniyu_plugin" }
+puniyu_plugin_core = { version = "0.8.2", path = "./crates/puniyu_plugin_core" }
 
-puniyu_loader = { version = "0.8.1", path = "./crates/puniyu_loader" }
-puniyu_core = { version = "0.8.1", path = "./crates/puniyu_core" }
-puniyu_api = { version = "0.8.1", path = "./crates/puniyu_api" }
+puniyu_loader = { version = "0.8.2", path = "./crates/puniyu_loader" }
+puniyu_core = { version = "0.8.2", path = "./crates/puniyu_core" }
+puniyu_api = { version = "0.8.2", path = "./crates/puniyu_api" }
 puniyu_macros = { version = "0.8.1", path = "./crates/puniyu_macros", default-features = true }
 puniyu_adapter_console = { version = "0.8.0", path = "./adapters/puniyu_adapter_console" }
 
