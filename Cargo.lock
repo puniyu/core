@@ -2058,7 +2058,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "actix-web",
  "async-trait",
@@ -2098,7 +2098,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_core"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "log",
@@ -2114,7 +2114,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_types"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "bon",
  "bytes",
@@ -2129,7 +2129,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_api"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "inventory",
  "puniyu_account",
@@ -2153,7 +2153,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_bot"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "log",
  "puniyu_account",
@@ -2175,7 +2175,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "clap",
@@ -2186,7 +2186,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_parser"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "clap",
@@ -2248,7 +2248,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_context"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2309,7 +2309,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_dispatch"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "log",
  "puniyu_event",
@@ -2338,7 +2338,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_event"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2359,7 +2359,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_handler"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2410,7 +2410,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_hook"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "puniyu_common",
@@ -2506,7 +2506,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin_core"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "async-trait",
  "log",
@@ -2541,7 +2541,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_runtime"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "actix-web",
  "async-trait",
@@ -2573,7 +2573,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_server"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "actix-web",
  "bytes",
