@@ -29,6 +29,6 @@ cargo run -p puniyu
 
 ## 社区与链接
 
-- GitHub：<https://github.com/puniyu/puniyu>
+- GitHub：<https://github.com/puniyu/core>
 - DeepWiki：<https://deepwiki.com/puniyu/puniyu>
 - QQ 群：`1022851882`

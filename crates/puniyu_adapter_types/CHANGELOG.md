@@ -5,17 +5,17 @@
 ### ⛰️ 新功能
 
 
-- *(puniyu_event)* 添加通知和请求事件类型支持 - ([d7421d5](https://github.com/puniyu/puniyu/commit/d7421d535c6ea247e6539372e34fda5fa26bb55b))
+- *(puniyu_event)* 添加通知和请求事件类型支持 - ([d7421d5](https://github.com/puniyu/core/commit/d7421d535c6ea247e6539372e34fda5fa26bb55b))
 
 ### 🚜 重构
 
 
-- *(core)* 重构整个框架的核心实现 ([#165](https://github.com/puniyu/puniyu/pull/165)) - ([9482b34](https://github.com/puniyu/puniyu/commit/9482b34a76fecf05b3475aecf01df93d9e8994ff))
-- 重构事件模块 ([#180](https://github.com/puniyu/puniyu/pull/180)) - ([bfbb9a7](https://github.com/puniyu/puniyu/commit/bfbb9a73d6c5cdeaa2a139cdb353988e28d16fac))
-- 使用jiff替换chrono库并优化时间处理 ([#179](https://github.com/puniyu/puniyu/pull/179)) - ([8d0257a](https://github.com/puniyu/puniyu/commit/8d0257a9663c43dceafa6e35f7e6f382425df727))
+- *(core)* 重构整个框架的核心实现 ([#165](https://github.com/puniyu/core/pull/165)) - ([9482b34](https://github.com/puniyu/core/commit/9482b34a76fecf05b3475aecf01df93d9e8994ff))
+- 重构事件模块 ([#180](https://github.com/puniyu/core/pull/180)) - ([bfbb9a7](https://github.com/puniyu/core/commit/bfbb9a73d6c5cdeaa2a139cdb353988e28d16fac))
+- 使用jiff替换chrono库并优化时间处理 ([#179](https://github.com/puniyu/core/pull/179)) - ([8d0257a](https://github.com/puniyu/core/commit/8d0257a9663c43dceafa6e35f7e6f382425df727))
 
 ### ⚙️ 杂项
 
 
-- 使用 bon 替换 derive_builder 并更新依赖 - ([aa29264](https://github.com/puniyu/puniyu/commit/aa29264500d5c3917d7396eef3acaec4df6ad722))
+- 使用 bon 替换 derive_builder 并更新依赖 - ([aa29264](https://github.com/puniyu/core/commit/aa29264500d5c3917d7396eef3acaec4df6ad722))
 

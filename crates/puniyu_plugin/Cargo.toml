@@ -1,9 +1,10 @@
 [package]
 name = "puniyu_plugin"
 version = "0.8.0"
+description = "puniyu 插件库, 提供统一Api"
 authors.workspace = true
 license.workspace = true
-readme.workspace = true
+readme = "README.md"
 homepage.workspace = true
 repository.workspace = true
 edition.workspace = true
