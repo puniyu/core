@@ -2025,7 +2025,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "actix-web",
  "async-trait",
@@ -2083,7 +2083,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_api"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "inventory",
  "puniyu_account",
@@ -2222,7 +2222,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_core"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "bytes",
  "const-str",
@@ -2325,7 +2325,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_loader"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2373,7 +2373,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "actix-web",
  "async-trait",
@@ -2398,7 +2398,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin_core"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "async-trait",
  "log",
