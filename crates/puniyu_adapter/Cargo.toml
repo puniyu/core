@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_adapter"
-version = "0.8.0"
+version = "0.8.1"
 description = "Puniyu 适配器库，提供适配器的统一接口定义和注册管理"
 authors.workspace = true
 license.workspace = true

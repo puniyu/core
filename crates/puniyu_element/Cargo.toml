@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_element"
-version = "0.8.0"
+version = "0.8.1"
 description = "puniyu 消息元素类型库，统一定义接收与发送元素模型"
 authors.workspace = true
 license.workspace = true
