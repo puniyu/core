@@ -83,7 +83,7 @@ puniyu_handler = { version = "0.8.1", path = "./crates/puniyu_handler" }
 puniyu_handler_command = { version = "0.8.0", path = "./crates/puniyu_handler_command" }
 puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook" }
 puniyu_plugin = { version = "0.8.0", path = "./crates/puniyu_plugin" }
-puniyu_plugin_core = { version = "0.8.1", path = "./crates/puniyu_plugin_core" }
+puniyu_plugin_core = { version = "0.8.2", path = "./crates/puniyu_plugin_core" }
 
 puniyu_loader = { version = "0.8.0", path = "./crates/puniyu_loader" }
 puniyu_core = { version = "0.8.0", path = "./crates/puniyu_core" }

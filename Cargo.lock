@@ -2506,7 +2506,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin_core"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "async-trait",
  "log",
