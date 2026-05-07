@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.3](https://github.com/puniyu/core/compare/v0.8.2...v0.8.3)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_core, puniyu_hook, puniyu_server, puniyu_command, puniyu_plugin_core, puniyu_api, puniyu_handler, puniyu_dispatch, puniyu_loader
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/v0.8.1...v0.8.2)
 
 ### ⛰️ 新功能

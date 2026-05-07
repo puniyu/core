@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.3](https://github.com/puniyu/core/compare/puniyu_plugin-v0.8.2...puniyu_plugin-v0.8.3)
+
+### 🚜 重构
+
+
+- *(puniyu_macros)* 重构宏实现以支持新的钩子系统 ([#209](https://github.com/puniyu/core/pull/209)) - ([1cd15d8](https://github.com/puniyu/core/commit/1cd15d84a59099c7a7cd047d5c320785ad463775))
+
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/puniyu_plugin-v0.8.1...puniyu_plugin-v0.8.2)
 
 ### ⛰️ 新功能
