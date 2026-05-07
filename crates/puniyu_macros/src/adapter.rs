@@ -5,8 +5,10 @@ pub use hook::hook;
 
 use crate::AdapterArgs;
 use crate::common::{validate_async, validate_return_type};
-use zyn::{ToTokens, zyn};
-pub fn adapter(item: zyn::syn::ItemFn, cfg: AdapterArgs) -> zyn::TokenStream {
+use quote::quote;
+use syn::ItemFn;
+
+pub fn adapter(item: ItemFn, cfg: AdapterArgs) -> proc_macro2::TokenStream {
 	if let Err(err) = validate_async(&item.sig) {
 		return err.to_compile_error();
 	}
@@ -14,73 +16,69 @@ pub fn adapter(item: zyn::syn::ItemFn, cfg: AdapterArgs) -> zyn::TokenStream {
 		return err.to_compile_error();
 	}
 
-	let adapter_name = zyn! { env!("CARGO_PKG_NAME") };
 	let fn_name = &item.sig.ident;
+	let runtime = cfg.runtime;
+	let server_impl = match cfg.server {
+		Some(server) => quote! {
+			fn server(&self) -> Option<::puniyu_adapter::__private::ServerFunction> {
+				Some(::puniyu_adapter::__private::ServerFunction::new(#server))
+			}
+		},
+		None => quote! {},
+	};
 	let init_impl = if item.block.stmts.is_empty() {
-		zyn! {}
+		quote! {}
 	} else {
-		zyn! {
+		quote! {
 			#[inline]
 			async fn init(&self) -> ::puniyu_adapter::Result {
-				{{ fn_name }}().await
+				#fn_name().await
 			}
 		}
 	};
 
-	zyn! {
-		{{ item }}
+	quote! {
+		#item
 
 		pub struct Adapter;
 
 		#[::puniyu_adapter::__private::async_trait]
 		impl ::puniyu_adapter::__private::Adapter for Adapter {
 			fn runtime(&self) -> ::std::sync::Arc<dyn ::puniyu_adapter::runtime::AdapterRuntime> {
-				{{ cfg.runtime }}()
+				#runtime()
 			}
-			fn config(&self) -> Vec<::std::sync::Arc<dyn ::puniyu_adapter::__private::Config>> {
+
+			fn config(&self) -> ::std::vec::Vec<::std::sync::Arc<dyn ::puniyu_adapter::__private::Config>> {
 				::puniyu_adapter::__private::inventory::iter::<crate::ConfigRegistry>
 					.into_iter()
-					.filter(|registry| registry.adapter_name == {{ adapter_name}})
+					.filter(|registry| registry.adapter_name == env!("CARGO_PKG_NAME"))
 					.map(|registry| (registry.builder)())
 					.collect()
 			}
 
-			fn hook(&self) -> Vec<::std::sync::Arc<dyn ::puniyu_adapter::__private::Hook>> {
+			fn hook(&self) -> ::std::vec::Vec<::std::sync::Arc<dyn ::puniyu_adapter::__private::Hook>> {
 				::puniyu_adapter::__private::inventory::iter::<crate::HookRegistry>
 					.into_iter()
-					.filter(|registry| registry.adapter_name == {{ adapter_name }})
+					.filter(|registry| registry.adapter_name == env!("CARGO_PKG_NAME"))
 					.map(|registry| (registry.builder)())
 					.collect()
 			}
 
-			fn server(&self) -> Option<::puniyu_adapter::__private::ServerFunction> {
-					@if(cfg.server.is_some()){
-						::puniyu_adapter::__private::ServerFunction::new(&cfg.server)
-					}
-					@else{
-						None
-					}
-			}
+			#server_impl
 
-			{{ init_impl }}
+			#init_impl
 		}
 
-		/// 配置注册表
 		pub(crate) struct ConfigRegistry {
 			adapter_name: &'static str,
-			/// 配置构造器
 			builder: fn() -> ::std::sync::Arc<dyn ::puniyu_adapter::__private::Config>,
 		}
 		::puniyu_adapter::__private::inventory::collect!(crate::ConfigRegistry);
 
-		/// 钩子注册注册表
 		pub(crate) struct HookRegistry {
 			adapter_name: &'static str,
-			/// 钩子构造器
 			builder: fn() -> ::std::sync::Arc<dyn ::puniyu_adapter::__private::Hook>,
 		}
 		::puniyu_adapter::__private::inventory::collect!(crate::HookRegistry);
-
 	}
-	.to_token_stream()
 }

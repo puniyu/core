@@ -1,10 +1,14 @@
 use crate::{
 	HookArgs,
-	common::{validate_async, validate_hook_args, validate_return_type},
+	common::{
+		default_name_from_ident, function_struct_ident, hook_type_tokens, validate_async,
+		validate_hook_args, validate_return_type,
+	},
 };
-use zyn::{ToTokens, syn::spanned::Spanned, zyn};
+use quote::quote;
+use syn::{ItemFn, LitStr, spanned::Spanned};
 
-pub fn hook(item: zyn::syn::ItemFn, cfg: HookArgs) -> zyn::TokenStream {
+pub fn hook(item: ItemFn, cfg: HookArgs) -> proc_macro2::TokenStream {
 	let fn_sig = item.sig.clone();
 	if let Err(err) = validate_async(&fn_sig) {
 		return err.to_compile_error();
@@ -17,113 +21,31 @@ pub fn hook(item: zyn::syn::ItemFn, cfg: HookArgs) -> zyn::TokenStream {
 	}
 
 	let fn_name = &fn_sig.ident;
-	let struct_name = zyn! { {{ fn_name | pascal | ident: "{}Hook" }} };
-	let plugin_name = zyn! { env!("CARGO_PKG_NAME") };
-	let hook_name = match &cfg.name {
-		Some(name) => zyn! { {{ name | str }} },
-		_ => zyn! { {{ fn_name | lower | str }} },
+	let struct_name = function_struct_ident(fn_name, "Hook");
+	let hook_name = cfg.name.unwrap_or_else(|| default_name_from_ident(fn_name));
+	let hook_type_value = cfg.hook_type.as_ref().map(LitStr::value);
+	let hook_type_span = cfg.hook_type.as_ref().map_or_else(|| fn_sig.span(), LitStr::span);
+	let hook_type = match hook_type_tokens("plugin", hook_type_value.as_deref(), hook_type_span) {
+		Ok(tokens) => tokens,
+		Err(err) => return err.to_compile_error(),
 	};
-	let hook_type = match &cfg.hook_type {
-		Some(type_str) => {
-			let parts: Vec<&str> = type_str.split('.').collect();
-			match parts.as_slice() {
-				["event"] => zyn! {
-					::puniyu_plugin::hook::HookType::Event(
-						::puniyu_plugin::hook::HookEventType::default()
-					)
-				},
-				["event", "message"] => zyn! {
-					::puniyu_plugin::hook::HookType::Event(
-						::puniyu_plugin::hook::HookEventType::Message
-					)
-				},
-				["event", "extension"] => zyn! {
-					::puniyu_plugin::hook::HookType::Event(
-						::puniyu_plugin::hook::HookEventType::Extension
-					)
-				},
-				["event", "all"] => zyn! {
-					::puniyu_plugin::hook::HookType::Event(
-						::puniyu_plugin::hook::HookEventType::All
-					)
-				},
-				["status"] => zyn! {
-					::puniyu_plugin::hook::HookType::Status(
-						::puniyu_plugin::hook::StatusType::default()
-					)
-				},
-				["status", "start"] => zyn! {
-					::puniyu_plugin::hook::HookType::Status(
-						::puniyu_plugin::hook::StatusType::Start
-					)
-				},
-				["status", "stop"] => zyn! {
-					::puniyu_plugin::hook::HookType::Status(
-						::puniyu_plugin::hook::StatusType::Stop
-					)
-				},
-				["event", subtype] => {
-					let err_msg = format!(
-						"Invalid event subtype '{}'. Valid event subtypes are: 'message', 'extension', 'all'. \
-						Examples: 'event.message', 'event.all'",
-						subtype
-					);
-					return zyn::syn::Error::new(fn_sig.span(), err_msg).to_compile_error();
-				}
-				["status", subtype] => {
-					let err_msg = format!(
-						"Invalid status subtype '{}'. Valid status subtypes are: 'start', 'stop'. \
-						Examples: 'status.start', 'status.stop'",
-						subtype
-					);
-					return zyn::syn::Error::new(fn_sig.span(), err_msg).to_compile_error();
-				}
-				[category, _] => {
-					let err_msg = format!(
-						"Invalid hook category '{}'. Valid categories are: 'event', 'status'. \
-						Examples: 'event.message', 'status.start'",
-						category
-					);
-					return zyn::syn::Error::new(fn_sig.span(), err_msg).to_compile_error();
-				}
-				[category] => {
-					let err_msg = format!(
-						"Invalid hook category '{}'. Valid categories are: 'event', 'status'. \
-						Examples: 'event', 'event.message', 'status.start'",
-						category
-					);
-					return zyn::syn::Error::new(fn_sig.span(), err_msg).to_compile_error();
-				}
-				_ => {
-					let err_msg = format!(
-						"Invalid hook type format '{}'. Expected format: 'category' or 'category.subtype'. \
-						Examples: 'event', 'event.message', 'status.start'",
-						type_str
-					);
-					return zyn::syn::Error::new(fn_sig.span(), err_msg).to_compile_error();
-				}
-			}
-		}
-		None => zyn! { ::puniyu_plugin::hook::HookType::default() },
-	};
-	let hook_priority = match &cfg.priority {
-		Some(priority) => zyn! { {{ priority }} },
-		_ => zyn! { 500 },
-	};
+	let hook_priority = cfg.priority.unwrap_or(500);
 
-	zyn! {
-		{{ item }}
+	quote! {
+		#item
 
-		struct {{ struct_name }};
+		struct #struct_name;
 
 		#[::puniyu_plugin::__private::async_trait]
-		impl ::puniyu_plugin::__private::Hook for {{ struct_name }} {
+		impl ::puniyu_plugin::__private::Hook for #struct_name {
 			fn name(&self) -> &'static str {
 				#hook_name
 			}
 
-			fn r#type(&self) -> ::puniyu_plugin::hook::HookType {
-				#hook_type
+			fn r#type(&self) -> &::puniyu_plugin::hook::HookType {
+				static HOOK_TYPE: ::std::sync::LazyLock<::puniyu_plugin::hook::HookType> =
+					::std::sync::LazyLock::new(|| #hook_type);
+				&HOOK_TYPE
 			}
 
 			fn priority(&self) -> u32 {
@@ -133,20 +55,19 @@ pub fn hook(item: zyn::syn::ItemFn, cfg: HookArgs) -> zyn::TokenStream {
 			#[inline]
 			async fn execute(
 				&self,
-				event: Option<&Event>,
+				_event: Option<&::puniyu_plugin::context::EventContext>,
 			) -> ::puniyu_plugin::Result {
-				{{ fn_name }}(event).await
+				#fn_name(self.r#type()).await
 			}
 		}
 
 		::puniyu_plugin::__private::inventory::submit! {
 			crate::HookRegistry {
-				plugin_name: {{ plugin_name }},
+				plugin_name: env!("CARGO_PKG_NAME"),
 				builder: || -> ::std::sync::Arc<dyn ::puniyu_plugin::__private::Hook> {
-					::std::sync::Arc::new({{ struct_name }} {})
+					::std::sync::Arc::new(#struct_name {})
 				}
 			}
 		}
 	}
-	.to_token_stream()
 }

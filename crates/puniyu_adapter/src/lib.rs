@@ -1,6 +1,7 @@
 pub mod account;
 pub mod bot;
 pub mod contact;
+pub mod context;
 pub mod element;
 pub mod event;
 pub mod hook;

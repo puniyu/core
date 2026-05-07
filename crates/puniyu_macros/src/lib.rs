@@ -1,6 +1,6 @@
 //! # puniyu_macros
 //!
-//! `puniyu_macros` 提供 puniyu 生态中的过程宏，用于声明插件、命令、任务、配置和适配器入口。
+//! `puniyu_macros` 提供 puniyu 生态中的过程宏，用于声明插件、适配器、命令、任务、Hook 和配置，减少 trait 实现与 `inventory` 注册样板代码。
 //!
 //! ## 插件侧宏
 //!
@@ -17,10 +17,23 @@
 //! - [`adapter_config`]：声明适配器配置结构体
 //! - [`adapter_hook`]：声明适配器钩子函数
 //!
+//! ## 编译期校验
+//!
+//! 大多数函数类宏会在编译期校验以下内容：
+//!
+//! - 被标注项是否为 `async fn`
+//! - 函数参数和返回类型是否满足约束
+//! - 属性参数是否使用合法的 key-value 形式
+//! - `cron`、`hook_type`、`permission` 等枚举值或格式是否有效
+//!
+//! ## 生成行为
+//!
+//! 这些宏会生成对应 trait 的实现，并通过 `inventory` 注册元数据，供运行时收集插件、适配器、命令、任务、Hook 和配置。
+//!
 //! ## 示例
 //!
 //! ```rust, ignore
-//! use puniyu_plugin::prelude::*;
+//! use puniyu_macros::plugin;
 //!
 //! #[plugin]
 //! async fn __main() {}
@@ -32,260 +45,340 @@ mod plugin;
 mod types;
 pub(crate) use types::*;
 
-use zyn::{ToTokens, syn::spanned::Spanned};
+fn parse_attr<T: syn::parse::Parse>(
+	tokens: proc_macro::TokenStream,
+) -> Result<T, proc_macro::TokenStream> {
+	syn::parse(tokens).map_err(|err| err.to_compile_error().into())
+}
+
+fn arg_marker(args: proc_macro::TokenStream) -> proc_macro2::TokenStream {
+	let args: proc_macro2::TokenStream = args.into();
+	quote::quote!(#[__puniyu_arg(#args)])
+}
 
 /// 声明适配器配置结构体。
 ///
-/// 该宏会为结构体生成适配器配置注册逻辑，并使用结构体的默认值作为初始配置。
-/// 默认配置名取结构体名的 snake_case，也可以通过 `name` 参数覆盖。
+/// # 参数
 ///
-/// # 示例
+/// - `name = "..."`：可选，配置名；默认从结构体名推导并转换为 snake_case。
 ///
-/// ```rust, ignore
-/// use puniyu_macros::adapter_config;
-/// use serde::{Deserialize, Serialize};
+/// # 约束
 ///
-/// #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-/// #[adapter_config(name = "console")]
-/// pub struct ConsoleConfig {
-///     pub enabled: bool,
-///     pub prompt: String,
-/// }
-/// ```
-#[zyn::attribute]
+/// - 只能标注在结构体上。
+/// - 被标注结构体需要实现 `Default`。
+/// - 被标注结构体需要能序列化为 TOML。
+///
+#[proc_macro_attribute]
 pub fn adapter_config(
-	#[zyn(input)] item: zyn::syn::ItemStruct,
-	args: zyn::Args,
-) -> zyn::TokenStream {
-	let cfg = match ConfigArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	let item = match parse_attr::<syn::ItemStruct>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	adapter::config(item, cfg)
+	let cfg = match ConfigArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	adapter::config(item, cfg).into()
 }
 
-/// 声明适配器钩子函数。
+/// 声明适配器 Hook 函数。
 ///
-/// 要求函数为 `async`，接收一个引用参数，对应适配器侧 `HookType`，并返回
-/// `puniyu_adapter::Result`。
+/// # 参数
 ///
-/// # 示例
+/// - `name = "..."`：可选，Hook 名；默认从函数名推导。
+/// - `hook_type = "..."`：可选，也可写作 `type` 或 `r#type`；默认使用 `HookType::default()`。
+/// - `priority = 100`：可选，优先级；默认 `500`。
 ///
-/// ```rust, ignore
-/// use puniyu_adapter::hook::HookType;
-/// use puniyu_macros::adapter_hook;
+/// `hook_type` 支持：`event`、`event.message`、`event.extension`、`event.all`、`status`、`status.start`、`status.stop`。
 ///
-/// #[adapter_hook(name = "on_start", hook_type = "status.start", priority = 100)]
-/// async fn on_start(event: &HookType) -> puniyu_adapter::Result {
-///     let _ = event;
-///     Ok(())
-/// }
-/// ```
-#[zyn::attribute(debug(pretty))]
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 函数必须接收一个 `&HookType` 参数。
+/// - 函数必须返回 `puniyu_adapter::Result`。
+///
+#[proc_macro_attribute]
 pub fn adapter_hook(
-	#[zyn(input)] item: zyn::syn::ItemFn,
-	args: zyn::Args,
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-	let cfg = match HookArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	adapter::hook(item, cfg)
+	let cfg = match HookArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	adapter::hook(item, cfg).into()
 }
 
 /// 声明适配器入口函数。
 ///
-/// 参数中需要提供：
-/// - `info`：返回 `AdapterInfo` 的函数
-/// - `runtime`：返回适配器运行时的函数
+/// # 参数
 ///
-/// 要求函数为 `async`。当函数体非空时，返回类型必须为 `puniyu_adapter::Result`；
-/// 当函数体为空时，可以省略返回值类型。
+/// - `runtime = path`：必填，返回 `Arc<dyn puniyu_adapter::runtime::AdapterRuntime>` 的函数或表达式。
+/// - `server = path`：可选，适配器服务函数。
+///
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 函数必须返回 `puniyu_adapter::Result`。
+/// - 空函数体不会生成 `init` 调用；非空函数体会作为适配器初始化逻辑调用。
+///
 ///
 /// # 示例
 ///
 /// ```rust, ignore
-/// use puniyu_adapter::types::*;
 /// use puniyu_macros::adapter;
 ///
-/// #[adapter(runtime = runtime::runtime)]
-/// async fn main() -> puniyu_adapter::Result {
+/// #[adapter(runtime = runtime)]
+/// async fn __main() -> puniyu_adapter::Result {
 ///     Ok(())
 /// }
 /// ```
-#[zyn::attribute(debug(pretty))]
-pub fn adapter(#[zyn(input)] item: zyn::syn::ItemFn, args: zyn::Args) -> proc_macro::TokenStream {
-	let cfg = match AdapterArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+#[proc_macro_attribute]
+pub fn adapter(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	adapter::adapter(item, cfg)
+	let cfg = match AdapterArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	adapter::adapter(item, cfg).into()
 }
 
 /// 声明插件入口函数。
 ///
-/// 可选参数：
-/// - `desc`：插件描述
-/// - `prefix`：插件命令前缀
+/// # 参数
 ///
-/// 要求函数为 `async`。当函数体非空时，返回类型必须为 `puniyu_plugin::Result`；
-/// 当函数体为空时，可以省略返回值类型。
+/// - `desc = "..."`：可选，插件描述。
+/// - `prefix = "..."`：可选，命令前缀。
+/// - `server = path`：可选，插件服务函数。
+///
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 当函数体非空时，函数必须返回 `puniyu_plugin::Result`。
+/// - 空函数体不会生成 `init` 调用；非空函数体会作为插件初始化逻辑调用。
 ///
 /// # 示例
 ///
 /// ```rust, ignore
 /// use puniyu_macros::plugin;
-/// use puniyu_plugin::prelude::*;
 ///
-/// #[plugin(desc = "基础功能插件", prefix = "basic")]
-/// async fn __main() -> puniyu_plugin::Result {
-///     Ok(())
-/// }
+/// #[plugin]
+/// async fn __main() {}
 /// ```
-#[zyn::attribute(debug(pretty))]
-pub fn plugin(#[zyn(input)] item: zyn::syn::ItemFn, args: zyn::Args) -> proc_macro::TokenStream {
-	let cfg = match PluginArg::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+#[proc_macro_attribute]
+pub fn plugin(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	plugin::plugin(item, cfg)
+	let cfg = match PluginArg::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	plugin::plugin(item, cfg).into()
 }
 
 /// 声明插件配置结构体。
 ///
-/// 该宏会为结构体生成插件配置注册逻辑，并使用结构体的默认值作为初始配置。
-/// 默认配置名取结构体名的 snake_case，也可以通过 `name` 参数覆盖。
+/// # 参数
+///
+/// - `name = "..."`：可选，配置名；默认从结构体名推导并转换为 snake_case。
+///
+/// # 约束
+///
+/// - 只能标注在结构体上。
+/// - 被标注结构体需要实现 `Default`。
+/// - 被标注结构体需要能序列化为 TOML。
 ///
 /// # 示例
 ///
 /// ```rust, ignore
 /// use puniyu_macros::plugin_config;
-/// use serde::{Deserialize, Serialize};
 ///
-/// #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-/// #[plugin_config(name = "basic")]
-/// pub struct BasicConfig {
-///     pub enabled: bool,
-///     pub prefix: String,
+/// #[derive(Default, serde::Serialize, serde::Deserialize)]
+/// #[plugin_config(name = "sample")]
+/// struct SampleConfig {
+///     value: String,
 /// }
 /// ```
-#[zyn::attribute(debug(pretty))]
+#[proc_macro_attribute]
 pub fn plugin_config(
-	#[zyn(input)] item: zyn::syn::ItemStruct,
-	args: zyn::Args,
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-	let cfg = match ConfigArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+	let item = match parse_attr::<syn::ItemStruct>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	plugin::config(item, cfg)
+	let cfg = match ConfigArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	plugin::config(item, cfg).into()
 }
 
-/// 声明命令处理函数。
+/// 声明插件命令处理函数。
 ///
-/// 常用参数：
-/// - `name`：命令名称，必填
-/// - `desc`：命令描述，可选
-/// - `priority`：优先级，可选
-/// - `alias`：别名列表，可选
-/// - `permission`：权限，可选，支持 `"all"` 和 `"admin"`
+/// # 参数
 ///
-/// 要求：
-/// - 函数必须是 `async`
-/// - 必须且只能接收一个参数：`&MessageContext<'_>`
-/// - 返回类型必须为 `puniyu_plugin::Result<CommandAction>`
+/// - `name = "..."`：可选，命令名；默认从函数名推导并转换为 snake_case。
+/// - `priority = 100`：可选，优先级；默认 `500`。
+/// - `desc = "..."`：可选，命令描述。
+/// - `alias = ["a", "b"]`：可选，命令别名列表。
+/// - `permission = "all"`：可选，命令权限；默认 `all`。
+///
+/// `permission` 支持：`all`、`master`、`owner`、`admin`。
+///
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 函数必须接收一个 `&MessageContext` 参数。
+/// - 函数必须返回 `puniyu_plugin::Result<CommandAction>`。
+/// - 可配合多个 [`arg`] 属性声明命令参数。
+///
+///
+/// # 常见错误
+///
+/// - 函数不是 `async fn`。
+/// - `permission` 值不合法。
+/// - 参数或返回类型不匹配。
 ///
 /// # 示例
 ///
 /// ```rust, ignore
+/// use puniyu_context::MessageContext;
 /// use puniyu_macros::{arg, command};
-/// use puniyu_plugin::prelude::*;
+/// use puniyu_plugin::command::CommandAction;
 ///
-/// #[command(name = "echo", desc = "回显文本", alias = ["say"], priority = 100)]
-/// #[arg(name = "message", desc = "消息内容", required = true)]
-/// #[arg(name = "times", r#type = "integer", mode = "optional", desc = "重复次数")]
-/// async fn echo(ctx: &MessageContext<'_>) -> puniyu_plugin::Result<CommandAction> {
-///     Ok(CommandAction::Done)
+/// #[command(desc = "echo", permission = "all")]
+/// #[arg(name = "message", desc = "消息")]
+/// async fn echo(_ctx: &MessageContext<'_>) -> puniyu_plugin::Result<CommandAction> {
+///     CommandAction::done()
 /// }
 /// ```
-#[zyn::attribute(debug(pretty))]
-pub fn command(#[zyn(input)] item: zyn::syn::ItemFn, cfg: zyn::Args) -> proc_macro::TokenStream {
-	let cfg = match CommandArgs::from_args(&cfg) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+#[proc_macro_attribute]
+pub fn command(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	plugin::command(item, cfg)
+	let cfg = match CommandArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	plugin::command(item, cfg).into()
 }
 
-/// 为命令补充参数描述。
+/// 为 [`command`] 声明命令参数。
 ///
-/// 该宏通常与 [`command`] 一起使用，常用参数包括：
-/// - `name`：参数名
-/// - `desc`：参数说明
-/// - `type`：参数类型，支持 `string`、`integer`、`boolean`
-/// - `mode`：参数模式，支持 `positional`、`optional`
-/// - `required`：是否必填
+/// # 参数
 ///
-/// # 示例
+/// - `name = "..."`：必填，参数名。
+/// - `arg_type = "string"`：可选，也可写作 `type` 或 `r#type`；默认 `string`。
+/// - `mode = "positional"`：可选，默认 `positional`。
+/// - `required = true`：可选，是否必填；默认 `false`。
+/// - `desc = "..."`：可选，参数描述。
 ///
-/// ```rust, ignore
-/// use puniyu_macros::{arg, command};
-/// use puniyu_plugin::prelude::*;
+/// `arg_type` 支持：`string`、`integer`、`int`、`float`、`boolean`、`bool`。
+/// `mode` 支持：`positional`、`named`。
 ///
-/// #[command(name = "echo")]
-/// #[arg(name = "message", desc = "消息内容", required = true)]
-/// #[arg(name = "times", r#type = "integer", mode = "optional", desc = "重复次数")]
-/// #[arg(name = "silent", r#type = "boolean", mode = "optional", desc = "是否静默执行")]
-/// async fn echo(ctx: &MessageContext<'_>) -> puniyu_plugin::Result<CommandAction> {
-///     Ok(CommandAction::Done)
-/// }
-/// ```
-#[zyn::attribute(debug(pretty))]
-pub fn arg(#[zyn(input)] item: zyn::syn::ItemFn) -> proc_macro::TokenStream {
-	item.to_token_stream()
+/// # 约束
+///
+/// - 该属性应与 [`command`] 一起使用。
+/// - 该宏会先校验自身参数格式，再写入内部参数标记供 [`command`] 收集处理。
+///
+#[proc_macro_attribute]
+pub fn arg(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	if let Err(err) = ArgType::parse_tokens(args.clone().into()) {
+		return err.to_compile_error().into();
+	}
+	let marker = arg_marker(args);
+	let item: proc_macro2::TokenStream = item.into();
+	quote::quote!(#marker #item).into()
 }
 
-/// 声明定时任务函数。
+/// 声明插件定时任务函数。
 ///
-/// 常用参数：
-/// - `cron`：cron 表达式，必填
-/// - `name`：任务名，可选
+/// # 参数
 ///
-/// 要求：
-/// - 函数必须是 `async`
-/// - 函数不接收参数
-/// - 返回类型必须为 `puniyu_plugin::Result`
-/// - `cron` 会在编译时校验
+/// - `cron = "..."`：必填，cron 表达式。
+/// - `name = "..."`：可选，任务名；默认从函数名推导。
+///
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 函数不能有参数。
+/// - 函数必须返回 `puniyu_plugin::Result`。
+/// - `cron` 必须能被 `croner::Cron` 解析。
 ///
 /// # 示例
 ///
 /// ```rust, ignore
 /// use puniyu_macros::task;
-/// use puniyu_plugin::prelude::*;
 ///
-/// #[task(cron = "*/5 * * * *", name = "health_check")]
+/// #[task(cron = "0 * * * * *", name = "health_check")]
 /// async fn health_check() -> puniyu_plugin::Result {
 ///     Ok(())
 /// }
 /// ```
-#[zyn::attribute(debug(pretty))]
-pub fn task(#[zyn(input)] item: zyn::syn::ItemFn, args: zyn::Args) -> proc_macro::TokenStream {
-	let cfg = match TaskArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+#[proc_macro_attribute]
+pub fn task(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	plugin::task(item, cfg)
+	let cfg = match TaskArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	plugin::task(item, cfg).into()
 }
 
-/// 声明插件钩子函数。
+/// 声明插件 Hook 函数。
 ///
-/// 常用参数：
-/// - `name`：钩子名称，可选
-/// - `hook_type`：钩子类型，可选，如 `"event.message"`、`"status.start"`
-/// - `priority`：优先级，可选
+/// # 参数
 ///
-/// 要求函数为 `async`，接收一个引用参数，对应插件侧 `HookType`，并返回
-/// `puniyu_plugin::Result`。
+/// - `name = "..."`：可选，Hook 名；默认从函数名推导。
+/// - `hook_type = "..."`：可选，也可写作 `type` 或 `r#type`；默认使用 `HookType::default()`。
+/// - `priority = 100`：可选，优先级；默认 `500`。
+///
+/// `hook_type` 支持：`event`、`event.message`、`event.extension`、`event.all`、`status`、`status.start`、`status.stop`。
+///
+/// # 约束
+///
+/// - 被标注项必须是 `async fn`。
+/// - 函数必须接收一个 `&HookType` 参数。
+/// - 函数必须返回 `puniyu_plugin::Result`。
+///
+/// # 生成行为
+///
+/// - 生成 Hook 包装结构体并实现 `puniyu_plugin::__private::Hook`。
+/// - 通过插件侧 `HookRegistry` 注册 Hook 构造器。
 ///
 /// # 示例
 ///
@@ -294,18 +387,22 @@ pub fn task(#[zyn(input)] item: zyn::syn::ItemFn, args: zyn::Args) -> proc_macro
 /// use puniyu_plugin::hook::HookType;
 ///
 /// #[plugin_hook(name = "on_message", hook_type = "event.message", priority = 100)]
-/// async fn on_message(event: &HookType) -> puniyu_plugin::Result {
+/// async fn on_message(_event: &HookType) -> puniyu_plugin::Result {
 ///     Ok(())
 /// }
 /// ```
-#[zyn::attribute(debug(pretty))]
+#[proc_macro_attribute]
 pub fn plugin_hook(
-	#[zyn(input)] item: zyn::syn::ItemFn,
-	args: zyn::Args,
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-	let cfg = match HookArgs::from_args(&args) {
-		Ok(cfg) => cfg,
-		Err(err) => bail!("{err}"),
+	let item = match parse_attr::<syn::ItemFn>(item) {
+		Ok(item) => item,
+		Err(err) => return err,
 	};
-	plugin::hook(item, cfg)
+	let cfg = match HookArgs::parse_tokens(args.into()) {
+		Ok(cfg) => cfg,
+		Err(err) => return err.to_compile_error().into(),
+	};
+	plugin::hook(item, cfg).into()
 }
