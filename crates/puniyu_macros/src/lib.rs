@@ -237,7 +237,7 @@ pub fn plugin_config(
 ///
 /// # 参数
 ///
-/// - `name = "..."`：必填，命令名。
+/// - `name = "..."`：可选，命令名；默认从函数名推导并转换为 snake_case。
 /// - `priority = 100`：可选，优先级；默认 `500`。
 /// - `desc = "..."`：可选，命令描述。
 /// - `alias = ["a", "b"]`：可选，命令别名列表。
@@ -256,7 +256,6 @@ pub fn plugin_config(
 /// # 常见错误
 ///
 /// - 函数不是 `async fn`。
-/// - 缺少 `name`。
 /// - `permission` 值不合法。
 /// - 参数或返回类型不匹配。
 ///
@@ -267,7 +266,7 @@ pub fn plugin_config(
 /// use puniyu_macros::{arg, command};
 /// use puniyu_plugin::command::CommandAction;
 ///
-/// #[command(name = "echo", desc = "echo", permission = "all")]
+/// #[command(desc = "echo", permission = "all")]
 /// #[arg(name = "message", desc = "消息")]
 /// async fn echo(_ctx: &MessageContext<'_>) -> puniyu_plugin::Result<CommandAction> {
 ///     CommandAction::done()
@@ -300,7 +299,7 @@ pub fn command(
 /// - `desc = "..."`：可选，参数描述。
 ///
 /// `arg_type` 支持：`string`、`integer`、`int`、`float`、`boolean`、`bool`。
-/// `mode` 支持：`positional`、`named`、`optional`。
+/// `mode` 支持：`positional`、`named`。
 ///
 /// # 约束
 ///

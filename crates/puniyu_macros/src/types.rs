@@ -38,7 +38,7 @@ pub(crate) struct ArgType {
 }
 
 pub(crate) struct CommandArgs {
-	pub name: String,
+	pub name: Option<String>,
 	pub priority: Option<u32>,
 	pub desc: Option<String>,
 	pub alias: Option<Vec<String>>,
@@ -227,7 +227,7 @@ impl Parse for CommandArgs {
 			}
 		}
 
-		Ok(Self { name: require_field(name, "name")?, priority, desc, alias, permission })
+		Ok(Self { name, priority, desc, alias, permission })
 	}
 }
 

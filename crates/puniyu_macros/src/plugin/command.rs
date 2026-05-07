@@ -1,6 +1,6 @@
 use crate::{
 	ArgType, CommandArgs,
-	common::{function_struct_ident, path_matches, validate_async},
+	common::{default_name_from_ident, function_struct_ident, path_matches, validate_async},
 };
 use quote::{ToTokens, quote};
 use syn::{Attribute, ItemFn, Signature, Type, spanned::Spanned};
@@ -24,7 +24,7 @@ pub fn command(mut item: ItemFn, cfg: CommandArgs) -> proc_macro2::TokenStream {
 
 	let fn_name = &item.sig.ident;
 	let struct_name = function_struct_ident(fn_name, "Command");
-	let command_name = cfg.name;
+	let command_name = cfg.name.unwrap_or_else(|| default_name_from_ident(fn_name));
 	let command_priority = cfg.priority.unwrap_or(500u32);
 	let command_desc = match cfg.desc {
 		Some(desc) => quote!(Some(#desc)),
@@ -144,7 +144,7 @@ fn build_arg_tokens(args: &[ArgType]) -> syn::Result<Vec<proc_macro2::TokenStrea
 			let mode_method = if let Some(mode) = &arg.mode {
 				match mode.value().as_str() {
 					"positional" => quote!(.positional()),
-					"named" | "optional" => quote!(.named()),
+					"named" => quote!(.named()),
 					invalid => {
 						return Err(syn::Error::new_spanned(
 							mode,
