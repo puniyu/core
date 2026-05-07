@@ -2345,6 +2345,7 @@ dependencies = [
  "puniyu_context",
  "puniyu_plugin",
  "quote",
+ "serde",
  "syn",
  "trybuild",
 ]

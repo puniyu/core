@@ -15,7 +15,7 @@ pub fn config(item: ItemStruct, cfg: ConfigArgs) -> proc_macro2::TokenStream {
 			fn config(&self) -> ::puniyu_plugin::__private::ConfigInfo {
 				::puniyu_plugin::__private::ConfigInfo {
 					name: ::std::string::String::from(#config_name),
-					path: ::puniyu_plugin::path::adapter::config_dir()
+					path: ::puniyu_plugin::path::plugin::config_dir()
 						.join(env!("CARGO_PKG_NAME"))
 						.join(#config_file_name),
 					value: ::puniyu_plugin::__private::toml::from_str(

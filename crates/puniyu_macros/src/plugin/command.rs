@@ -30,18 +30,22 @@ pub fn command(mut item: ItemFn, cfg: CommandArgs) -> proc_macro2::TokenStream {
 		Some(desc) => quote!(Some(#desc)),
 		None => quote!(None),
 	};
-	let command_permission = match cfg.permission.as_deref().unwrap_or("all") {
-		"all" => quote!(::puniyu_plugin::command::Permission::All),
-		"master" => quote!(::puniyu_plugin::command::Permission::Master),
-		"owner" => quote!(::puniyu_plugin::command::Permission::Owner),
-		"admin" => quote!(::puniyu_plugin::command::Permission::Admin),
-		invalid => {
-			return syn::Error::new_spanned(
-				&item.sig.ident,
-				format!("invalid command permission: {invalid}"),
-			)
-			.to_compile_error();
+	let command_permission = if let Some(permission) = &cfg.permission {
+		match permission.value().as_str() {
+			"all" => quote!(::puniyu_plugin::command::Permission::All),
+			"master" => quote!(::puniyu_plugin::command::Permission::Master),
+			"owner" => quote!(::puniyu_plugin::command::Permission::Owner),
+			"admin" => quote!(::puniyu_plugin::command::Permission::Admin),
+			invalid => {
+				return syn::Error::new_spanned(
+					permission,
+					format!("invalid command permission: {invalid}"),
+				)
+				.to_compile_error();
+			}
 		}
+	} else {
+		quote!(::puniyu_plugin::command::Permission::All)
 	};
 	let command_alias = cfg.alias.unwrap_or_default();
 	let args_tokens = match build_arg_tokens(&args) {
@@ -121,33 +125,38 @@ fn build_arg_tokens(args: &[ArgType]) -> syn::Result<Vec<proc_macro2::TokenStrea
 	args.iter()
 		.map(|arg| {
 			let name = &arg.name;
-			let constructor = match arg.arg_type.as_deref().unwrap_or("string") {
-				"string" => quote!(::puniyu_plugin::command::Arg::string(#name)),
-				"integer" | "int" => quote!(::puniyu_plugin::command::Arg::int(#name)),
-				"float" => quote!(::puniyu_plugin::command::Arg::float(#name)),
-				"boolean" | "bool" => quote!(::puniyu_plugin::command::Arg::bool(#name)),
-				invalid => {
-					return Err(syn::Error::new(
-						proc_macro2::Span::call_site(),
-						format!("invalid arg type: {invalid}"),
-					));
+			let constructor = if let Some(arg_type) = &arg.arg_type {
+				match arg_type.value().as_str() {
+					"string" => quote!(::puniyu_plugin::command::Arg::string(#name)),
+					"integer" | "int" => quote!(::puniyu_plugin::command::Arg::int(#name)),
+					"float" => quote!(::puniyu_plugin::command::Arg::float(#name)),
+					"boolean" | "bool" => quote!(::puniyu_plugin::command::Arg::bool(#name)),
+					invalid => {
+						return Err(syn::Error::new_spanned(
+							arg_type,
+							format!("invalid arg type: {invalid}"),
+						));
+					}
 				}
-			};
-			let mode_method = match arg.mode.as_deref().unwrap_or("positional") {
-				"positional" => quote!(.positional()),
-				"named" | "optional" => quote!(.named()),
-				invalid => {
-					return Err(syn::Error::new(
-						proc_macro2::Span::call_site(),
-						format!("invalid arg mode: {invalid}"),
-					));
-				}
-			};
-			let required_method = if arg.required.unwrap_or(false) {
-				quote!(.required())
 			} else {
-				quote!()
+				quote!(::puniyu_plugin::command::Arg::string(#name))
 			};
+			let mode_method = if let Some(mode) = &arg.mode {
+				match mode.value().as_str() {
+					"positional" => quote!(.positional()),
+					"named" | "optional" => quote!(.named()),
+					invalid => {
+						return Err(syn::Error::new_spanned(
+							mode,
+							format!("invalid arg mode: {invalid}"),
+						));
+					}
+				}
+			} else {
+				quote!(.positional())
+			};
+			let required_method =
+				if arg.required.unwrap_or(false) { quote!(.required()) } else { quote!() };
 			let desc_method = match &arg.desc {
 				Some(desc) => quote!(.description(#desc)),
 				None => quote!(),
@@ -158,7 +167,10 @@ fn build_arg_tokens(args: &[ArgType]) -> syn::Result<Vec<proc_macro2::TokenStrea
 }
 
 fn validate_command_args(fn_sig: &Signature) -> syn::Result<()> {
-	let arg_type = crate::common::validate_single_ref_arg(fn_sig, "command function parameter must not be `self`")?;
+	let arg_type = crate::common::validate_single_ref_arg(
+		fn_sig,
+		"command function parameter must not be `self`",
+	)?;
 	if !path_matches(arg_type, &["MessageContext"])
 		&& !path_matches(arg_type, &["puniyu_context", "MessageContext"])
 		&& !path_matches(arg_type, &["puniyu_plugin", "context", "MessageContext"])

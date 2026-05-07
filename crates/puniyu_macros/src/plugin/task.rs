@@ -1,11 +1,14 @@
 use crate::{
 	TaskArgs,
-	common::{default_name_from_ident, function_struct_ident, validate_async, validate_return_type, validate_zero_args},
+	common::{
+		default_name_from_ident, function_struct_ident, validate_async, validate_return_type,
+		validate_zero_args,
+	},
 };
 use croner::Cron;
 use quote::quote;
 use std::str::FromStr;
-use syn::{ItemFn, LitStr};
+use syn::ItemFn;
 
 pub fn task(item: ItemFn, cfg: TaskArgs) -> proc_macro2::TokenStream {
 	let fn_sig = item.sig.clone();
@@ -21,8 +24,8 @@ pub fn task(item: ItemFn, cfg: TaskArgs) -> proc_macro2::TokenStream {
 
 	let fn_name = &item.sig.ident;
 	let cron_expr = cfg.cron;
-	if Cron::from_str(&cron_expr).is_err() {
-		return syn::Error::new_spanned(LitStr::new(&cron_expr, fn_sig.ident.span()), "Invalid cron expression format")
+	if Cron::from_str(&cron_expr.value()).is_err() {
+		return syn::Error::new_spanned(&cron_expr, "Invalid cron expression format")
 			.to_compile_error();
 	}
 

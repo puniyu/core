@@ -1,4 +1,7 @@
-use syn::{Expr, LitBool, LitInt, LitStr, Result, Token, bracketed, parse::{Parse, ParseStream}};
+use syn::{
+	Expr, LitBool, LitInt, LitStr, Result, Token, bracketed,
+	parse::{Parse, ParseStream},
+};
 
 pub(crate) struct ConfigArgs {
 	pub name: Option<String>,
@@ -11,7 +14,7 @@ pub(crate) struct AdapterArgs {
 
 pub(crate) struct HookArgs {
 	pub name: Option<String>,
-	pub hook_type: Option<String>,
+	pub hook_type: Option<LitStr>,
 	pub priority: Option<u32>,
 }
 
@@ -23,13 +26,13 @@ pub(crate) struct PluginArg {
 
 pub(crate) struct TaskArgs {
 	pub name: Option<String>,
-	pub cron: String,
+	pub cron: LitStr,
 }
 
 pub(crate) struct ArgType {
 	pub name: String,
-	pub arg_type: Option<String>,
-	pub mode: Option<String>,
+	pub arg_type: Option<LitStr>,
+	pub mode: Option<LitStr>,
 	pub required: Option<bool>,
 	pub desc: Option<String>,
 }
@@ -39,7 +42,7 @@ pub(crate) struct CommandArgs {
 	pub priority: Option<u32>,
 	pub desc: Option<String>,
 	pub alias: Option<Vec<String>>,
-	pub permission: Option<String>,
+	pub permission: Option<LitStr>,
 }
 
 impl ConfigArgs {
@@ -123,7 +126,7 @@ impl Parse for HookArgs {
 			match key.as_str() {
 				"name" => assign_option(&mut name, key, parser.parse_string()?)?,
 				"hook_type" | "type" | "r#type" => {
-					assign_option(&mut hook_type, key, parser.parse_string()?)?
+					assign_option(&mut hook_type, key, parser.parse_lit_str()?)?
 				}
 				"priority" => assign_option(&mut priority, key, parser.parse_u32()?)?,
 				_ => return Err(parser.unknown_key(&key)),
@@ -163,7 +166,7 @@ impl Parse for TaskArgs {
 		while let Some(key) = parser.next_key()? {
 			match key.as_str() {
 				"name" => assign_option(&mut name, key, parser.parse_string()?)?,
-				"cron" => assign_option(&mut cron, key, parser.parse_string()?)?,
+				"cron" => assign_option(&mut cron, key, parser.parse_lit_str()?)?,
 				_ => return Err(parser.unknown_key(&key)),
 			}
 		}
@@ -185,22 +188,16 @@ impl Parse for ArgType {
 			match key.as_str() {
 				"name" => assign_option(&mut name, key, parser.parse_string()?)?,
 				"arg_type" | "type" | "r#type" => {
-					assign_option(&mut arg_type, key, parser.parse_string()?)?
+					assign_option(&mut arg_type, key, parser.parse_lit_str()?)?
 				}
-				"mode" => assign_option(&mut mode, key, parser.parse_string()?)?,
+				"mode" => assign_option(&mut mode, key, parser.parse_lit_str()?)?,
 				"required" => assign_option(&mut required, key, parser.parse_bool()?)?,
 				"desc" => assign_option(&mut desc, key, parser.parse_string()?)?,
 				_ => return Err(parser.unknown_key(&key)),
 			}
 		}
 
-		Ok(Self {
-			name: require_field(name, "name")?,
-			arg_type,
-			mode,
-			required,
-			desc,
-		})
+		Ok(Self { name: require_field(name, "name")?, arg_type, mode, required, desc })
 	}
 }
 
@@ -219,44 +216,54 @@ impl Parse for CommandArgs {
 				"priority" => assign_option(&mut priority, key, parser.parse_u32()?)?,
 				"desc" => assign_option(&mut desc, key, parser.parse_string()?)?,
 				"alias" => assign_option(&mut alias, key, parser.parse_string_array()?)?,
-				"permission" => assign_option(&mut permission, key, parser.parse_string()?)?,
+				"permission" => assign_option(&mut permission, key, parser.parse_lit_str()?)?,
 				_ => return Err(parser.unknown_key(&key)),
 			}
 		}
 
-		Ok(Self {
-			name: require_field(name, "name")?,
-			priority,
-			desc,
-			alias,
-			permission,
-		})
+		Ok(Self { name: require_field(name, "name")?, priority, desc, alias, permission })
 	}
 }
 
 struct KeyValueParser<'a> {
 	input: ParseStream<'a>,
+	parsed_any: bool,
 }
 
 impl<'a> KeyValueParser<'a> {
 	fn new(input: ParseStream<'a>) -> Self {
-		Self { input }
+		Self { input, parsed_any: false }
 	}
 
 	fn next_key(&mut self) -> Result<Option<String>> {
-		while self.input.peek(Token![,]) {
-			self.input.parse::<Token![,]>()?;
-		}
 		if self.input.is_empty() {
 			return Ok(None);
 		}
+		if self.parsed_any {
+			self.input.parse::<Token![,]>()?;
+			if self.input.is_empty() {
+				return Ok(None);
+			}
+		} else {
+			while self.input.peek(Token![,]) {
+				self.input.parse::<Token![,]>()?;
+			}
+			if self.input.is_empty() {
+				return Ok(None);
+			}
+		}
 		let ident: syn::Ident = self.input.parse()?;
 		self.input.parse::<Token![=]>()?;
+		self.parsed_any = true;
 		Ok(Some(ident.to_string()))
 	}
 
+	fn parse_lit_str(&mut self) -> Result<LitStr> {
+		self.input.parse()
+	}
+
 	fn parse_string(&mut self) -> Result<String> {
-		Ok(self.input.parse::<LitStr>()?.value())
+		Ok(self.parse_lit_str()?.value())
 	}
 
 	fn parse_bool(&mut self) -> Result<bool> {
@@ -292,13 +299,20 @@ impl<'a> KeyValueParser<'a> {
 
 fn assign_option<T>(slot: &mut Option<T>, key: String, value: T) -> Result<()> {
 	if slot.is_some() {
-		return Err(syn::Error::new(proc_macro2::Span::call_site(), format!("duplicate attribute key `{key}`")));
+		return Err(syn::Error::new(
+			proc_macro2::Span::call_site(),
+			format!("duplicate attribute key `{key}`"),
+		));
 	}
 	*slot = Some(value);
 	Ok(())
 }
 
 fn require_field<T>(value: Option<T>, name: &str) -> Result<T> {
-	value.ok_or_else(|| syn::Error::new(proc_macro2::Span::call_site(), format!("missing required attribute key `{name}`")))
+	value.ok_or_else(|| {
+		syn::Error::new(
+			proc_macro2::Span::call_site(),
+			format!("missing required attribute key `{name}`"),
+		)
+	})
 }
-

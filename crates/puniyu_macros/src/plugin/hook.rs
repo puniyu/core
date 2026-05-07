@@ -1,9 +1,12 @@
 use crate::{
 	HookArgs,
-	common::{default_name_from_ident, function_struct_ident, hook_type_tokens, validate_async, validate_hook_args, validate_return_type},
+	common::{
+		default_name_from_ident, function_struct_ident, hook_type_tokens, validate_async,
+		validate_hook_args, validate_return_type,
+	},
 };
 use quote::quote;
-use syn::{ItemFn, spanned::Spanned};
+use syn::{ItemFn, LitStr, spanned::Spanned};
 
 pub fn hook(item: ItemFn, cfg: HookArgs) -> proc_macro2::TokenStream {
 	let fn_sig = item.sig.clone();
@@ -20,7 +23,9 @@ pub fn hook(item: ItemFn, cfg: HookArgs) -> proc_macro2::TokenStream {
 	let fn_name = &fn_sig.ident;
 	let struct_name = function_struct_ident(fn_name, "Hook");
 	let hook_name = cfg.name.unwrap_or_else(|| default_name_from_ident(fn_name));
-	let hook_type = match hook_type_tokens("plugin", cfg.hook_type.as_deref(), fn_sig.span()) {
+	let hook_type_value = cfg.hook_type.as_ref().map(LitStr::value);
+	let hook_type_span = cfg.hook_type.as_ref().map_or_else(|| fn_sig.span(), LitStr::span);
+	let hook_type = match hook_type_tokens("plugin", hook_type_value.as_deref(), hook_type_span) {
 		Ok(tokens) => tokens,
 		Err(err) => return err.to_compile_error(),
 	};

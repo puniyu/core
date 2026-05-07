@@ -32,12 +32,17 @@ mod plugin;
 mod types;
 pub(crate) use types::*;
 
-fn parse_attr<T: syn::parse::Parse>(tokens: proc_macro::TokenStream) -> Result<T, proc_macro::TokenStream> {
+fn parse_attr<T: syn::parse::Parse>(
+	tokens: proc_macro::TokenStream,
+) -> Result<T, proc_macro::TokenStream> {
 	syn::parse(tokens).map_err(|err| err.to_compile_error().into())
 }
 
 #[proc_macro_attribute]
-pub fn adapter_config(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn adapter_config(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemStruct>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -50,7 +55,10 @@ pub fn adapter_config(args: proc_macro::TokenStream, item: proc_macro::TokenStre
 }
 
 #[proc_macro_attribute]
-pub fn adapter_hook(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn adapter_hook(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -63,7 +71,10 @@ pub fn adapter_hook(args: proc_macro::TokenStream, item: proc_macro::TokenStream
 }
 
 #[proc_macro_attribute]
-pub fn adapter(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn adapter(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -76,7 +87,10 @@ pub fn adapter(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> 
 }
 
 #[proc_macro_attribute]
-pub fn plugin(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn plugin(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -89,7 +103,10 @@ pub fn plugin(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> p
 }
 
 #[proc_macro_attribute]
-pub fn plugin_config(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn plugin_config(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemStruct>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -102,7 +119,10 @@ pub fn plugin_config(args: proc_macro::TokenStream, item: proc_macro::TokenStrea
 }
 
 #[proc_macro_attribute]
-pub fn command(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn command(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -115,12 +135,18 @@ pub fn command(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> 
 }
 
 #[proc_macro_attribute]
-pub fn arg(_args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn arg(
+	_args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	item
 }
 
 #[proc_macro_attribute]
-pub fn task(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn task(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
@@ -133,7 +159,10 @@ pub fn task(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> pro
 }
 
 #[proc_macro_attribute]
-pub fn plugin_hook(args: proc_macro::TokenStream, item: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn plugin_hook(
+	args: proc_macro::TokenStream,
+	item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
 	let item = match parse_attr::<syn::ItemFn>(item) {
 		Ok(item) => item,
 		Err(err) => return err,
