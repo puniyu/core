@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package puniyu.account;
-
-message AccountInfo {
-  string uin = 1;
-  string name = 2;
-  bytes avatar = 3;
-}
