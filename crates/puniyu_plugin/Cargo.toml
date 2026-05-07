@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_plugin"
-version = "0.8.2"
+version = "0.8.3"
 description = "puniyu 插件库, 提供统一Api"
 authors.workspace = true
 license.workspace = true
