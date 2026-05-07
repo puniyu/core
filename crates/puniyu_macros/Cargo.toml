@@ -21,8 +21,8 @@ quote = "1"
 syn = { version = "2", features = ["full"] }
 
 [dev-dependencies]
-puniyu_adapter.workspace = true
-puniyu_context.workspace = true
-puniyu_plugin.workspace = true
+puniyu_adapter = { path = "../puniyu_adapter" }
+puniyu_context = { path = "../puniyu_context" }
+puniyu_plugin = { path = "../puniyu_plugin" }
 serde.workspace = true
 trybuild = "1"
