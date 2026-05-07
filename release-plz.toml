@@ -65,10 +65,12 @@ header = """# 变更日志
 body = """
 
 {% macro print_commit(commit) -%}
-    - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
-      {% if commit.breaking %}[**breaking**] {% endif %}\
-      {{ commit.message | upper_first }} - \
-      ([{{ commit.id | truncate(length=7, end="") }}]({{ remote.link }}/commit/{{ commit.id }}))\
+    {% if commit.id %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+          {% if commit.breaking %}[**breaking**] {% endif %}\
+          {{ commit.message | upper_first }} - \
+          ([{{ commit.id | truncate(length=7, end="") }}]({{ remote.link }}/commit/{{ commit.id }}))
+    {% endif %}
 {% endmacro -%}
 
 {% if version %}\
