@@ -75,6 +75,12 @@ impl TaskArgs {
 	}
 }
 
+impl ArgType {
+	pub fn parse_tokens(input: proc_macro2::TokenStream) -> Result<Self> {
+		syn::parse2(input)
+	}
+}
+
 impl CommandArgs {
 	pub fn parse_tokens(input: proc_macro2::TokenStream) -> Result<Self> {
 		syn::parse2(input)

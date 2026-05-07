@@ -109,7 +109,7 @@ fn collect_arg_attrs(attrs: &mut Vec<Attribute>) -> syn::Result<Vec<ArgType>> {
 	let mut retained = Vec::new();
 
 	for attr in attrs.drain(..) {
-		if attr.path().is_ident("arg") {
+		if attr.path().is_ident("arg") || attr.path().is_ident("__puniyu_arg") {
 			let arg = attr.parse_args::<ArgType>()?;
 			parsed.push(arg);
 		} else {
