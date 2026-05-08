@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.3...puniyu_adapter_core-v0.8.4)
+
+### ⛰️ 新功能
+
+
+- *(app)* 添加应用版本管理功能 - ([6345cdf](https://github.com/puniyu/core/commit/6345cdfbd63898f3ff611f882ed5449bc043e48b))
+
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.0...puniyu_adapter_core-v0.8.1)
 
 ### ⚙️ 杂项

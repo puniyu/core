@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.3...puniyu_plugin_core-v0.8.4)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_hook, puniyu_server, puniyu_command
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.2...puniyu_plugin_core-v0.8.3)
 
 ### ⚙️ 杂项
