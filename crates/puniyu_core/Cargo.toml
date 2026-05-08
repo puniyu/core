@@ -27,8 +27,6 @@ puniyu_path.workspace = true
 puniyu_dispatch.workspace = true
 const-str.workspace = true
 
-figlet-rs = "1.0.0"
-
 puniyu_config.workspace = true
 puniyu_api.workspace = true
 puniyu_error = { workspace = true, features = ["registry"] }
@@ -41,9 +39,6 @@ puniyu_handler = { workspace = true, features = ["registry"] }
 puniyu_adapter_core = { workspace = true, features = ["registry"] }
 puniyu_server = { workspace = true, features = ["registry"] }
 
-
-[build-dependencies]
-vergen-git2 = { version = "9.1.0", features = ["build"] }
 
 [features]
 default = ["log"]

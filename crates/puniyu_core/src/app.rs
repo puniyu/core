@@ -7,15 +7,11 @@ mod server;
 
 use bytes::Bytes;
 use convert_case::{Case, Casing};
-use figlet_rs::FIGlet;
-use log::{debug, error, info};
 use puniyu_adapter_core::Adapter;
 use puniyu_common::app::app_name;
-use puniyu_common::uptime;
 use puniyu_handler::Handler;
 use puniyu_hook::{HookType, StatusType};
 use puniyu_loader::Loader;
-use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_plugin_core::Plugin;
 use puniyu_version::Version;
 use std::path::PathBuf;
@@ -23,6 +19,8 @@ use std::sync::Arc;
 use std::time::Instant;
 use std::{env, io};
 use tokio::{fs, signal};
+
+use crate::logger::{core_debug, core_error, core_info};
 
 const VERSION: Version = Version {
 	major: const_str::parse!(env!("CARGO_PKG_VERSION_MAJOR"), u64),
@@ -203,27 +201,13 @@ impl AppBuilder {
 	/// 返回配置好的 `App` 实例
 	pub fn build(self) -> App {
 		App {
-			name: self.name,
-			version: self.version,
-			logo: self.logo,
-			working_dir: self.working_dir,
-			plugins: self.plugins,
-			adapters: self.adapters,
-			loaders: self.loaders,
-			handlers: self.handlers,
+			inner: self,
 		}
 	}
 }
 
 pub struct App {
-	name: &'static str,
-	version: &'static Version,
-	logo: Option<Bytes>,
-	working_dir: PathBuf,
-	plugins: Vec<Arc<dyn Plugin>>,
-	adapters: Vec<Arc<dyn Adapter>>,
-	loaders: Vec<Arc<dyn Loader>>,
-	handlers: Vec<Arc<dyn Handler>>,
+	inner: AppBuilder
 }
 
 impl App {
@@ -246,44 +230,52 @@ impl App {
 	/// ```
 	pub async fn run(self) -> io::Result<()> {
 		use crate::common::format_duration;
-		use puniyu_common::app::{AppInfo, app_name, set_app_info};
+		use puniyu_common::app::{AppInfo, set_app_info};
+		use puniyu_common::uptime;
 		use puniyu_loader::LoaderRegistry;
 		use std::time::Duration;
 
 		let start_time = Instant::now();
-		let info = AppInfo::new(self.name, self.version, self.working_dir);
+		let name = self.inner.name;
+		let version = self.inner.version;
+		let logo = self.inner.logo;
+		let working_dir = self.inner.working_dir;
+		let loaders = self.inner.loaders;
+		let handlers = self.inner.handlers;
+		let plugins = self.inner.plugins;
+		let adapters = self.inner.adapters;
+		let info = AppInfo::new(name, version, working_dir);
 		set_app_info(info);
 
-		print_start_log();
 		puniyu_config::init();
 
 		#[cfg(feature = "log")]
 		{
 			crate::logger::log_init();
 		}
-		for handler in self.handlers.into_iter() {
+		for handler in handlers.into_iter() {
 			if let Err(e) = puniyu_handler::HandlerRegistry::register(handler) {
-				error!("Failed to register handler: {}", e);
+				core_error!("Failed to register handler: {}", e);
 			}
 		}
-		for loader in self.loaders.into_iter() {
+		for loader in loaders.into_iter() {
 			if let Err(e) = LoaderRegistry::register(loader) {
-				error!("Failed to register loader: {}", e);
+				core_error!("Failed to register loader: {}", e);
 			}
 		}
 
-		if let Err(e) = init_app(self.plugins, self.adapters, LoaderRegistry::all()).await {
-			error!("Failed to init app: {}", e);
+		if let Err(e) = init_app(plugins, adapters, LoaderRegistry::all()).await {
+			core_error!("Failed to init app: {}", e);
 		}
 		execute_hooks(StatusType::Start).await;
 
 		let app_name = app_name().to_case(Case::Lower);
 
 		if let Err(e) = puniyu_dispatch::EventEmitter::run() {
-			error!("Failed to start event emitter: {}", e);
+			core_error!("Failed to start event emitter: {}", e);
 		}
 
-		if let Some(logo) = self.logo {
+		if let Some(logo) = logo {
 			puniyu_server::set_logo(logo);
 		}
 
@@ -294,7 +286,7 @@ impl App {
 		let server_runtime = puniyu_server::start_server(host, port)?;
 
 		let duration_str = format_duration(start_time.elapsed());
-		info!(
+		core_info!(
 			"{} initialized in {}",
 			app_name.fg_rgb::<64, 224, 208>(),
 			duration_str.fg_rgb::<255, 127, 80>()
@@ -304,9 +296,9 @@ impl App {
 		execute_hooks(StatusType::Stop).await;
 		puniyu_dispatch::EventEmitter::stop();
 		if let Err(e) = server_runtime.shutdown().await {
-			error!("Server exited with error: {}", e);
+			core_error!("Server exited with error: {}", e);
 		}
-		info!(
+		core_info!(
 			"{} uptime: {}",
 			app_name.to_case(Case::Lower).fg_rgb::<64, 224, 208>(),
 			format_duration(Duration::from_secs(uptime())).fg_rgb::<255, 127, 80>()
@@ -344,51 +336,36 @@ async fn init_app(
 
 	puniyu_task::init().await;
 
-	debug!("adapter loading...");
+	core_debug!("adapter loading...");
 	for adapter in adapters {
 		if let Err(e) = adapter::init_adapter(adapter).await {
-			error!("Failed to init adapter: {}", e);
+			core_error!("Failed to init adapter: {}", e);
 		}
 	}
-	debug!("adapter loaded!");
-	debug!("loader loading...");
+	core_debug!("adapter loaded!");
+	core_debug!("loader loading...");
 	for loader in loaders {
 		if let Err(e) = loader::init_loader(loader).await {
-			error!("Failed to register loader: {}", e);
+			core_error!("Failed to register loader: {}", e);
 		}
 	}
-	debug!("loader loaded!");
-	debug!("plugin loading...");
+	core_debug!("loader loaded!");
+	core_debug!("plugin loading...");
 	for plugin in plugins {
 		if let Err(e) = plugin::init_plugin(plugin).await {
-			error!("Failed to init plugin: {}", e);
+			core_error!("Failed to init plugin: {}", e);
 		}
 	}
-	debug!("plugin loaded!");
-	info!("loaders: {}", puniyu_loader::LoaderRegistry::all().len());
-	info!("adapters: {}", puniyu_adapter_core::AdapterRegistry::all().len());
-	info!("plugins: {}", puniyu_plugin_core::PluginRegistry::all().len());
-	info!("commands: {}", puniyu_command::CommandRegistry::all().len());
-	info!("handlers: {}", puniyu_handler::HandlerRegistry::all().len());
-	info!("hooks: {}", puniyu_hook::HookRegistry::all().len());
+	core_debug!("plugin loaded!");
+	core_info!("loaders: {}", puniyu_loader::LoaderRegistry::all().len());
+	core_info!("adapters: {}", puniyu_adapter_core::AdapterRegistry::all().len());
+	core_info!("plugins: {}", puniyu_plugin_core::PluginRegistry::all().len());
+	core_info!("commands: {}", puniyu_command::CommandRegistry::all().len());
+	core_info!("handlers: {}", puniyu_handler::HandlerRegistry::all().len());
+	core_info!("hooks: {}", puniyu_hook::HookRegistry::all().len());
 	Ok(())
 }
 
-fn print_start_log() {
-	let app_name = app_name().to_case(Case::Lower);
-	if let Ok(standard_font) = FIGlet::standard()
-		&& let Some(art_text) = standard_font.convert(app_name.as_str())
-	{
-		println!("{}", art_text);
-	} else {
-		println!("{}", app_name);
-	}
-
-	println!("{} starting...", app_name.to_case(Case::Lower));
-	println!("Version: {}", VERSION);
-	println!("Git SHA: {}", env!("VERGEN_GIT_SHA"));
-	println!("Github: {}", env!("CARGO_PKG_REPOSITORY"));
-}
 
 async fn execute_hooks(status_type: StatusType) {
 	use puniyu_hook::HookRegistry;
@@ -404,12 +381,12 @@ async fn execute_hooks(status_type: StatusType) {
 	for hook in hooks {
 		if let Err(e) = hook.builder.execute(None).await {
 			match status_type {
-				StatusType::Start => error!("Failed to execute start hook: {}", e),
-				StatusType::Stop => error!("Failed to execute stop hook: {}", e),
+				StatusType::Start => core_error!("Failed to execute start hook: {}", e),
+				StatusType::Stop => core_error!("Failed to execute stop hook: {}", e),
 			}
 		}
 		if let Err(e) = HookRegistry::unregister(hook.source) {
-			error!("Failed to unregister hook: {}", e);
+			core_error!("Failed to unregister hook: {}", e);
 		}
 	}
 }
