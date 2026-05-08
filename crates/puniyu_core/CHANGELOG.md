@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/v0.8.3...v0.8.4)
+
+### ⛰️ 新功能
+
+
+- *(app)* 添加应用版本管理功能 - ([6345cdf](https://github.com/puniyu/core/commit/6345cdfbd63898f3ff611f882ed5449bc043e48b))
+
+
+
+### 🚜 重构
+
+
+- *(core)* 重构应用结构并改进日志系统 - ([eb562a8](https://github.com/puniyu/core/commit/eb562a8c02b619b3bda82f5c8fe3bb20f5b3a2f6))
+
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/v0.8.2...v0.8.3)
 
 ### ⚙️ 杂项

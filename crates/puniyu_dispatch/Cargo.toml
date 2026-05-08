@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_dispatch"
-version = "0.8.2"
+version = "0.8.3"
 description = "puniyu 事件分发库，提供全局事件发射器用于异步事件处理"
 authors.workspace = true
 license.workspace = true
