@@ -12,7 +12,6 @@
 //! - [`AdapterProvider`]：访问适配器信息
 //! - [`AdapterRuntime`]：适配器级运行时抽象
 //! - [`SendMessage`]：发送消息能力 trait
-//! - [`Runtime::downcast_ref`]：访问适配器私有运行时能力
 //! - [`ServerRuntime`]：HTTP 服务运行句柄，封装服务停止与等待结束等生命周期能力
 //!
 //! ## 设计说明

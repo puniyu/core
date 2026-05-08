@@ -5,7 +5,6 @@ mod loader;
 mod plugin;
 mod server;
 
-use crate::VERSION;
 use bytes::Bytes;
 use convert_case::{Case, Casing};
 use figlet_rs::FIGlet;
@@ -18,11 +17,18 @@ use puniyu_hook::{HookType, StatusType};
 use puniyu_loader::Loader;
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_plugin_core::Plugin;
+use puniyu_version::Version;
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Instant;
 use std::{env, io};
 use tokio::{fs, signal};
+
+const VERSION: Version = Version {
+	major: const_str::parse!(env!("CARGO_PKG_VERSION_MAJOR"), u64),
+	minor: const_str::parse!(env!("CARGO_PKG_VERSION_MINOR"), u64),
+	patch: const_str::parse!(env!("CARGO_PKG_VERSION_PATCH"), u64),
+};
 
 /// 应用构建器
 ///
@@ -44,6 +50,7 @@ use tokio::{fs, signal};
 /// ```
 pub struct AppBuilder {
 	name: &'static str,
+	version: &'static Version,
 	logo: Option<Bytes>,
 	working_dir: PathBuf,
 	plugins: Vec<Arc<dyn Plugin>>,
@@ -56,7 +63,8 @@ impl Default for AppBuilder {
 	fn default() -> Self {
 		#[allow(clippy::unwrap_used)]
 		Self {
-			name: "puniyu",
+			name: "Core",
+			version: &VERSION,
 			logo: None,
 			working_dir: std::env::current_dir().unwrap(),
 			plugins: Vec::new(),
@@ -75,6 +83,17 @@ impl AppBuilder {
 	/// - `name`: 应用名称
 	pub fn with_app_name(mut self, name: &'static str) -> Self {
 		self.name = name;
+		self
+	}
+
+	/// 设置应用版本
+	///
+	/// # 参数
+	///
+	/// - `version`: 应用版本
+	///
+	pub fn with_app_version(mut self, version: &'static Version) -> Self {
+		self.version = version;
 		self
 	}
 
@@ -185,6 +204,7 @@ impl AppBuilder {
 	pub fn build(self) -> App {
 		App {
 			name: self.name,
+			version: self.version,
 			logo: self.logo,
 			working_dir: self.working_dir,
 			plugins: self.plugins,
@@ -197,6 +217,7 @@ impl AppBuilder {
 
 pub struct App {
 	name: &'static str,
+	version: &'static Version,
 	logo: Option<Bytes>,
 	working_dir: PathBuf,
 	plugins: Vec<Arc<dyn Plugin>>,
@@ -230,7 +251,7 @@ impl App {
 		use std::time::Duration;
 
 		let start_time = Instant::now();
-		let info = AppInfo::new(self.name, &VERSION, self.working_dir);
+		let info = AppInfo::new(self.name, self.version, self.working_dir);
 		set_app_info(info);
 
 		print_start_log();
