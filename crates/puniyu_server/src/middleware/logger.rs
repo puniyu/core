@@ -4,7 +4,7 @@ use actix_web::{
 	dev::{Service, ServiceRequest, ServiceResponse, Transform},
 	http::header::HeaderMap,
 };
-use futures_util::future::LocalBoxFuture;
+use futures::future::LocalBoxFuture;
 use std::net::IpAddr;
 use std::{
 	future::{Ready, ready},

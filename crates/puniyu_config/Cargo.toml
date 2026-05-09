@@ -14,10 +14,11 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+sugar_path = { version = "2.0.1", features = ["cached_current_dir"] }
+
 log.workspace = true
 toml.workspace = true
 serde.workspace = true
-sugar_path.workspace = true
 serde_repr.workspace = true
 
 puniyu_logger.workspace = true

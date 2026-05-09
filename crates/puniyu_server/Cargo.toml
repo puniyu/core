@@ -28,7 +28,7 @@ puniyu_path.workspace = true
 bytes.workspace = true
 tokio = { workspace = true, features = ["full"] }
 actix-web.workspace = true
-futures-util = "0.3.31"
+futures.workspace = true
 clap = { workspace = true, optional = true, features = ["derive", "help"] }
 const-str = { workspace = true, optional = true }
 puniyu_error.workspace = true

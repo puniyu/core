@@ -18,7 +18,6 @@ log.workspace = true
 toml.workspace = true
 bytes.workspace = true
 tokio.workspace = true
-convert_case.workspace = true
 puniyu_logger.workspace = true
 puniyu_version.workspace = true
 puniyu_common.workspace = true
@@ -39,6 +38,7 @@ puniyu_handler = { workspace = true, features = ["registry"] }
 puniyu_adapter_core = { workspace = true, features = ["registry"] }
 puniyu_server = { workspace = true, features = ["registry"] }
 
+convert_case = { version = "0.11.0" }
 
 [features]
 default = ["log"]
