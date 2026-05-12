@@ -72,14 +72,11 @@ impl FriendConfig {
 }
 
 impl crate::Config for FriendConfig {
-	fn config(&self) -> crate::ConfigInfo {
-		crate::ConfigInfo {
-			name: "friend".to_string(),
-			path: CONFIG_PATH.clone(),
-			value: toml::from_str(
-				&toml::to_string(self).expect("Failed to serialize FriendConfig to TOML string"),
-			)
-			.expect("Failed to parse TOML string to Value"),
-		}
+	fn name(&self) -> &str {
+		"friend"
+	}
+
+	fn to_value(&self) -> toml::Value {
+		crate::serialize_to_value(self)
 	}
 }

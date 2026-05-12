@@ -12,8 +12,8 @@ pub async fn init_config(name: &str, configs: Vec<Arc<dyn Config>>) -> Result {
 	}
 
 	for config in configs {
-		let mut config = config.config();
-		let path = config_dir().join(name).join(&config.name);
+		let config_name = config.name().to_string();
+		let path = config_dir().join(name).join(format!("{}.toml", &config_name));
 		if let Some(parent) = path.parent()
 			&& !parent.exists()
 		{
@@ -21,15 +21,42 @@ pub async fn init_config(name: &str, configs: Vec<Arc<dyn Config>>) -> Result {
 				Error::other(format!("Failed to create parent config dir for {}: {}", name, e))
 			})?;
 		}
-		let existing = read_config_value(&path, &config.name, name)?;
-		merge_config(config_dir().join(name), &config.name, &config.value, &existing).map_err(
-			|e| Error::other(format!("Failed to merge config {} for {}: {}", config.name, name, e)),
+		let existing = read_config_value(&path, &config_name, name)?;
+		let default_value = config.to_value();
+		merge_config(config_dir().join(name), &config_name, &default_value, &existing).map_err(
+			|e| Error::other(format!("Failed to merge config {} for {}: {}", config_name, name, e)),
 		)?;
-		config.path = path.clone();
-		config.value = read_config_value(&path, &config.name, name)?;
-		ConfigRegistry::register(config).map_err(|e| {
+		let final_value = read_config_value(&path, &config_name, name)?;
+		ConfigRegistry::register_entry(&config_name, path, final_value).map_err(|e| {
 			Error::other(format!("Failed to register config for {}: {:?}", name, e))
 		})?;
+	}
+
+	Ok(())
+}
+
+pub async fn init_app_config(configs: Vec<Arc<dyn Config>>) -> Result {
+	if configs.is_empty() {
+		return Ok(());
+	}
+
+	for config in configs {
+		let config_name = config.name().to_string();
+		let dir = config.path();
+		if !dir.exists() {
+			create_dir_all(&dir).await.map_err(|e| {
+				Error::other(format!("Failed to create config dir: {}", e))
+			})?;
+		}
+		let file_path = dir.join(format!("{}.toml", &config_name));
+		let existing = read_config_value(&file_path, &config_name, "app")?;
+		let default_value = config.to_value();
+		merge_config(&dir, &config_name, &default_value, &existing).map_err(|e| {
+			Error::other(format!("Failed to merge app config {}: {}", config_name, e))
+		})?;
+		let final_value = read_config_value(&file_path, &config_name, "app")?;
+		ConfigRegistry::register_entry(&config_name, file_path, final_value)
+			.map_err(|e| Error::other(format!("Failed to register app config: {:?}", e)))?;
 	}
 
 	Ok(())

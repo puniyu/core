@@ -15,10 +15,8 @@ pub(crate) const fn default_cd() -> u64 {
 	0
 }
 
-use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::path::{Path, PathBuf};
-use toml::Value;
 
 /// Bot 响应模式枚举
 ///
@@ -103,15 +101,3 @@ impl From<&str> for ConfigId {
 	}
 }
 
-/// 配置信息
-///
-/// 包含配置的名称、路径和值
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct ConfigInfo {
-	/// 配置文件名称
-	pub name: String,
-	/// 配置文件路径
-	pub path: PathBuf,
-	/// 配置内容
-	pub value: Value,
-}

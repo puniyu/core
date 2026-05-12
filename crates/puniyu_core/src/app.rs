@@ -55,6 +55,7 @@ pub struct AppBuilder {
 	adapters: Vec<Arc<dyn Adapter>>,
 	loaders: Vec<Arc<dyn Loader>>,
 	handlers: Vec<Arc<dyn Handler>>,
+	configs: Vec<Arc<dyn puniyu_config::Config>>,
 }
 
 impl Default for AppBuilder {
@@ -69,6 +70,7 @@ impl Default for AppBuilder {
 			adapters: Vec::new(),
 			loaders: Vec::new(),
 			handlers: Vec::new(),
+			configs: Vec::new(),
 		}
 	}
 }
@@ -194,6 +196,25 @@ impl AppBuilder {
 		self
 	}
 
+	/// 添加自定义配置
+	///
+	/// 接受任何实现了 `Config` trait 的类型
+	///
+	/// # 参数
+	///
+	/// - `config`: 配置实例
+	///
+	/// # 示例
+	///
+	/// ```rust,ignore
+	/// App::builder()
+	///     .with_config(DatabaseConfig::default())
+	/// ```
+	pub fn with_config<C: puniyu_config::Config + Default +'static>(mut self, config: C) -> Self {
+		self.configs.push(Arc::new(config));
+		self
+	}
+
 	/// 构建应用实例
 	///
 	/// # 返回值
@@ -244,10 +265,17 @@ impl App {
 		let handlers = self.inner.handlers;
 		let plugins = self.inner.plugins;
 		let adapters = self.inner.adapters;
+		let configs = self.inner.configs;
 		let info = AppInfo::new(name, version, working_dir);
 		set_app_info(info);
 
 		puniyu_config::init();
+
+		if !configs.is_empty()
+			&& let Err(e) = config::init_app_config(configs).await
+		{
+			core_error!("Failed to init app configs: {}", e);
+		}
 
 		#[cfg(feature = "log")]
 		{

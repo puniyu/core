@@ -122,14 +122,11 @@ impl AppConfig {
 }
 
 impl crate::Config for AppConfig {
-	fn config(&self) -> crate::ConfigInfo {
-		crate::ConfigInfo {
-			name: "app".to_string(),
-			path: CONFIG_PATH.clone(),
-			value: toml::from_str(
-				&toml::to_string(self).expect("Failed to serialize AppConfig to TOML string"),
-			)
-			.expect("Failed to parse TOML string to Value"),
-		}
+	fn name(&self) -> &str {
+		"app"
+	}
+
+	fn to_value(&self) -> toml::Value {
+		crate::serialize_to_value(self)
 	}
 }

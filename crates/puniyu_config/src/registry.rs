@@ -1,26 +1,30 @@
 mod store;
 
-use crate::types::{ConfigId, ConfigInfo};
+use crate::types::ConfigId;
 use puniyu_error::registry::Error;
 use std::{path::Path, sync::LazyLock};
-use store::ConfigStore;
+use store::{ConfigEntry, ConfigStore};
 use toml::Value;
 
-/// 全局配置存储实例
 static STORE: LazyLock<ConfigStore> = LazyLock::new(ConfigStore::new);
 
 /// 配置注册表
-///
-/// 提供全局配置管理功能，支持注册、查询和更新配置。
 pub struct ConfigRegistry;
 
 impl ConfigRegistry {
-	/// 注册一份配置，并返回其内部索引。
-	pub fn register(config: ConfigInfo) -> Result<u64, Error> {
-		STORE.insert(config)
+	pub fn register<C: crate::Config>(config: C) -> Result<u64, Error> {
+		let file_path = config.path().join(format!("{}.toml", config.name()));
+		STORE.insert(config.name().to_string(), file_path, config.to_value())
 	}
 
-	/// 按索引或路径获取配置值。
+	pub fn register_entry(
+		name: &str,
+		path: std::path::PathBuf,
+		value: Value,
+	) -> Result<u64, Error> {
+		STORE.insert(name.to_string(), path, value)
+	}
+
 	pub fn get<C>(id: C) -> Option<Value>
 	where
 		C: Into<ConfigId>,
@@ -32,14 +36,12 @@ impl ConfigRegistry {
 		}
 	}
 
-	/// 通过内部索引获取配置值。
 	pub fn get_with_index(id: u64) -> Option<Value> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
 		Some(map.get(&id).cloned()?.value)
 	}
 
-	/// 通过配置文件路径获取配置值。
 	pub fn get_with_path<P>(path: P) -> Option<Value>
 	where
 		P: AsRef<Path>,
@@ -49,7 +51,6 @@ impl ConfigRegistry {
 		Some(map.values().find(|v| v.path == path.as_ref())?.value.clone())
 	}
 
-	/// 按索引或路径更新配置值。
 	pub fn update<C>(id: C, value: Value) -> Result<(), Error>
 	where
 		C: Into<ConfigId>,
@@ -61,7 +62,6 @@ impl ConfigRegistry {
 		}
 	}
 
-	/// 通过内部索引更新配置值。
 	pub fn update_with_index(id: u64, value: Value) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
@@ -70,7 +70,6 @@ impl ConfigRegistry {
 		Ok(())
 	}
 
-	/// 通过配置文件路径更新所有匹配配置的值。
 	pub fn update_with_path<P>(path: P, value: Value) -> Result<(), Error>
 	where
 		P: AsRef<Path>,
@@ -83,8 +82,7 @@ impl ConfigRegistry {
 		Ok(())
 	}
 
-	/// 获取所有已注册配置。
-	pub fn all() -> Vec<ConfigInfo> {
+	pub fn all() -> Vec<ConfigEntry> {
 		STORE.all()
 	}
 }

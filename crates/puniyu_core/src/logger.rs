@@ -54,6 +54,7 @@ macro_rules! core_error {
 pub(crate) use core_error;
 
 /// 初始化日志系统
+#[cfg(feature = "log")]
 pub fn log_init() {
 	use puniyu_path::log_dir;
 	let config = app_config();

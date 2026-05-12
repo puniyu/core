@@ -49,15 +49,25 @@ use puniyu_common::merge_config;
 use puniyu_path::{config_dir, log_dir};
 
 /// 配置 trait
-pub trait Config: Send + Sync + 'static {
-	/// 返回当前配置的元信息。
-	fn config(&self) -> ConfigInfo;
+pub trait Config: Send + Sync {
+	/// 配置名称（对应文件名，不含扩展名）
+	fn name(&self) -> &str;
+	/// 配置文件所在目录
+	fn path(&self) -> std::path::PathBuf {
+		puniyu_path::config_dir()
+	}
+	/// 序列化为 toml::Value
+	fn to_value(&self) -> toml::Value;
 }
 
 impl PartialEq for dyn Config {
 	fn eq(&self, other: &Self) -> bool {
-		self.config() == other.config()
+		self.name() == other.name() && self.path() == other.path()
 	}
+}
+
+pub(crate)  fn serialize_to_value<T: serde::Serialize>(config: &T) -> toml::Value {
+	toml::Value::try_from(config).expect("Failed to serialize config to toml::Value")
 }
 
 /// 获取应用配置。
@@ -113,28 +123,28 @@ pub fn init() {
 		});
 
 	let app_config = AppConfig::get();
-	if let Err(e) = ConfigRegistry::register(app_config.config()) {
+	if let Err(e) = ConfigRegistry::register(app_config) {
 		error!("[Config] Failed to register app config: {}", e);
 	} else {
 		info!("[Config] App config registered");
 	}
 
 	let bot_config = BotConfig::get();
-	if let Err(e) = ConfigRegistry::register(bot_config.config()) {
+	if let Err(e) = ConfigRegistry::register(bot_config) {
 		error!("[Config] Failed to register bot config: {}", e);
 	} else {
 		debug!("[Config] Bot config registered");
 	}
 
 	let group_config = GroupConfig::get();
-	if let Err(e) = ConfigRegistry::register(group_config.config()) {
+	if let Err(e) = ConfigRegistry::register(group_config) {
 		error!("[Config] Failed to register group config: {}", e);
 	} else {
 		debug!("[Config] Group config registered");
 	}
 
 	let friend_config = FriendConfig::get();
-	if let Err(e) = ConfigRegistry::register(friend_config.config()) {
+	if let Err(e) = ConfigRegistry::register(friend_config) {
 		error!("[Config] Failed to register friend config: {}", e);
 	} else {
 		debug!("[Config] Friend config registered");
