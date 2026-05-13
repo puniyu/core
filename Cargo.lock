@@ -1839,6 +1839,7 @@ dependencies = [
  "puniyu_message",
  "puniyu_path",
  "puniyu_plugin_core",
+ "puniyu_runtime",
  "puniyu_segment",
  "puniyu_sender",
  "puniyu_server",
