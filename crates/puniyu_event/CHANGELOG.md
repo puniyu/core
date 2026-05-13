@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_event-v0.8.3...puniyu_event-v0.8.4)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types, puniyu_error, puniyu_runtime, puniyu_bot
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_event-v0.8.2...puniyu_event-v0.8.3)
 
 ### ⚙️ 杂项

@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_handler"
-version = "0.8.3"
+version = "0.8.4"
 description = "puniyu 事件处理器库，提供 Handler trait 与可选注册表管理"
 authors.workspace = true
 license.workspace = true

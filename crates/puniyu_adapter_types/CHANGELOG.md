@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_adapter_types-v0.8.4...puniyu_adapter_types-v0.8.5)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_adapter_types-v0.8.0...puniyu_adapter_types-v0.8.1)
 
 ### ⚙️ 杂项

@@ -1,5 +1,17 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.3...puniyu_command_parser-v0.8.4)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+- 使用 SmolStr 优化字符串存储和性能 - ([2ee2f25](https://github.com/puniyu/core/commit/2ee2f25ebbff6357443a1b77bef89c5039d7ddab))
+
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.2...puniyu_command_parser-v0.8.3)
 
 ### ⚙️ 杂项

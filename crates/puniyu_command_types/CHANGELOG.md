@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_command_types-v0.8.1...puniyu_command_types-v0.8.2)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_error
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_command_types-v0.8.0...puniyu_command_types-v0.8.1)
 
 ### ⚙️ 杂项

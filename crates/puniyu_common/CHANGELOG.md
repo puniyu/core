@@ -1,5 +1,24 @@
 # 变更日志
 
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_common-v0.8.1...puniyu_common-v0.8.2)
+
+### 🚜 重构
+
+
+- *(app)* 移除未使用的依赖并优化路径处理 - ([471e82b](https://github.com/puniyu/core/commit/471e82b13265a5b2817e386c2e1b52e3347ca44a))
+
+
+
+### ⚙️ 杂项
+
+
+- 使用 SmolStr 优化字符串存储和性能 - ([2ee2f25](https://github.com/puniyu/core/commit/2ee2f25ebbff6357443a1b77bef89c5039d7ddab))
+
+
+- Update Cargo.toml dependencies
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_common-v0.8.0...puniyu_common-v0.8.1)
 
 ### ⚙️ 杂项

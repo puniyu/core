@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.4...puniyu_loader-v0.8.5)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+
+
 ## [0.8.4](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.3...puniyu_loader-v0.8.4)
 
 ### ⚙️ 杂项

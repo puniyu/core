@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.3...puniyu_bot-v0.8.4)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.2...puniyu_bot-v0.8.3)
 
 ### ⛰️ 新功能
