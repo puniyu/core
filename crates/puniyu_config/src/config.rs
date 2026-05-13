@@ -6,7 +6,7 @@ use std::thread;
 use std::time::Duration;
 use sugar_path::SugarPath;
 
-/// 启动配置目录监听线程，并在文件变更后刷新注册表。
+/// 启动配置目录监听线程
 pub fn start_config_watcher() {
 	use notify_debouncer_full::{DebounceEventResult, new_debouncer, notify};
 	thread::spawn(|| {

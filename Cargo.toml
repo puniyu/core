@@ -16,7 +16,8 @@ rust-version = "1.88.0"
 
 [workspace.dependencies]
 log = { version = "0.4.28" }
-jiff = { version = "0.2.23", features = ["serde"] }
+jiff = { version = "0.2.24", features = ["serde"] }
+smol_str = { version = "0.3.6", features = ["serde"] }
 tokio = { version = "1.47.1" }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_repr = { version = "0.1" }

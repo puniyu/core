@@ -271,10 +271,14 @@ impl App {
 
 		puniyu_config::init();
 
-		if !configs.is_empty()
-			&& let Err(e) = config::init_app_config(configs).await
-		{
-			core_error!("Failed to init app configs: {}", e);
+		if !configs.is_empty() {
+			for config in configs {
+				let config_name = config.name().to_string();
+				let file_path = config.path().join(format!("{}.toml", &config_name));
+				if let Err(e) = puniyu_config::ConfigRegistry::register_entry(&config_name, file_path, config.to_value()) {
+					core_error!("Failed to register config: {:?}", e);
+				}
+			}
 		}
 
 		#[cfg(feature = "log")]

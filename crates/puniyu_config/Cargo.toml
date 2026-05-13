@@ -20,6 +20,7 @@ log.workspace = true
 toml.workspace = true
 serde.workspace = true
 serde_repr.workspace = true
+smol_str.workspace = true
 
 puniyu_logger.workspace = true
 puniyu_path.workspace = true

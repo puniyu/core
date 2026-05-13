@@ -20,7 +20,6 @@ pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
 		.init()
 		.await
 		.map_err(|e| IoError::other(format!("Failed to init adapter {}: {}", name, e)))?;
-
 	super::config::init_config(&name, adapter.config()).await?;
 
 	let index = AdapterRegistry::register(Arc::clone(&adapter))

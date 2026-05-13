@@ -150,7 +150,7 @@ impl<'c> MessageContext<'c> {
 	pub fn is_master(&self) -> bool {
 		let config = app_config();
 		let masters = config.masters();
-		masters.contains(&self.user_id().to_string())
+		masters.contains(&self.user_id())
 	}
 }
 

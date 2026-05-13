@@ -44,8 +44,6 @@ mod registry;
 
 pub use registry::ConfigRegistry;
 
-use log::{debug, error, info};
-use puniyu_common::merge_config;
 use puniyu_path::{config_dir, log_dir};
 
 /// 配置 trait
@@ -66,7 +64,7 @@ impl PartialEq for dyn Config {
 	}
 }
 
-pub(crate)  fn serialize_to_value<T: serde::Serialize>(config: &T) -> toml::Value {
+pub(crate) fn serialize_to_value<T: serde::Serialize>(config: &T) -> toml::Value {
 	toml::Value::try_from(config).expect("Failed to serialize config to toml::Value")
 }
 
@@ -94,60 +92,46 @@ pub fn group_config() -> GroupConfig {
 	GroupConfig::get()
 }
 
-/// 初始化配置目录、合并默认配置并启动配置监听。
 pub fn init() {
+	macro_rules! core_debug {
+	($($arg:tt)+) => {{
+		use ::puniyu_logger::owo_colors::OwoColorize;
+		let prefix = "Core".fg_rgb::<64, 224, 208>();
+		::log::debug!("[{}] {}", prefix, format_args!($($arg)+))
+	}};
+}
+	macro_rules! core_error {
+	($($arg:tt)+) => {{
+		use ::puniyu_logger::owo_colors::OwoColorize;
+		let prefix = "Core".fg_rgb::<64, 224, 208>();
+		::log::error!("[{}] {}", prefix, format_args!($($arg)+))
+	}};
+}
+
 	if !config_dir().as_path().exists() {
 		std::fs::create_dir_all(config_dir().as_path())
-			.unwrap_or_else(|_| error!("[Config] Failed to initialize config directory"));
+			.unwrap_or_else(|_| core_error!("[Config] Failed to initialize config directory"));
 	}
 	if !log_dir().as_path().exists() {
 		std::fs::create_dir_all(log_dir().as_path())
-			.unwrap_or_else(|_| error!("[Config] Failed to initialize log directory"));
+			.unwrap_or_else(|_| core_error!("[Config] Failed to initialize log directory"));
 	}
 
-	merge_config(config_dir().as_path(), "app", &AppConfig::default(), &AppConfig::get())
-		.unwrap_or_else(|e| {
-			error!("[Config] Failed to merge app config: {}", e);
-		});
-	merge_config(config_dir().as_path(), "group", &GroupConfig::default(), &GroupConfig::get())
-		.unwrap_or_else(|e| {
-			error!("[Config] Failed to merge group config: {}", e);
-		});
-	merge_config(config_dir().as_path(), "friend", &FriendConfig::default(), &FriendConfig::get())
-		.unwrap_or_else(|e| {
-			error!("[Config] Failed to merge friend config: {}", e);
-		});
-	merge_config(config_dir().as_path(), "bot", &BotConfig::default(), &BotConfig::get())
-		.unwrap_or_else(|e| {
-			error!("[Config] Failed to merge bot config: {}", e);
-		});
-
-	let app_config = AppConfig::get();
-	if let Err(e) = ConfigRegistry::register(app_config) {
-		error!("[Config] Failed to register app config: {}", e);
-	} else {
-		info!("[Config] App config registered");
+	macro_rules! register_config {
+		($config:expr) => {{
+			let cfg = $config;
+			if let Err(e) = ConfigRegistry::register(cfg) {
+				core_error!("[Config] Failed to register config: {}", e);
+			} else {
+				core_debug!("[Config] {} config registered", stringify!($config));
+			}
+		}};
 	}
 
-	let bot_config = BotConfig::get();
-	if let Err(e) = ConfigRegistry::register(bot_config) {
-		error!("[Config] Failed to register bot config: {}", e);
-	} else {
-		debug!("[Config] Bot config registered");
-	}
+	register_config!(AppConfig::default());
+	register_config!(BotConfig::default());
+	register_config!(GroupConfig::default());
+	register_config!(FriendConfig::default());
 
-	let group_config = GroupConfig::get();
-	if let Err(e) = ConfigRegistry::register(group_config) {
-		error!("[Config] Failed to register group config: {}", e);
-	} else {
-		debug!("[Config] Group config registered");
-	}
-
-	let friend_config = FriendConfig::get();
-	if let Err(e) = ConfigRegistry::register(friend_config) {
-		error!("[Config] Failed to register friend config: {}", e);
-	} else {
-		debug!("[Config] Friend config registered");
-	}
 	config::start_config_watcher();
 }

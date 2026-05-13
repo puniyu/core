@@ -25,6 +25,7 @@ pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 		.init()
 		.await
 		.map_err(|e| IoError::other(format!("Failed to init plugin {}: {:?}", name, e)))?;
+
 	super::config::init_config(name, plugin.config()).await?;
 
 	let index = PluginRegistry::register(Arc::clone(&plugin))

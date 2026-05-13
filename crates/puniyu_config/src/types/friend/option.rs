@@ -1,5 +1,7 @@
 use crate::{ReactiveMode, default_cd};
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
+use crate::types::empty_vec_as_none;
 
 /// 好友配置选项
 ///
@@ -48,8 +50,8 @@ pub struct FriendOption {
 	///
 	/// 用于命令识别，当消息以别名开头时会被识别为命令
 	/// 如果未设置，继承全局配置
-	#[serde(skip_serializing_if = "Option::is_none")]
-	alias: Option<Vec<String>>,
+	#[serde(skip_serializing_if = "Option::is_none", deserialize_with = "empty_vec_as_none")]
+	alias: Option<Vec<SmolStr>>,
 }
 
 impl Default for FriendOption {
@@ -80,8 +82,8 @@ impl FriendOption {
 	}
 
 	/// 获取 Bot 别名列表的副本。
-	pub fn alias(&self) -> Vec<String> {
-		self.alias.clone().unwrap_or_default()
+	pub fn alias(&self) -> Vec<&str> {
+		self.alias.iter().flat_map(|v| v.iter().map(|s| s.as_str())).collect()
 	}
 
 	/// 获取响应模式。

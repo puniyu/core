@@ -12,9 +12,16 @@ static STORE: LazyLock<ConfigStore> = LazyLock::new(ConfigStore::new);
 pub struct ConfigRegistry;
 
 impl ConfigRegistry {
+	/// 注册配置到注册表。
+	///
+	/// 注册时自动读取用户配置文件并合并到默认配置中。
 	pub fn register<C: crate::Config>(config: C) -> Result<u64, Error> {
-		let file_path = config.path().join(format!("{}.toml", config.name()));
-		STORE.insert(config.name().to_string(), file_path, config.to_value())
+		let dir = config.path();
+		let name = config.name();
+		let file_path = dir.join(format!("{}.toml", name));
+
+		let merged = Self::merge_with_file(&dir, name, &config.to_value());
+		STORE.insert(name.to_string(), file_path, merged)
 	}
 
 	pub fn register_entry(
@@ -23,6 +30,17 @@ impl ConfigRegistry {
 		value: Value,
 	) -> Result<u64, Error> {
 		STORE.insert(name.to_string(), path, value)
+	}
+
+	fn merge_with_file(dir: &Path, name: &str, default: &Value) -> Value {
+		use puniyu_common::merge_toml_values;
+		use puniyu_common::read_config;
+
+		let mut merged = default.clone();
+		if let Ok(file_value) = read_config::<Value>(dir, name) {
+			merge_toml_values(&mut merged, file_value);
+		}
+		merged
 	}
 
 	pub fn get<C>(id: C) -> Option<Value>

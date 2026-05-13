@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
 
 /// 日志配置结构
 ///
@@ -24,7 +25,7 @@ pub struct LoggerConfig {
 	///
 	/// 可选值: "trace", "debug", "info", "warn", "error"
 	#[serde(default = "default_logger_level")]
-	level: String,
+	level: SmolStr,
 
 	/// 日志文件保留天数
 	///
@@ -48,8 +49,8 @@ const fn default_file_enable() -> bool {
 	true
 }
 
-fn default_logger_level() -> String {
-	String::from("info")
+fn default_logger_level() -> SmolStr {
+	SmolStr::new("info")
 }
 
 const fn default_retention_days() -> u8 {

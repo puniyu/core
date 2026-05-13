@@ -11,12 +11,23 @@ mod group;
 #[doc(inline)]
 pub use group::*;
 
+use serde::{Deserialize, Deserializer};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::path::{Path, PathBuf};
 pub(crate) const fn default_cd() -> u64 {
 	0
 }
 
-use serde_repr::{Deserialize_repr, Serialize_repr};
-use std::path::{Path, PathBuf};
+/// 反序列化时将空 Vec 转为 None
+fn empty_vec_as_none<'de, D, T>(deserializer: D) -> Result<Option<Vec<T>>, D::Error>
+where
+	D: Deserializer<'de>,
+	T: Deserialize<'de>,
+{
+	Ok(Option::<Vec<T>>::deserialize(deserializer)?.filter(|value| !value.is_empty()))
+}
+
+
 
 /// Bot 响应模式枚举
 ///

@@ -3,7 +3,7 @@ use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf, sync::LazyLock};
-
+use smol_str::SmolStr;
 static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("bot.toml"));
 
 /// Bot 配置结构
@@ -35,7 +35,7 @@ pub struct BotConfig {
 	///
 	/// 键为 Bot ID，值为该 Bot 的特定配置
 	#[serde(default, skip_serializing_if = "HashMap::is_empty")]
-	bot: HashMap<String, BotOption>,
+	bot: HashMap<SmolStr, BotOption>,
 }
 
 impl BotConfig {
@@ -60,12 +60,12 @@ impl BotConfig {
 			.unwrap_or_else(|| self.global.clone())
 	}
 
-	/// 获取所有按 Bot ID 定义的配置，并自动与全局配置合并。
-	pub fn list(&self) -> HashMap<String, BotOption> {
+	/// 获取Bot列表
+	pub fn list(&self) -> HashMap<&str, BotOption> {
 		self.bot
 			.iter()
 			.map(|(id, specific)| {
-				(id.clone(), crate::common::MergeWith::merge_with(specific, &self.global))
+				(id.as_str(), crate::common::MergeWith::merge_with(specific, &self.global))
 			})
 			.collect()
 	}
@@ -76,6 +76,7 @@ impl crate::Config for BotConfig {
 		"bot"
 	}
 
+	#[inline]
 	fn to_value(&self) -> toml::Value {
 		crate::serialize_to_value(self)
 	}

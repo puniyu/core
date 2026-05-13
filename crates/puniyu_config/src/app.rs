@@ -3,17 +3,19 @@ use crate::{AdapterConfig, LoggerConfig, ServerConfig};
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
 use std::path::PathBuf;
 use std::sync::LazyLock;
 
 static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("app.toml"));
 
-fn default_master() -> Vec<String> {
-	vec!["console".to_string()]
+fn default_master() -> Vec<SmolStr> {
+    vec![SmolStr::new("console")]
 }
 
-fn default_prefix() -> Option<String> {
-	Some(String::from("!"))
+
+fn default_prefix() -> Option<SmolStr> {
+	Some(SmolStr::new("!"))
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -52,13 +54,13 @@ pub struct AppConfig {
 	///
 	/// 定义哪些用户是 Bot 的主人，拥有最高权限
 	#[serde(default = "default_master")]
-	masters: Vec<String>,
+	masters: Vec<SmolStr>,
 
 	/// 全局命令前缀
 	///
 	/// 用于识别命令的前缀字符，默认为 "!"
 	#[serde(default = "default_prefix")]
-	prefix: Option<String>,
+	prefix: Option<SmolStr>,
 }
 
 impl Default for AppConfig {
@@ -110,14 +112,14 @@ impl AppConfig {
 		&self.friend
 	}
 
-	/// 获取 Bot 主人列表的副本。
-	pub fn masters(&self) -> Vec<String> {
-		self.masters.clone()
+	/// 获取框架主人列表
+	pub fn masters(&self) -> Vec<&str> {
+		self.masters.iter().map(|s| s.as_str()).collect()
 	}
 
-	/// 获取全局命令前缀的副本。
-	pub fn prefix(&self) -> Option<String> {
-		self.prefix.clone()
+	/// 获取全局命令前缀
+	pub fn prefix(&self) -> Option<&str> {
+		self.prefix.as_deref()
 	}
 }
 

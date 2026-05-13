@@ -160,7 +160,7 @@ where
 	write_to_file(&build_config_path(path, name), &base_value)
 }
 
-fn merge_toml_values(base: &mut Value, fill: Value) {
+pub fn merge_toml_values(base: &mut Value, fill: Value) {
 	match (base, fill) {
 		(Value::Table(base_table), Value::Table(fill_table)) => {
 			for (key, fill_value) in fill_table {

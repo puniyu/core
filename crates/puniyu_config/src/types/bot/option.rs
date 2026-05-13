@@ -1,5 +1,8 @@
 use crate::{ReactiveMode, default_cd};
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
+
+use crate::types::empty_vec_as_none;
 
 /// Bot 配置选项
 ///
@@ -49,8 +52,8 @@ pub struct BotOption {
 	///
 	/// 用于命令识别，当消息以别名开头时会被识别为命令
 	/// 如果未设置，继承全局配置
-	#[serde(skip_serializing_if = "Option::is_none")]
-	alias: Option<Vec<String>>,
+	#[serde(default, skip_serializing_if = "Option::is_none", deserialize_with = "empty_vec_as_none")]
+	alias: Option<Vec<SmolStr>>,
 }
 
 impl Default for BotOption {
@@ -59,7 +62,7 @@ impl Default for BotOption {
 		Self {
 			cd: Some(default_cd()),
 			mode: Some(Default::default()),
-			alias: Some(Default::default()),
+			alias: None,
 		}
 	}
 }
@@ -80,9 +83,9 @@ impl BotOption {
 		self.cd.unwrap_or(default_cd())
 	}
 
-	/// 获取 Bot 别名列表的副本。
-	pub fn alias(&self) -> Vec<String> {
-		self.alias.clone().unwrap_or_default()
+	/// 获取 Bot 别名列表
+	pub fn alias(&self) -> Vec<&str> {
+		self.alias.iter().flat_map(|v| v.iter().map(|s| s.as_str())).collect()
 	}
 
 	/// 获取响应模式。

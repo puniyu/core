@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use smol_str::SmolStr;
 
 /// 适配器配置结构
 ///
@@ -21,23 +22,23 @@ pub struct AdapterConfig {
 	///
 	/// 列出需要启用的适配器名称
 	#[serde(default)]
-	enable_list: Vec<String>,
+	enable_list: Vec<SmolStr>,
 
 	/// 禁用的适配器列表
 	///
 	/// 列出需要禁用的适配器名称，优先级高于启用列表
 	#[serde(default)]
-	disable_list: Vec<String>,
+	disable_list: Vec<SmolStr>,
 }
 
 impl AdapterConfig {
 	/// 获取启用适配器列表。
-	pub fn enable_list(&self) -> &Vec<String> {
-		&self.enable_list
+	pub fn enable_list(&self) -> Vec<&str> {
+		self.enable_list.iter().map(|s|s.as_str()).collect()
 	}
 
 	/// 获取禁用适配器列表。
-	pub fn disable_list(&self) -> &Vec<String> {
-		&self.disable_list
+	pub fn disable_list(&self) -> Vec<&str> {
+		self.disable_list.iter().map(|s| s.as_str()).collect()
 	}
 }
