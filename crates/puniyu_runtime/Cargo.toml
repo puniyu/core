@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_runtime"
-version = "0.8.3"
+version = "0.8.4"
 description = "puniyu 统一运行时 trait 库，提供运行时视图、消息发送能力与框架复合运行时"
 authors.workspace = true
 license.workspace = true

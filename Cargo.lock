@@ -1792,7 +1792,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_core"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "async-trait",
  "log",
@@ -1808,7 +1808,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_types"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "bon",
  "bytes",
@@ -1823,7 +1823,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_api"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "inventory",
  "puniyu_account",
@@ -1848,7 +1848,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_bot"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "log",
  "puniyu_account",
@@ -1870,7 +1870,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "clap",
@@ -1881,7 +1881,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_parser"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "clap",
@@ -1895,7 +1895,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_types"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "puniyu_error",
  "serde",
@@ -1905,7 +1905,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_common"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "puniyu_error",
  "puniyu_system_info",
@@ -1916,7 +1916,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_config"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "log",
  "notify-debouncer-full",
@@ -1943,7 +1943,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_context"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1963,7 +1963,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_core"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "bytes",
  "const-str",
@@ -1991,7 +1991,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_dispatch"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "log",
  "puniyu_event",
@@ -2012,7 +2012,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_error"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "thiserror 2.0.18",
  "toml",
@@ -2020,7 +2020,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_event"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2041,7 +2041,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_handler"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2050,7 +2050,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_hook"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "async-trait",
  "puniyu_common",
@@ -2064,7 +2064,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_loader"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2096,7 +2096,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_path"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "puniyu_common",
  "puniyu_version",
@@ -2104,7 +2104,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin_core"
-version = "0.8.4"
+version = "0.8.5"
 dependencies = [
  "async-trait",
  "log",
@@ -2120,7 +2120,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_runtime"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "actix-web",
  "async-trait",
@@ -2152,7 +2152,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_server"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "actix-web",
  "bytes",
@@ -2194,7 +2194,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_task"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "async-trait",
  "chrono",
