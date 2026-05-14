@@ -41,10 +41,10 @@ pub use types::*;
 mod common;
 mod config;
 mod registry;
+mod logger;
+use logger::{config_debug, config_error};
 
 pub use registry::ConfigRegistry;
-
-use puniyu_path::{config_dir, log_dir};
 
 /// 配置 trait
 pub trait Config: Send + Sync {
@@ -93,37 +93,13 @@ pub fn group_config() -> GroupConfig {
 }
 
 pub fn init() {
-	macro_rules! core_debug {
-	($($arg:tt)+) => {{
-		use ::puniyu_logger::owo_colors::OwoColorize;
-		let prefix = "Core".fg_rgb::<64, 224, 208>();
-		::log::debug!("[{}] {}", prefix, format_args!($($arg)+))
-	}};
-}
-	macro_rules! core_error {
-	($($arg:tt)+) => {{
-		use ::puniyu_logger::owo_colors::OwoColorize;
-		let prefix = "Core".fg_rgb::<64, 224, 208>();
-		::log::error!("[{}] {}", prefix, format_args!($($arg)+))
-	}};
-}
-
-	if !config_dir().as_path().exists() {
-		std::fs::create_dir_all(config_dir().as_path())
-			.unwrap_or_else(|_| core_error!("[Config] Failed to initialize config directory"));
-	}
-	if !log_dir().as_path().exists() {
-		std::fs::create_dir_all(log_dir().as_path())
-			.unwrap_or_else(|_| core_error!("[Config] Failed to initialize log directory"));
-	}
-
 	macro_rules! register_config {
 		($config:expr) => {{
 			let cfg = $config;
 			if let Err(e) = ConfigRegistry::register(cfg) {
-				core_error!("[Config] Failed to register config: {}", e);
+				config_error!("[Config] Failed to register config: {}", e);
 			} else {
-				core_debug!("[Config] {} config registered", stringify!($config));
+				config_debug!("[Config] {} config registered", stringify!($config));
 			}
 		}};
 	}

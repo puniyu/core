@@ -1,16 +1,16 @@
-use log::{debug, error, info};
 use puniyu_common::read_config;
-use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_path::config_dir;
 use std::thread;
 use std::time::Duration;
 use sugar_path::SugarPath;
 
+use crate::logger::{config_debug, config_error, config_info};
+
 /// 启动配置目录监听线程
 pub fn start_config_watcher() {
 	use notify_debouncer_full::{DebounceEventResult, new_debouncer, notify};
 	thread::spawn(|| {
-		debug!("[Config] Configuration file watcher started");
+		config_debug!("Configuration file watcher started");
 
 		let mut debouncer =
 			new_debouncer(Duration::from_secs(2), None, |res: DebounceEventResult| match res {
@@ -27,16 +27,11 @@ pub fn start_config_watcher() {
 
 						for path in event.event.paths.iter() {
 							match std::env::current_dir() {
-								Ok(cwd) => info!(
-									"[{}] File changed: {}",
-									"Config".yellow(),
+								Ok(cwd) => config_info!(
+									"File changed: {}",
 									path.relative(&cwd).to_slash_lossy()
 								),
-								Err(_) => info!(
-									"[{}] File changed: {}",
-									"Config".yellow(),
-									path.to_slash_lossy()
-								),
+								Err(_) => config_info!("File changed: {}", path.to_slash_lossy()),
 							}
 
 							use crate::ConfigRegistry;
@@ -48,20 +43,15 @@ pub fn start_config_watcher() {
 								&& let Ok(value) = read_config::<toml::Value>(dir, name)
 							{
 								if let Err(e) = ConfigRegistry::update(path.as_path(), value) {
-									error!(
-										"[{}] Failed to update config: {}, {}",
-										"Config".yellow(),
-										name,
-										e
-									);
+									config_error!("Failed to update config: {}, {}", name, e);
 								} else {
-									info!("[{}] Config updated: {}", "Config".yellow(), name);
+									config_info!("Config updated: {}", name);
 								}
 							}
 						}
 					}
 				}
-				Err(e) => error!("[Config] Watch error: {:?}", e),
+				Err(e) => config_error!("Watch error: {:?}", e),
 			})
 			.expect("Failed to create config file watcher");
 

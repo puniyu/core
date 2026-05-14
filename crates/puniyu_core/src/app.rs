@@ -210,7 +210,7 @@ impl AppBuilder {
 	/// App::builder()
 	///     .with_config(DatabaseConfig::default())
 	/// ```
-	pub fn with_config<C: puniyu_config::Config + Default +'static>(mut self, config: C) -> Self {
+	pub fn with_config<C: puniyu_config::Config + Default + 'static>(mut self, config: C) -> Self {
 		self.configs.push(Arc::new(config));
 		self
 	}
@@ -221,14 +221,12 @@ impl AppBuilder {
 	///
 	/// 返回配置好的 `App` 实例
 	pub fn build(self) -> App {
-		App {
-			inner: self,
-		}
+		App { inner: self }
 	}
 }
 
 pub struct App {
-	inner: AppBuilder
+	inner: AppBuilder,
 }
 
 impl App {
@@ -266,20 +264,49 @@ impl App {
 		let plugins = self.inner.plugins;
 		let adapters = self.inner.adapters;
 		let configs = self.inner.configs;
+		use puniyu_path::{
+			adapter_dir, app_dir, config_dir, data_dir, log_dir, plugin_dir, resource_dir,
+		};
+
+		let dirs = vec![
+			app_dir(),
+			adapter_dir(),
+			data_dir(),
+			config_dir(),
+			resource_dir(),
+			plugin_dir(),
+			log_dir(),
+			puniyu_path::plugin::config_dir(),
+			puniyu_path::plugin::data_dir(),
+			puniyu_path::plugin::resource_dir(),
+			puniyu_path::plugin::temp_dir(),
+			puniyu_path::adapter::config_dir(),
+			puniyu_path::adapter::data_dir(),
+			puniyu_path::adapter::resource_dir(),
+			puniyu_path::adapter::temp_dir(),
+		];
+		for dir in dirs {
+			fs::create_dir_all(&dir).await?;
+		}
 		let info = AppInfo::new(name, version, working_dir);
 		set_app_info(info);
-
-		puniyu_config::init();
-
+		
 		if !configs.is_empty() {
 			for config in configs {
 				let config_name = config.name().to_string();
 				let file_path = config.path().join(format!("{}.toml", &config_name));
-				if let Err(e) = puniyu_config::ConfigRegistry::register_entry(&config_name, file_path, config.to_value()) {
+				if let Err(e) = puniyu_config::ConfigRegistry::register_entry(
+					&config_name,
+					file_path,
+					config.to_value(),
+				) {
 					core_error!("Failed to register config: {:?}", e);
 				}
 			}
 		}
+
+		puniyu_config::init();
+		puniyu_task::init().await;
 
 		#[cfg(feature = "log")]
 		{
@@ -344,30 +371,6 @@ async fn init_app(
 	adapters: Vec<Arc<dyn Adapter>>,
 	loaders: Vec<Arc<dyn Loader>>,
 ) -> io::Result<()> {
-	use puniyu_path::{adapter_dir, app_dir, config_dir, data_dir, plugin_dir, resource_dir};
-
-	let dirs = vec![
-		app_dir(),
-		adapter_dir(),
-		data_dir(),
-		config_dir(),
-		resource_dir(),
-		plugin_dir(),
-		puniyu_path::plugin::config_dir(),
-		puniyu_path::plugin::data_dir(),
-		puniyu_path::plugin::resource_dir(),
-		puniyu_path::plugin::temp_dir(),
-		puniyu_path::adapter::config_dir(),
-		puniyu_path::adapter::data_dir(),
-		puniyu_path::adapter::resource_dir(),
-		puniyu_path::adapter::temp_dir(),
-	];
-	for dir in dirs {
-		fs::create_dir_all(&dir).await?;
-	}
-
-	puniyu_task::init().await;
-
 	core_debug!("adapter loading...");
 	for adapter in adapters {
 		if let Err(e) = adapter::init_adapter(adapter).await {
@@ -397,7 +400,6 @@ async fn init_app(
 	core_info!("hooks: {}", puniyu_hook::HookRegistry::all().len());
 	Ok(())
 }
-
 
 async fn execute_hooks(status_type: StatusType) {
 	use puniyu_hook::HookRegistry;
