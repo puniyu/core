@@ -17,6 +17,8 @@ workspace = true
 log.workspace = true
 async-trait.workspace = true
 
+puniyu_version.workspace = true
+const-str.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_runtime.workspace = true
 puniyu_config.workspace = true
@@ -30,7 +32,11 @@ registry = ["puniyu_error/registry"]
 
 [dev-dependencies]
 async-trait.workspace = true
+
 puniyu_runtime.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_contact.workspace = true
 puniyu_message.workspace = true
+
+[build-dependencies]
+cargo_metadata = { workspace = true, features = ["builder"] }

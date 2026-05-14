@@ -3,6 +3,7 @@
 //! 统一的 puniyu 适配器核心库，覆盖适配器定义与注册表管理场景。
 
 mod registry;
+use puniyu_version::Version;
 #[doc(inline)]
 pub use registry::AdapterRegistry;
 mod types;
@@ -18,6 +19,12 @@ use std::sync::Arc;
 pub trait Adapter: Send + Sync + 'static {
 	/// 获取适配器运行时。
 	fn runtime(&self) -> Arc<dyn AdapterRuntime>;
+
+	fn core_version(&self) -> Version {
+			Version { 
+			major: const_str::parse!(env!("CORE_VERSION_MAJOR"), u64), minor: const_str::parse!(env!("CORE_VERSION_MINOR"), u64), patch: const_str::parse!(env!("CORE_VERSION_PATCH"), u64) 
+		}
+	}
 
 	/// 获取配置列表。
 	fn config(&self) -> Vec<Arc<dyn Config>> {

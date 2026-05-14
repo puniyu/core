@@ -9,8 +9,15 @@ use puniyu_task::Task;
 use std::{io::Error as IoError, sync::Arc};
 use tokio::fs::create_dir_all;
 
+use crate::logger::core_warn;
+
 pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 	let name = plugin.name();
+	let core_version = plugin.core_version();
+	if core_version <= super::VERSION {
+		core_warn!("{} ({}): plugin core version is too low, please upgrade to {} or higher", name, core_version, super::VERSION);
+		return Ok(());
+	}
 	let hooks = plugin.hooks();
 	let commands = plugin.commands();
 	let tasks = plugin.tasks();

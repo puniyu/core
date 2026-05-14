@@ -16,6 +16,7 @@ workspace = true
 [dependencies]
 log.workspace = true
 async-trait.workspace = true
+const-str.workspace = true
 puniyu_error.workspace = true
 puniyu_version.workspace = true
 puniyu_hook.workspace = true
@@ -28,3 +29,6 @@ puniyu_server.workspace = true
 [features]
 default = []
 registry = ["puniyu_error/registry"]
+
+[build-dependencies]
+cargo_metadata = { workspace = true, features = ["builder"] }

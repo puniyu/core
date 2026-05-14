@@ -23,9 +23,11 @@ pub trait Plugin: Send + Sync + 'static {
 	fn name(&self) -> &str;
 	/// 插件版本
 	fn version(&self) -> Version;
-	/// 插件 ABI 版本
-	fn abi_version(&self) -> Version {
-		*puniyu_common::app::app_version()
+	/// Core版本
+	fn core_version(&self) -> Version {
+		Version { 
+			major: const_str::parse!(env!("CORE_VERSION_MAJOR"), u64), minor: const_str::parse!(env!("CORE_VERSION_MINOR"), u64), patch: const_str::parse!(env!("CORE_VERSION_PATCH"), u64) 
+		}
 	}
 	/// 插件描述
 	fn description(&self) -> Option<&str>;

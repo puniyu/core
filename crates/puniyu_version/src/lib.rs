@@ -38,7 +38,9 @@ use std::str::FromStr;
 /// 三段式版本号（`major.minor.patch`）。
 ///
 /// 这是 `semver` 的简化表示，仅保存核心版本信息，不保存预发布和构建元数据。
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display)]
+#[derive(
+	Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize, Display,
+)]
 #[display("{major}.{minor}.{patch}")]
 pub struct Version {
 	/// 主版本号

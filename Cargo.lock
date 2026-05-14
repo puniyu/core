@@ -1795,6 +1795,8 @@ name = "puniyu_adapter_core"
 version = "0.8.5"
 dependencies = [
  "async-trait",
+ "cargo_metadata",
+ "const-str",
  "log",
  "puniyu_adapter_types",
  "puniyu_config",
@@ -1804,6 +1806,7 @@ dependencies = [
  "puniyu_message",
  "puniyu_runtime",
  "puniyu_server",
+ "puniyu_version",
 ]
 
 [[package]]
@@ -2107,6 +2110,8 @@ name = "puniyu_plugin_core"
 version = "0.8.5"
 dependencies = [
  "async-trait",
+ "cargo_metadata",
+ "const-str",
  "log",
  "puniyu_command",
  "puniyu_common",
