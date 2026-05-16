@@ -31,7 +31,7 @@ jobs:
 
       - name: 运行 release-plz
         id: release
-        uses: release-plz/action@064f4d1e36c843611ddf013be726beaa4ad804db # v0.5
+        uses: puniyu/release-action@main
         with:
           command: release
         env:
@@ -40,7 +40,7 @@ jobs:
           
       - name: 运行 release-plz
         if: ${{ steps.release.outputs.releases_created == 'false' }}
-        uses: release-plz/action@064f4d1e36c843611ddf013be726beaa4ad804db # v0.5
+        uses: puniyu/release-action@main
         with:
           command: release-pr
         env:

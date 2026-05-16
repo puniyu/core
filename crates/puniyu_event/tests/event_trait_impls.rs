@@ -35,7 +35,7 @@ impl SendMessage for TestAdapterRuntime {
 		_contact: &ContactType<'_>,
 		_message: &Message,
 	) -> puniyu_error::Result<SendMsgType> {
-		Ok(SendMsgType { message_id: "test-msg".to_string(), time: 0 })
+		Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
 	}
 }
 

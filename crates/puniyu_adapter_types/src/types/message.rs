@@ -2,6 +2,7 @@ use puniyu_contact::ContactType;
 use puniyu_element::receive::Elements;
 use puniyu_sender::SenderType;
 use serde::{Deserialize, Serialize};
+use std::time::Duration;
 
 /// 消息标识类型。
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -35,7 +36,7 @@ pub struct SendMsgType {
 	/// 消息 ID。
 	pub message_id: String,
 	/// 发送时间戳，单位为秒。
-	pub time: u64,
+	pub time: Duration,
 }
 
 /// 完整消息信息。
