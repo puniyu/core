@@ -27,8 +27,6 @@ where
 	Ok(Option::<Vec<T>>::deserialize(deserializer)?.filter(|value| !value.is_empty()))
 }
 
-
-
 /// Bot 响应模式枚举
 ///
 /// 定义 Bot 在不同场景下的响应行为。
@@ -111,4 +109,3 @@ impl From<&str> for ConfigId {
 		Self::Path(PathBuf::from(path))
 	}
 }
-

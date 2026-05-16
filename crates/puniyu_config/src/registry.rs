@@ -1,11 +1,11 @@
 mod store;
 
+use crate::logger::config_error;
 use crate::types::ConfigId;
 use puniyu_error::registry::Error;
 use std::{fs, path::Path, sync::LazyLock};
 use store::{ConfigEntry, ConfigStore};
 use toml::Value;
-use crate::logger::config_error;
 
 static STORE: LazyLock<ConfigStore> = LazyLock::new(ConfigStore::new);
 
@@ -24,10 +24,14 @@ impl ConfigRegistry {
 		let merged = Self::merge_with_file(&dir, name, &config.to_value());
 
 		if let Some(parent) = file_path.parent()
-			&& let Err(e) = fs::create_dir_all(parent) {
-				config_error!("[Config] Failed to create config directory: {}", e);
-			}
-		if let Err(e) = fs::write(&file_path, toml::to_string_pretty(&merged).expect("Failed to serialize config")) {
+			&& let Err(e) = fs::create_dir_all(parent)
+		{
+			config_error!("[Config] Failed to create config directory: {}", e);
+		}
+		if let Err(e) = fs::write(
+			&file_path,
+			toml::to_string_pretty(&merged).expect("Failed to serialize config"),
+		) {
 			config_error!("[Config] Failed to write config file: {}", e);
 		}
 

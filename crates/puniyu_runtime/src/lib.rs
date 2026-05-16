@@ -59,4 +59,3 @@ pub trait SendMessage: Send + Sync {
 		message: &Message,
 	) -> Result<SendMsgType>;
 }
-

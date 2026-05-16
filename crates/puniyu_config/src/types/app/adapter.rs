@@ -34,7 +34,7 @@ pub struct AdapterConfig {
 impl AdapterConfig {
 	/// 获取启用适配器列表。
 	pub fn enable_list(&self) -> Vec<&str> {
-		self.enable_list.iter().map(|s|s.as_str()).collect()
+		self.enable_list.iter().map(|s| s.as_str()).collect()
 	}
 
 	/// 获取禁用适配器列表。

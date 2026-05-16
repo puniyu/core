@@ -64,7 +64,7 @@ fn test_error_match() {
 
 	match error {
 		Error::NotFound(name) => assert_eq!(name, "item"),
-		Error::Exists(_) => panic!("Expected NotFound")
+		Error::Exists(_) => panic!("Expected NotFound"),
 	}
 }
 

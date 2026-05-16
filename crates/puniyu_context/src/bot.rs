@@ -20,7 +20,6 @@ impl<'c> BotContext<'c> {
 		self.inner.adapter_info()
 	}
 
-
 	pub fn runtime<T: Runtime>(&self) -> Option<&T> {
 		self.inner.runtime()
 	}

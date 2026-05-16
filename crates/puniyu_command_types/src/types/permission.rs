@@ -6,9 +6,17 @@ use strum::{Display, EnumString, IntoStaticStr};
 /// 命令权限级别。
 #[repr(u8)]
 #[derive(
-	Debug, Default, Copy, Clone, PartialEq, PartialOrd,
-	EnumString, Display, IntoStaticStr,
-	Serialize_repr, Deserialize_repr,
+	Debug,
+	Default,
+	Copy,
+	Clone,
+	PartialEq,
+	PartialOrd,
+	EnumString,
+	Display,
+	IntoStaticStr,
+	Serialize_repr,
+	Deserialize_repr,
 )]
 #[strum(serialize_all = "lowercase")]
 pub enum Permission {

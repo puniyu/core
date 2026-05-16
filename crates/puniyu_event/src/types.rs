@@ -226,7 +226,7 @@ pub trait EventBase: Send + Sync {
 	/// 获取发送者信息。
 	fn sender(&self) -> SenderType<'_>;
 
-		/// 判断是否为好友消息。
+	/// 判断是否为好友消息。
 	fn is_friend(&self) -> bool {
 		matches!(self.contact().scene(), SceneType::Friend)
 	}

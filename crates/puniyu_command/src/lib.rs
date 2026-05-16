@@ -58,7 +58,6 @@ macro_rules! has_permission {
 	};
 }
 
-
 /// 命令行为接口。
 #[async_trait]
 pub trait Command: Send + Sync + 'static {

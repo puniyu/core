@@ -1,7 +1,7 @@
+use crate::types::empty_vec_as_none;
 use crate::{ReactiveMode, default_cd};
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
-use crate::types::empty_vec_as_none;
 /// 群组配置选项
 ///
 /// 定义单个群组的配置参数。

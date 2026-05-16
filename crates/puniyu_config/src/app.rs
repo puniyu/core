@@ -10,9 +10,8 @@ use std::sync::LazyLock;
 static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("app.toml"));
 
 fn default_master() -> Vec<SmolStr> {
-    vec![SmolStr::new("console")]
+	vec![SmolStr::new("console")]
 }
-
 
 fn default_prefix() -> Option<SmolStr> {
 	Some(SmolStr::new("!"))

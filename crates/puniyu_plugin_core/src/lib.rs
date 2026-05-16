@@ -25,8 +25,10 @@ pub trait Plugin: Send + Sync + 'static {
 	fn version(&self) -> Version;
 	/// Core版本
 	fn core_version(&self) -> Version {
-		Version { 
-			major: const_str::parse!(env!("CORE_VERSION_MAJOR"), u64), minor: const_str::parse!(env!("CORE_VERSION_MINOR"), u64), patch: const_str::parse!(env!("CORE_VERSION_PATCH"), u64) 
+		Version {
+			major: const_str::parse!(env!("CORE_VERSION_MAJOR"), u64),
+			minor: const_str::parse!(env!("CORE_VERSION_MINOR"), u64),
+			patch: const_str::parse!(env!("CORE_VERSION_PATCH"), u64),
 		}
 	}
 	/// 插件描述

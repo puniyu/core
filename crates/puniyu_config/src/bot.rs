@@ -2,8 +2,8 @@ use crate::BotOption;
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, path::PathBuf, sync::LazyLock};
 use smol_str::SmolStr;
+use std::{collections::HashMap, path::PathBuf, sync::LazyLock};
 static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("bot.toml"));
 
 /// Bot 配置结构

@@ -183,11 +183,11 @@ impl<'c> EventBase for MessageContext<'c> {
 	}
 
 	fn contact(&self) -> puniyu_contact::ContactType<'_> {
-		EventBase::contact(self._event)
+		self._event.contact()
 	}
 
 	fn sender(&self) -> puniyu_sender::SenderType<'_> {
-		EventBase::sender(self._event)
+		self._event.sender()
 	}
 }
 

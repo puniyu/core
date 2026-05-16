@@ -57,9 +57,9 @@
 #[cfg(feature = "registry")]
 mod registry;
 
+use async_trait::async_trait;
 #[cfg(feature = "registry")]
 pub use registry::LoaderRegistry;
-use async_trait::async_trait;
 use std::sync::Arc;
 mod types;
 #[doc(inline)]

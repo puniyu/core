@@ -40,8 +40,8 @@ mod types;
 pub use types::*;
 mod common;
 mod config;
-mod registry;
 mod logger;
+mod registry;
 use logger::{config_debug, config_error};
 
 pub use registry::ConfigRegistry;

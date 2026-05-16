@@ -39,7 +39,7 @@ impl<'c> GroupTempContact<'c> {
 		P: Into<Cow<'c, str>>,
 		N: Into<Cow<'c, str>>,
 	{
-		Self { peer: peer.into(), name: name.map(|s|s.into()) }
+		Self { peer: peer.into(), name: name.map(|s| s.into()) }
 	}
 }
 

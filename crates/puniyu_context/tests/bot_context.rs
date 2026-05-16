@@ -34,7 +34,6 @@ impl SendMessage for TestAdapterRuntime {
 	}
 }
 
-
 fn make_bot_with_account(uin: &str, name: &str, avatar: Bytes) -> Arc<Bot> {
 	let adapter = adapter_info!(
 		name: "test-adapter",

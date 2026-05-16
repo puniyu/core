@@ -290,7 +290,7 @@ impl App {
 		}
 		let info = AppInfo::new(name, version, working_dir);
 		set_app_info(info);
-		
+
 		if !configs.is_empty() {
 			for config in configs {
 				let config_name = config.name().to_string();

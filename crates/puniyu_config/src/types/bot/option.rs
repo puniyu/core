@@ -52,18 +52,18 @@ pub struct BotOption {
 	///
 	/// 用于命令识别，当消息以别名开头时会被识别为命令
 	/// 如果未设置，继承全局配置
-	#[serde(default, skip_serializing_if = "Option::is_none", deserialize_with = "empty_vec_as_none")]
+	#[serde(
+		default,
+		skip_serializing_if = "Option::is_none",
+		deserialize_with = "empty_vec_as_none"
+	)]
 	alias: Option<Vec<SmolStr>>,
 }
 
 impl Default for BotOption {
 	#[inline]
 	fn default() -> Self {
-		Self {
-			cd: Some(default_cd()),
-			mode: Some(Default::default()),
-			alias: None,
-		}
+		Self { cd: Some(default_cd()), mode: Some(Default::default()), alias: None }
 	}
 }
 

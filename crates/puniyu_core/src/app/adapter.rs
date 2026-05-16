@@ -12,7 +12,12 @@ pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
 	let name = adapter.runtime().adapter_info().name.clone();
 	let core_version = adapter.core_version();
 	if core_version <= super::VERSION {
-		core_warn!("{} ({}): adapter core version is too low, please upgrade to {} or higher", name, core_version, super::VERSION);
+		core_warn!(
+			"{} ({}): adapter core version is too low, please upgrade to {} or higher",
+			name,
+			core_version,
+			super::VERSION
+		);
 		return Ok(());
 	}
 	let hooks = adapter.hook();

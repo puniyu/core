@@ -15,7 +15,6 @@ macro_rules! core_trace {
 #[allow(unused_imports)]
 pub(crate) use core_trace;
 
-
 macro_rules! core_debug {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
