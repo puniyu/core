@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.3](https://github.com/puniyu/core/compare/puniyu_error-v0.8.2...puniyu_error-v0.8.3)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/puniyu_error-v0.8.1...puniyu_error-v0.8.2)
 
 ### ⚙️ 杂项

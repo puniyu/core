@@ -1,5 +1,25 @@
 # 变更日志
 
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_server-v0.8.4...puniyu_server-v0.8.5)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+- *(core)* 添加Core版本校验 - ([a9f10bd](https://github.com/puniyu/core/commit/a9f10bd9fc71906285496cbe4f5080b27706b808))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+
 ## [0.8.4](https://github.com/puniyu/core/compare/puniyu_server-v0.8.3...puniyu_server-v0.8.4)
 
 ### 🚜 重构

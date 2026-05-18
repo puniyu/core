@@ -1,5 +1,29 @@
 # 变更日志
 
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.4...puniyu_command_parser-v0.8.5)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+### ⚙️ 杂项
+
+
+- *(message)* 更新消息时间字段类型 - ([1404d4a](https://github.com/puniyu/core/commit/1404d4a9d0887f3dea9546411d4f5363e21dc812))
+
+
+
+
 ## [0.8.4](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.3...puniyu_command_parser-v0.8.4)
 
 ### ⚙️ 杂项

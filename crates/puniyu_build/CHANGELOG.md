@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_build-v0.8.1...puniyu_build-v0.8.2)
+
+### ⛰️ 新功能
+
+
+- *(core)* 添加Core版本校验 - ([a9f10bd](https://github.com/puniyu/core/commit/a9f10bd9fc71906285496cbe4f5080b27706b808))
+
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_build-v0.8.0...puniyu_build-v0.8.1)
 
 ### ⚙️ 杂项

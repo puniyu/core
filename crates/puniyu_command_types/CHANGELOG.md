@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.3](https://github.com/puniyu/core/compare/puniyu_command_types-v0.8.2...puniyu_command_types-v0.8.3)
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/puniyu_command_types-v0.8.1...puniyu_command_types-v0.8.2)
 
 ### ⚙️ 杂项

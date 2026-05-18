@@ -1,5 +1,46 @@
 # 变更日志
 
+## [0.8.6](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.5...puniyu_adapter_core-v0.8.6)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+- *(core)* 添加Core版本校验 - ([a9f10bd](https://github.com/puniyu/core/commit/a9f10bd9fc71906285496cbe4f5080b27706b808))
+
+
+
+### 🐛 Bug 修复
+
+
+- 修复多余的前缀 - ([0591558](https://github.com/puniyu/core/commit/059155833980811adaf8012d8dbd590c8d4cd1e2))
+
+
+
+### 🚜 重构
+
+
+- *(core)* 移除钩子系统并替换为应用生命周期回调 ([#230](https://github.com/puniyu/core/pull/230)) - ([42cecb9](https://github.com/puniyu/core/commit/42cecb98c2250837db1c1b00ad1a44f3b50e1ece))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+### ⚙️ 杂项
+
+
+- *(message)* 更新消息时间字段类型 - ([1404d4a](https://github.com/puniyu/core/commit/1404d4a9d0887f3dea9546411d4f5363e21dc812))
+
+
+
+
 ## [0.8.5](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.4...puniyu_adapter_core-v0.8.5)
 
 ### 🚜 重构
