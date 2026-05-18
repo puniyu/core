@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_contact"
-version = "0.8.1"
+version = "0.8.2"
 description = "puniyu 联系人类型库，统一好友与群聊联系人模型"
 authors.workspace = true
 license.workspace = true

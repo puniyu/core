@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_contact-v0.8.1...puniyu_contact-v0.8.2)
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+
 ## [0.8.1](https://github.com/puniyu/core/compare/puniyu_contact-v0.8.0...puniyu_contact-v0.8.1)
 
 ### ⚙️ 杂项

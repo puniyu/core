@@ -1,5 +1,29 @@
 # 变更日志
 
+## [0.8.3](https://github.com/puniyu/core/compare/puniyu_config-v0.8.2...puniyu_config-v0.8.3)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+
+### 🐛 Bug 修复
+
+
+- 修复多余的前缀 - ([0591558](https://github.com/puniyu/core/commit/059155833980811adaf8012d8dbd590c8d4cd1e2))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/puniyu_config-v0.8.1...puniyu_config-v0.8.2)
 
 ### 🚜 重构

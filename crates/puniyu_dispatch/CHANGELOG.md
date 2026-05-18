@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_dispatch-v0.8.4...puniyu_dispatch-v0.8.5)
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+### ⚙️ 杂项
+
+
+- *(message)* 更新消息时间字段类型 - ([1404d4a](https://github.com/puniyu/core/commit/1404d4a9d0887f3dea9546411d4f5363e21dc812))
+
+
+
+
 ## [0.8.4](https://github.com/puniyu/core/compare/puniyu_dispatch-v0.8.3...puniyu_dispatch-v0.8.4)
 
 ### ⚙️ 杂项
