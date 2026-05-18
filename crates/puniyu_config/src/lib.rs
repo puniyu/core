@@ -97,9 +97,9 @@ pub fn init() {
 		($config:expr) => {{
 			let cfg = $config;
 			if let Err(e) = ConfigRegistry::register(cfg) {
-				config_error!("[Config] Failed to register config: {}", e);
+				config_error!("Failed to register config: {}", e);
 			} else {
-				config_debug!("[Config] {} config registered", stringify!($config));
+				config_debug!("{} config registered", stringify!($config));
 			}
 		}};
 	}
