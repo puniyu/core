@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_api"
-version = "0.8.6"
+version = "0.8.7"
 description = "puniyu API 模块"
 authors.workspace = true
 license.workspace = true
@@ -14,7 +14,7 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-inventory = { version = "0.3.21" }
+inventory = { version = "0.3.24" }
 
 puniyu_config.workspace = true
 puniyu_bot.workspace = true

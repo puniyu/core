@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_semver"
-version = "0.8.2"
+version = "0.8.7"
 description = "puniyu 轻量版本号类型，提供三段式语义版本表示与 semver 互转"
 authors.workspace = true
 license.workspace = true
@@ -17,7 +17,7 @@ workspace = true
 serde.workspace = true
 
 derive_more = { workspace = true, features = ["display"] }
-semver = { version = "1.0.27" }
+semver = { version = "1.0.28" }
 
 [dev-dependencies]
 serde_json.workspace = true

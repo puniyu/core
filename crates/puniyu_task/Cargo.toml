@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_task"
-version = "0.8.3"
+version = "0.8.7"
 description = "Puniyu 定时任务管理库，提供基于 Cron 表达式的任务调度功能"
 authors.workspace = true
 license.workspace = true

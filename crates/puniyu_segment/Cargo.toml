@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_segment"
-version = "0.8.1"
+version = "0.8.7"
 description = "puniyu 消息段构建库，提供 Segment API 与 segment! 宏"
 authors.workspace = true
 license.workspace = true

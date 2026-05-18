@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_command_parser"
-version = "0.8.5"
+version = "0.8.7"
 description = "puniyu 命令解析器，统一命令文本解析、别名剥离与参数验证流程"
 authors.workspace = true
 license.workspace = true
