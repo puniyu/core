@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/v0.8.7...v0.8.8)
+
+### 🐛 Bug 修复
+
+
+- 修复导入 - ([aca982b](https://github.com/puniyu/core/commit/aca982b1658672d5562103d653dd3956a45437c9))
+
+
+
+
 ## [0.8.6](https://github.com/puniyu/core/compare/v0.8.5...v0.8.6)
 
 ### ⛰️ 新功能
