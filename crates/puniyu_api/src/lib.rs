@@ -12,6 +12,8 @@ pub mod segment;
 pub mod sender;
 pub mod server;
 pub mod semver;
+pub mod command;
+pub mod result;
 
 pub use inventory;
 pub use puniyu_common::app::{app_name, app_version};

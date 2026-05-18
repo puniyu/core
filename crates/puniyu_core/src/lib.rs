@@ -19,3 +19,5 @@ pub use puniyu_api::sender;
 pub use puniyu_api::server;
 pub use puniyu_plugin_core as plugin;
 pub use puniyu_semver::Version;
+pub use puniyu_api::command;
+pub use puniyu_api::result;

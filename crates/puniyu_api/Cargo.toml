@@ -34,6 +34,4 @@ puniyu_message.workspace = true
 puniyu_runtime.workspace = true
 
 puniyu_plugin_core = { workspace = true, features = ["registry"] }
-
-[features]
-
+puniyu_command = { workspace = true, features = ["registry"] }

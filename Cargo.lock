@@ -1830,6 +1830,7 @@ dependencies = [
  "inventory",
  "puniyu_account",
  "puniyu_bot",
+ "puniyu_command",
  "puniyu_common",
  "puniyu_config",
  "puniyu_contact",
