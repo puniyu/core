@@ -45,7 +45,7 @@ pub struct BotOption {
 	///
 	/// 控制 Bot 响应哪些类型的消息
 	/// 如果未设置，继承全局配置
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(default, skip_serializing_if = "Option::is_none")]
 	mode: Option<ReactiveMode>,
 
 	/// Bot 别名列表

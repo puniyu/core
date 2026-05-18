@@ -26,13 +26,13 @@ impl ConfigRegistry {
 		if let Some(parent) = file_path.parent()
 			&& let Err(e) = fs::create_dir_all(parent)
 		{
-			config_error!("[Config] Failed to create config directory: {}", e);
+			config_error!("Failed to create config directory: {}", e);
 		}
 		if let Err(e) = fs::write(
 			&file_path,
 			toml::to_string_pretty(&merged).expect("Failed to serialize config"),
 		) {
-			config_error!("[Config] Failed to write config file: {}", e);
+			config_error!("Failed to write config file: {}", e);
 		}
 
 		STORE.insert(name.to_string(), file_path, merged)
