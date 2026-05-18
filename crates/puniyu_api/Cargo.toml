@@ -18,7 +18,7 @@ inventory = { version = "0.3.21" }
 
 puniyu_config.workspace = true
 puniyu_bot.workspace = true
-puniyu_version.workspace = true
+puniyu_semver.workspace = true
 puniyu_account.workspace = true
 puniyu_path.workspace = true
 puniyu_server.workspace = true

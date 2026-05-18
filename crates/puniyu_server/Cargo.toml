@@ -23,7 +23,7 @@ serde.workspace = true
 serde_json.workspace = true
 puniyu_logger.workspace = true
 puniyu_common.workspace = true
-puniyu_version.workspace = true
+puniyu_semver.workspace = true
 puniyu_path.workspace = true
 bytes.workspace = true
 tokio = { workspace = true, features = ["full"] }

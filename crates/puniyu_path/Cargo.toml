@@ -20,4 +20,4 @@ workspace = true
 puniyu_common.workspace = true
 
 [dev-dependencies]
-puniyu_version.workspace = true
+puniyu_semver.workspace = true

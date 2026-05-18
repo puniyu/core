@@ -1,4 +1,4 @@
-use puniyu_version::Version;
+use puniyu_semver::Version;
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 

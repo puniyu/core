@@ -11,23 +11,18 @@ use puniyu_common::app::app_name;
 use puniyu_handler::Handler;
 use puniyu_loader::Loader;
 use puniyu_plugin_core::Plugin;
-use puniyu_version::Version;
+use puniyu_semver::Version;
+use puniyu_version::VERSION;
+use std::io;
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Instant;
-use std::{env, io};
 use tokio::{fs, signal};
 
 use crate::logger::{core_debug, core_error, core_info};
 
 type AsyncFn =
 	Box<dyn Fn() -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> + Send + Sync>;
-
-const VERSION: Version = Version {
-	major: const_str::parse!(env!("CARGO_PKG_VERSION_MAJOR"), u64),
-	minor: const_str::parse!(env!("CARGO_PKG_VERSION_MINOR"), u64),
-	patch: const_str::parse!(env!("CARGO_PKG_VERSION_PATCH"), u64),
-};
 
 /// 应用构建器
 ///

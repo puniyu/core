@@ -21,6 +21,6 @@ jiff.workspace = true
 bon.workspace = true
 puniyu_sender.workspace = true
 puniyu_contact.workspace = true
-puniyu_version.workspace = true
+puniyu_semver.workspace = true
 puniyu_element.workspace = true
 

@@ -6,6 +6,7 @@ use puniyu_path::plugin::*;
 use puniyu_plugin_core::Plugin;
 use puniyu_plugin_core::PluginRegistry;
 use puniyu_task::Task;
+use puniyu_version::VERSION;
 use std::{io::Error as IoError, sync::Arc};
 use tokio::fs::create_dir_all;
 
@@ -14,12 +15,12 @@ use crate::logger::core_warn;
 pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 	let name = plugin.name();
 	let core_version = plugin.core_version();
-	if core_version <= super::VERSION {
+	if core_version <= VERSION {
 		core_warn!(
 			"{} ({}): plugin core version is too low, please upgrade to {} or higher",
 			name,
 			core_version,
-			super::VERSION
+			VERSION
 		);
 		return Ok(());
 	}

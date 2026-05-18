@@ -5,7 +5,7 @@
 ### ⚙️ 杂项
 
 
-- Updated the following local packages: puniyu_version, puniyu_common
+- Updated the following local packages: puniyu_semver, puniyu_common
 
 
 

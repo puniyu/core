@@ -13,7 +13,7 @@ use puniyu_config::Config;
 use puniyu_error::Result;
 use puniyu_server::ServerFunction;
 use puniyu_task::Task;
-use puniyu_version::Version;
+use puniyu_semver::Version;
 use std::sync::Arc;
 
 #[async_trait]
@@ -24,11 +24,7 @@ pub trait Plugin: Send + Sync + 'static {
 	fn version(&self) -> Version;
 	/// Core版本
 	fn core_version(&self) -> Version {
-		Version {
-			major: const_str::parse!(env!("CORE_VERSION_MAJOR"), u64),
-			minor: const_str::parse!(env!("CORE_VERSION_MINOR"), u64),
-			patch: const_str::parse!(env!("CORE_VERSION_PATCH"), u64),
-		}
+		puniyu_version::VERSION
 	}
 	/// 插件描述
 	fn description(&self) -> Option<&str>;

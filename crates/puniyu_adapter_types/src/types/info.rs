@@ -1,6 +1,6 @@
 use bon::Builder;
 use jiff::Timestamp;
-use puniyu_version::Version;
+use puniyu_semver::Version;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString, IntoStaticStr};
 

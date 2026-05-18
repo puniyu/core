@@ -1,4 +1,4 @@
-# puniyu_version
+# puniyu_semver
 
 轻量版本号类型库，提供三段式语义版本表示与转换能力。
 

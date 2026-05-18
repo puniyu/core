@@ -1,6 +1,6 @@
 # 变更日志
 
-## [0.8.2](https://github.com/puniyu/core/compare/puniyu_version-v0.8.1...puniyu_version-v0.8.2)
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_semver-v0.8.1...puniyu_semver-v0.8.2)
 
 ### ⛰️ 新功能
 
@@ -10,7 +10,7 @@
 
 
 
-## [0.8.1](https://github.com/puniyu/core/compare/puniyu_version-v0.8.0...puniyu_version-v0.8.1)
+## [0.8.1](https://github.com/puniyu/core/compare/puniyu_semver-v0.8.0...puniyu_semver-v0.8.1)
 
 ### ⚙️ 杂项
 

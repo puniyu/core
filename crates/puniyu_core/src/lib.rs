@@ -18,4 +18,4 @@ pub use puniyu_api::segment;
 pub use puniyu_api::sender;
 pub use puniyu_api::server;
 pub use puniyu_plugin_core as plugin;
-pub use puniyu_version::Version;
+pub use puniyu_semver::Version;

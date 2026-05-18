@@ -7,7 +7,7 @@ fn init_test_env() {
 	use std::sync::Once;
 
 	static INIT: Once = Once::new();
-	static VERSION: &puniyu_version::Version = &puniyu_version::Version::new(0, 1, 0);
+	static VERSION: &puniyu_semver::Version = &puniyu_semver::Version::new(0, 1, 0);
 
 	INIT.call_once(|| {
 		let info = AppInfo::new("testapp", VERSION, Path::new("."));

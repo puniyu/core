@@ -17,13 +17,14 @@ workspace = true
 log.workspace = true
 async-trait.workspace = true
 
-puniyu_version.workspace = true
+puniyu_semver.workspace = true
 const-str.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_runtime.workspace = true
 puniyu_config.workspace = true
 puniyu_error.workspace = true
 puniyu_server.workspace = true
+puniyu_version.workspace = true
 
 [features]
 default = []
@@ -36,6 +37,3 @@ puniyu_runtime.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_contact.workspace = true
 puniyu_message.workspace = true
-
-[build-dependencies]
-cargo_metadata = { workspace = true, features = ["builder"] }

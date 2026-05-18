@@ -1795,7 +1795,6 @@ name = "puniyu_adapter_core"
 version = "0.8.6"
 dependencies = [
  "async-trait",
- "cargo_metadata",
  "const-str",
  "log",
  "puniyu_adapter_types",
@@ -1804,6 +1803,7 @@ dependencies = [
  "puniyu_error",
  "puniyu_message",
  "puniyu_runtime",
+ "puniyu_semver",
  "puniyu_server",
  "puniyu_version",
 ]
@@ -1817,8 +1817,8 @@ dependencies = [
  "jiff",
  "puniyu_contact",
  "puniyu_element",
+ "puniyu_semver",
  "puniyu_sender",
- "puniyu_version",
  "serde",
  "strum 0.28.0",
 ]
@@ -1842,9 +1842,9 @@ dependencies = [
  "puniyu_plugin_core",
  "puniyu_runtime",
  "puniyu_segment",
+ "puniyu_semver",
  "puniyu_sender",
  "puniyu_server",
- "puniyu_version",
 ]
 
 [[package]]
@@ -1909,8 +1909,8 @@ name = "puniyu_common"
 version = "0.8.3"
 dependencies = [
  "puniyu_error",
+ "puniyu_semver",
  "puniyu_system_info",
- "puniyu_version",
  "serde",
  "toml",
 ]
@@ -1982,6 +1982,7 @@ dependencies = [
  "puniyu_logger",
  "puniyu_path",
  "puniyu_plugin_core",
+ "puniyu_semver",
  "puniyu_server",
  "puniyu_task",
  "puniyu_version",
@@ -2085,7 +2086,7 @@ name = "puniyu_path"
 version = "0.8.3"
 dependencies = [
  "puniyu_common",
- "puniyu_version",
+ "puniyu_semver",
 ]
 
 [[package]]
@@ -2093,13 +2094,13 @@ name = "puniyu_plugin_core"
 version = "0.8.6"
 dependencies = [
  "async-trait",
- "cargo_metadata",
  "const-str",
  "log",
  "puniyu_command",
  "puniyu_common",
  "puniyu_config",
  "puniyu_error",
+ "puniyu_semver",
  "puniyu_server",
  "puniyu_task",
  "puniyu_version",
@@ -2125,6 +2126,16 @@ version = "0.8.1"
 dependencies = [
  "bytes",
  "puniyu_element",
+]
+
+[[package]]
+name = "puniyu_semver"
+version = "0.8.2"
+dependencies = [
+ "derive_more",
+ "semver",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2154,7 +2165,7 @@ dependencies = [
  "puniyu_logger",
  "puniyu_path",
  "puniyu_runtime",
- "puniyu_version",
+ "puniyu_semver",
  "serde",
  "serde_json",
  "tokio",
@@ -2195,12 +2206,10 @@ dependencies = [
 
 [[package]]
 name = "puniyu_version"
-version = "0.8.2"
+version = "0.8.6"
 dependencies = [
- "derive_more",
- "semver",
- "serde",
- "serde_json",
+ "const-str",
+ "puniyu_semver",
 ]
 
 [[package]]

@@ -7,7 +7,7 @@ use std::{
 	path::Path,
 };
 
-static VERSION: puniyu_version::Version = puniyu_version::Version::new(
+static VERSION: puniyu_semver::Version = puniyu_semver::Version::new(
 	parse!(env!("CARGO_PKG_VERSION_MAJOR"), u64),
 	parse!(env!("CARGO_PKG_VERSION_MINOR"), u64),
 	parse!(env!("CARGO_PKG_VERSION_PATCH"), u64),

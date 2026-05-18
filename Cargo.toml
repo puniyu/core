@@ -43,7 +43,8 @@ puniyu_logger = { version = "0.7.2" }
 puniyu_system_info = { version = "1.5.6" }
 
 puniyu_error = { version = "0.8.3", path = "./crates/puniyu_error", default-features = false }
-puniyu_version = { version = "0.8.2", path = "./crates/puniyu_version" }
+puniyu_semver = { version = "0.8.2", path = "./crates/puniyu_semver" }
+puniyu_version = { version = "0.8.6", path = "./crates/puniyu_version" }
 puniyu_common = { version = "0.8.3", path = "./crates/puniyu_common", default-features = false }
 puniyu_element = { version = "0.8.1", path = "./crates/puniyu_element" }
 puniyu_message = { version = "0.8.1", path = "./crates/puniyu_message" }

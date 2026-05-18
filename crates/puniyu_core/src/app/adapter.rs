@@ -3,6 +3,7 @@ use puniyu_adapter_core::AdapterRegistry;
 use puniyu_common::source::SourceType;
 use puniyu_error::Result;
 use puniyu_path::adapter::*;
+use puniyu_version::VERSION;
 use std::{io::Error as IoError, sync::Arc};
 use tokio::fs::create_dir_all;
 
@@ -11,12 +12,12 @@ use crate::logger::core_warn;
 pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
 	let name = adapter.runtime().adapter_info().name.clone();
 	let core_version = adapter.core_version();
-	if core_version <= super::VERSION {
+	if core_version <= VERSION {
 		core_warn!(
 			"{} ({}): adapter core version is too low, please upgrade to {} or higher",
 			name,
 			core_version,
-			super::VERSION
+			VERSION
 		);
 		return Ok(());
 	}

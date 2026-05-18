@@ -1,0 +1,23 @@
+[package]
+name = "puniyu_semver"
+version = "0.8.2"
+description = "puniyu 轻量版本号类型，提供三段式语义版本表示与 semver 互转"
+authors.workspace = true
+license.workspace = true
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+serde.workspace = true
+
+derive_more = { workspace = true, features = ["display"] }
+semver = { version = "1.0.27" }
+
+[dev-dependencies]
+serde_json.workspace = true

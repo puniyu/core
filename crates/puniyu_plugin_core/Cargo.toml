@@ -18,16 +18,14 @@ log.workspace = true
 async-trait.workspace = true
 const-str.workspace = true
 puniyu_error.workspace = true
-puniyu_version.workspace = true
+puniyu_semver.workspace = true
 puniyu_config.workspace = true
 puniyu_common.workspace = true
 puniyu_command.workspace = true
 puniyu_task.workspace = true
 puniyu_server.workspace = true
+puniyu_version.workspace = true
 
 [features]
 default = []
 registry = ["puniyu_error/registry"]
-
-[build-dependencies]
-cargo_metadata = { workspace = true, features = ["builder"] }

@@ -1,10 +1,10 @@
 [package]
 name = "puniyu_version"
-version = "0.8.2"
-description = "puniyu 轻量版本号类型，提供三段式语义版本表示与 semver 互转"
+version = "0.8.6"
+description = "version for puniyu"
 authors.workspace = true
 license.workspace = true
-readme = "README.md"
+readme.workspace = true
 homepage.workspace = true
 repository.workspace = true
 edition.workspace = true
@@ -14,10 +14,7 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-serde.workspace = true
+puniyu_semver.workspace = true
 
-derive_more = { workspace = true, features = ["display"] }
-semver = { version = "1.0.27" }
+const-str.workspace = true
 
-[dev-dependencies]
-serde_json.workspace = true

@@ -11,7 +11,7 @@ pub mod runtime;
 pub mod segment;
 pub mod sender;
 pub mod server;
-pub mod version;
+pub mod semver;
 
 pub use inventory;
 pub use puniyu_common::app::{app_name, app_version};

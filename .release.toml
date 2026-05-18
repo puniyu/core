@@ -130,7 +130,11 @@ link_parsers = [
 name = "puniyu_build"
 
 [[package]]
+name = "puniyu_semver"
+
+[[package]]
 name = "puniyu_version"
+version_group = "core"
 
 [[package]]
 name = "puniyu_error"
@@ -152,7 +156,7 @@ name = "puniyu_command_types"
 
 [[package]]
 name = "puniyu_common"
-changelog_include = ["puniyu_error", "puniyu_version"]
+changelog_include = ["puniyu_error", "puniyu_semver"]
 
 [[package]]
 name = "puniyu_segment"
@@ -174,7 +178,7 @@ changelog_include = [
     "puniyu_sender",
     "puniyu_contact",
     "puniyu_element",
-    "puniyu_version",
+    "puniyu_semver",
 ]
 
 [[package]]
@@ -213,7 +217,7 @@ name = "puniyu_server"
 version_group = "server"
 changelog_include = [
     "puniyu_common",
-    "puniyu_version",
+    "puniyu_semver",
     "puniyu_path",
     "puniyu_error",
 ]
@@ -267,7 +271,7 @@ changelog_include = ["puniyu_event", "puniyu_handler"]
 name = "puniyu_plugin_core"
 changelog_include = [
     "puniyu_error",
-    "puniyu_version",
+    "puniyu_semver",
     "puniyu_config",
     "puniyu_common",
     "puniyu_command",
@@ -300,7 +304,7 @@ name = "puniyu_api"
 changelog_include = [
     "puniyu_config",
     "puniyu_bot",
-    "puniyu_version",
+    "puniyu_semver",
     "puniyu_account",
     "puniyu_path",
     "puniyu_server",
@@ -323,6 +327,7 @@ git_tag_name = "v{{ version }}"
 git_release_enable = true
 git_release_name = "v{{ version }}"
 git_release_latest = true
+version_group = "core"
 changelog_include = [
     "puniyu_common",
     "puniyu_path",
@@ -337,5 +342,5 @@ changelog_include = [
     "puniyu_handler",
     "puniyu_adapter_core",
     "puniyu_server",
-    "puniyu_version",
+    "puniyu_semver",
 ]

@@ -1,6 +1,6 @@
 use bytes::Bytes;
 use puniyu_adapter_types::{AdapterPlatform, AdapterProtocol, Avatar, MessageType, adapter_info};
-use puniyu_version::Version;
+use puniyu_semver::Version;
 
 #[test]
 fn adapter_info_short_macro_builds_basic_info() {
