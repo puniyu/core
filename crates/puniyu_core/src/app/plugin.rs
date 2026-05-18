@@ -23,10 +23,6 @@ pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 		);
 		return Ok(());
 	}
-	let hooks = plugin.hooks();
-	let commands = plugin.commands();
-	let tasks = plugin.tasks();
-	let server = plugin.server();
 
 	init_dir(config_dir().join(name), name, "config").await?;
 	init_dir(data_dir().join(name), name, "data").await?;
@@ -34,9 +30,9 @@ pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 	init_dir(temp_dir().join(name), name, "temp").await?;
 
 	plugin
-		.init()
+		.on_load()
 		.await
-		.map_err(|e| IoError::other(format!("Failed to init plugin {}: {:?}", name, e)))?;
+		.map_err(|e| IoError::other(format!("Failed to on_load plugin {}: {:?}", name, e)))?;
 
 	super::config::init_config(name, plugin.config()).await?;
 
@@ -44,7 +40,7 @@ pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 		.unwrap_or_else(|e| panic!("Failed to register plugin {}: {:?}", name, e));
 	let source = SourceType::Plugin(index);
 
-	register_plugin_components(index, source, hooks, commands, tasks, server).await;
+	register_plugin_components(index, source, plugin.commands(), plugin.tasks(), plugin.server()).await;
 
 	Ok(())
 }
@@ -64,17 +60,10 @@ async fn init_dir(path: std::path::PathBuf, plugin_name: &str, dir_kind: &str) -
 async fn register_plugin_components(
 	plugin_id: u64,
 	source: SourceType,
-	hooks: Vec<Arc<dyn puniyu_hook::Hook>>,
 	commands: Vec<Arc<dyn Command>>,
 	tasks: Vec<Arc<dyn Task>>,
 	server: Option<puniyu_server::ServerFunction>,
 ) {
-	if !hooks.is_empty() {
-		super::hook::init_hook(source, hooks).unwrap_or_else(|e| {
-			panic!("Failed to register hook for plugin {}: {:?}", plugin_id, e)
-		});
-	}
-
 	if !commands.is_empty() {
 		init_command(plugin_id, commands).unwrap_or_else(|e| {
 			panic!("Failed to register command for plugin {}: {:?}", plugin_id, e)

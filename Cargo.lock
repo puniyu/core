@@ -1802,7 +1802,6 @@ dependencies = [
  "puniyu_config",
  "puniyu_contact",
  "puniyu_error",
- "puniyu_hook",
  "puniyu_message",
  "puniyu_runtime",
  "puniyu_server",
@@ -1838,7 +1837,6 @@ dependencies = [
  "puniyu_element",
  "puniyu_error",
  "puniyu_event",
- "puniyu_hook",
  "puniyu_message",
  "puniyu_path",
  "puniyu_plugin_core",
@@ -1980,7 +1978,6 @@ dependencies = [
  "puniyu_dispatch",
  "puniyu_error",
  "puniyu_handler",
- "puniyu_hook",
  "puniyu_loader",
  "puniyu_logger",
  "puniyu_path",
@@ -2052,20 +2049,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "puniyu_hook"
-version = "0.8.4"
-dependencies = [
- "async-trait",
- "puniyu_common",
- "puniyu_context",
- "puniyu_error",
- "puniyu_event",
- "serde",
- "strum 0.28.0",
- "tokio",
-]
-
-[[package]]
 name = "puniyu_loader"
 version = "0.8.5"
 dependencies = [
@@ -2117,7 +2100,6 @@ dependencies = [
  "puniyu_common",
  "puniyu_config",
  "puniyu_error",
- "puniyu_hook",
  "puniyu_server",
  "puniyu_task",
  "puniyu_version",

@@ -29,7 +29,6 @@ const-str.workspace = true
 puniyu_config.workspace = true
 puniyu_api.workspace = true
 puniyu_error = { workspace = true, features = ["registry"] }
-puniyu_hook = { workspace = true, features = ["registry"] }
 puniyu_command = { workspace = true, features = ["registry"] }
 puniyu_task = { workspace = true, features = ["registry"] }
 puniyu_plugin_core = { workspace = true, features = ["registry"] }

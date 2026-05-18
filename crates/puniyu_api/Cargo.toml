@@ -21,7 +21,6 @@ puniyu_bot.workspace = true
 puniyu_version.workspace = true
 puniyu_account.workspace = true
 puniyu_path.workspace = true
-puniyu_hook.workspace = true
 puniyu_server.workspace = true
 puniyu_error.workspace = true
 puniyu_common.workspace = true

@@ -71,7 +71,6 @@ puniyu_command_types = { version = "0.8.2", path = "./crates/puniyu_command_type
 puniyu_server = { version = "0.8.4", path = "./crates/puniyu_server", default-features = false }
 
 puniyu_task = { version = "0.8.2", path = "./crates/puniyu_task" }
-puniyu_hook = { version = "0.8.4", path = "./crates/puniyu_hook" }
 puniyu_handler = { version = "0.8.4", path = "./crates/puniyu_handler" }
 puniyu_handler_command = { version = "0.8.0", path = "./crates/puniyu_handler_command" }
 puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook" }
