@@ -24,7 +24,6 @@ puniyu_runtime.workspace = true
 puniyu_config.workspace = true
 puniyu_error.workspace = true
 puniyu_server.workspace = true
-puniyu_hook.workspace = true
 
 [features]
 default = []

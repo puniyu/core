@@ -170,11 +170,21 @@ changelog_include = ["puniyu_common"]
 
 [[package]]
 name = "puniyu_adapter_types"
-changelog_include = ["puniyu_sender", "puniyu_contact", "puniyu_element", "puniyu_version"]
+changelog_include = [
+    "puniyu_sender",
+    "puniyu_contact",
+    "puniyu_element",
+    "puniyu_version",
+]
 
 [[package]]
 name = "puniyu_bot"
-changelog_include = ["puniyu_account", "puniyu_adapter_types", "puniyu_runtime", "puniyu_error"]
+changelog_include = [
+    "puniyu_account",
+    "puniyu_adapter_types",
+    "puniyu_runtime",
+    "puniyu_error",
+]
 
 [[package]]
 name = "puniyu_config"
@@ -182,16 +192,31 @@ changelog_include = ["puniyu_path", "puniyu_common", "puniyu_error"]
 
 [[package]]
 name = "puniyu_runtime"
-changelog_include = ["puniyu_adapter_types", "puniyu_contact", "puniyu_message", "puniyu_error"]
+changelog_include = [
+    "puniyu_adapter_types",
+    "puniyu_contact",
+    "puniyu_message",
+    "puniyu_error",
+]
 
 [[package]]
 name = "puniyu_event"
-changelog_include = ["puniyu_bot", "puniyu_contact", "puniyu_sender", "puniyu_element"]
+changelog_include = [
+    "puniyu_bot",
+    "puniyu_contact",
+    "puniyu_sender",
+    "puniyu_element",
+]
 
 [[package]]
 name = "puniyu_server"
 version_group = "server"
-changelog_include = ["puniyu_common", "puniyu_version", "puniyu_path", "puniyu_error"]
+changelog_include = [
+    "puniyu_common",
+    "puniyu_version",
+    "puniyu_path",
+    "puniyu_error",
+]
 
 [[package]]
 name = "puniyu_task"
@@ -201,15 +226,19 @@ changelog_include = ["puniyu_error"]
 [[package]]
 name = "puniyu_context"
 changelog_include = [
-    "puniyu_account", "puniyu_runtime", "puniyu_adapter_types",
-    "puniyu_bot", "puniyu_sender", "puniyu_error", "puniyu_element",
-    "puniyu_contact", "puniyu_command_types", "puniyu_event",
-    "puniyu_message", "puniyu_config"
+    "puniyu_account",
+    "puniyu_runtime",
+    "puniyu_adapter_types",
+    "puniyu_bot",
+    "puniyu_sender",
+    "puniyu_error",
+    "puniyu_element",
+    "puniyu_contact",
+    "puniyu_command_types",
+    "puniyu_event",
+    "puniyu_message",
+    "puniyu_config",
 ]
-
-[[package]]
-name = "puniyu_hook"
-changelog_include = ["puniyu_context", "puniyu_error", "puniyu_event", "puniyu_common"]
 
 [[package]]
 name = "puniyu_handler"
@@ -223,7 +252,12 @@ changelog_include = ["puniyu_command_types", "puniyu_context", "puniyu_error"]
 [[package]]
 name = "puniyu_command_parser"
 version_group = "command"
-changelog_include = ["puniyu_command_types", "puniyu_command", "puniyu_context", "puniyu_error"]
+changelog_include = [
+    "puniyu_command_types",
+    "puniyu_command",
+    "puniyu_context",
+    "puniyu_error",
+]
 
 [[package]]
 name = "puniyu_dispatch"
@@ -231,7 +265,15 @@ changelog_include = ["puniyu_event", "puniyu_handler"]
 
 [[package]]
 name = "puniyu_plugin_core"
-changelog_include = ["puniyu_error", "puniyu_version", "puniyu_hook", "puniyu_config", "puniyu_common", "puniyu_command", "puniyu_task", "puniyu_server"]
+changelog_include = [
+    "puniyu_error",
+    "puniyu_version",
+    "puniyu_config",
+    "puniyu_common",
+    "puniyu_command",
+    "puniyu_task",
+    "puniyu_server",
+]
 
 [[package]]
 name = "puniyu_loader"
@@ -241,7 +283,13 @@ changelog_include = ["puniyu_plugin_core", "puniyu_error"]
 [[package]]
 name = "puniyu_adapter_core"
 version_group = "adapter"
-changelog_include = ["puniyu_adapter_types", "puniyu_runtime", "puniyu_config", "puniyu_error", "puniyu_server", "puniyu_hook"]
+changelog_include = [
+    "puniyu_adapter_types",
+    "puniyu_runtime",
+    "puniyu_config",
+    "puniyu_error",
+    "puniyu_server",
+]
 
 [[package]]
 name = "puniyu_adapter_types"
@@ -250,11 +298,22 @@ version_group = "adapter"
 [[package]]
 name = "puniyu_api"
 changelog_include = [
-    "puniyu_config", "puniyu_bot", "puniyu_version", "puniyu_account",
-    "puniyu_path", "puniyu_hook", "puniyu_server", "puniyu_error",
-    "puniyu_common", "puniyu_event", "puniyu_context", "puniyu_sender",
-    "puniyu_contact", "puniyu_element", "puniyu_segment", "puniyu_message",
-    "puniyu_plugin_core"
+    "puniyu_config",
+    "puniyu_bot",
+    "puniyu_version",
+    "puniyu_account",
+    "puniyu_path",
+    "puniyu_server",
+    "puniyu_error",
+    "puniyu_common",
+    "puniyu_event",
+    "puniyu_context",
+    "puniyu_sender",
+    "puniyu_contact",
+    "puniyu_element",
+    "puniyu_segment",
+    "puniyu_message",
+    "puniyu_plugin_core",
 ]
 
 [[package]]
@@ -265,8 +324,18 @@ git_release_enable = true
 git_release_name = "v{{ version }}"
 git_release_latest = true
 changelog_include = [
-    "puniyu_common", "puniyu_path", "puniyu_dispatch", "puniyu_config",
-    "puniyu_api", "puniyu_error", "puniyu_hook", "puniyu_command",
-    "puniyu_task", "puniyu_plugin_core", "puniyu_loader", "puniyu_handler",
-    "puniyu_adapter_core", "puniyu_server", "puniyu_version"
+    "puniyu_common",
+    "puniyu_path",
+    "puniyu_dispatch",
+    "puniyu_config",
+    "puniyu_api",
+    "puniyu_error",
+    "puniyu_command",
+    "puniyu_task",
+    "puniyu_plugin_core",
+    "puniyu_loader",
+    "puniyu_handler",
+    "puniyu_adapter_core",
+    "puniyu_server",
+    "puniyu_version",
 ]

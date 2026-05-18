@@ -1,6 +1,5 @@
 mod adapter;
 mod config;
-mod hook;
 mod loader;
 mod plugin;
 mod server;
@@ -10,7 +9,6 @@ use convert_case::{Case, Casing};
 use puniyu_adapter_core::Adapter;
 use puniyu_common::app::app_name;
 use puniyu_handler::Handler;
-use puniyu_hook::{HookType, StatusType};
 use puniyu_loader::Loader;
 use puniyu_plugin_core::Plugin;
 use puniyu_version::Version;
@@ -21,6 +19,9 @@ use std::{env, io};
 use tokio::{fs, signal};
 
 use crate::logger::{core_debug, core_error, core_info};
+
+type AsyncFn =
+	Box<dyn Fn() -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> + Send + Sync>;
 
 const VERSION: Version = Version {
 	major: const_str::parse!(env!("CARGO_PKG_VERSION_MAJOR"), u64),
@@ -50,12 +51,14 @@ pub struct AppBuilder {
 	name: &'static str,
 	version: &'static Version,
 	logo: Option<Bytes>,
-	working_dir: PathBuf,
+	cwd_dir: PathBuf,
 	plugins: Vec<Arc<dyn Plugin>>,
 	adapters: Vec<Arc<dyn Adapter>>,
 	loaders: Vec<Arc<dyn Loader>>,
 	handlers: Vec<Arc<dyn Handler>>,
 	configs: Vec<Arc<dyn puniyu_config::Config>>,
+	on_start: Option<AsyncFn>,
+	on_exit: Option<AsyncFn>,
 }
 
 impl Default for AppBuilder {
@@ -65,12 +68,14 @@ impl Default for AppBuilder {
 			name: "Core",
 			version: &VERSION,
 			logo: None,
-			working_dir: std::env::current_dir().unwrap(),
+			cwd_dir: std::env::current_dir().unwrap(),
 			plugins: Vec::new(),
 			adapters: Vec::new(),
 			loaders: Vec::new(),
 			handlers: Vec::new(),
 			configs: Vec::new(),
+			on_start: None,
+			on_exit: None,
 		}
 	}
 }
@@ -112,8 +117,8 @@ impl AppBuilder {
 	/// # 参数
 	///
 	/// - `dir`: 工作目录路径
-	pub fn with_working_dir(mut self, dir: impl Into<PathBuf>) -> Self {
-		self.working_dir = dir.into();
+	pub fn with_cwd_dir(mut self, dir: impl Into<PathBuf>) -> Self {
+		self.cwd_dir = dir.into();
 		self
 	}
 
@@ -215,6 +220,48 @@ impl AppBuilder {
 		self
 	}
 
+	/// 设置应用启动时的回调
+	///
+	/// # 参数
+	///
+	/// - `f`: 启动时执行的异步回调
+	///
+	/// # 示例
+	///
+	/// ```rust,ignore
+	/// App::builder()
+	///     .with_on_start(|| async { println!("started") })
+	/// ```
+	pub fn with_on_start<F, Fut>(mut self, f: F) -> Self
+	where
+		F: Fn() -> Fut + Send + Sync + 'static,
+		Fut: std::future::Future<Output = ()> + Send + 'static,
+	{
+		self.on_start = Some(Box::new(move || Box::pin(f())));
+		self
+	}
+
+	/// 设置应用退出时的回调
+	///
+	/// # 参数
+	///
+	/// - `f`: 退出时执行的异步回调
+	///
+	/// # 示例
+	///
+	/// ```rust,ignore
+	/// App::builder()
+	///     .with_on_exit(|| async { println!("exiting") })
+	/// ```
+	pub fn with_on_exit<F, Fut>(mut self, f: F) -> Self
+	where
+		F: Fn() -> Fut + Send + Sync + 'static,
+		Fut: std::future::Future<Output = ()> + Send + 'static,
+	{
+		self.on_exit = Some(Box::new(move || Box::pin(f())));
+		self
+	}
+
 	/// 构建应用实例
 	///
 	/// # 返回值
@@ -258,12 +305,14 @@ impl App {
 		let name = self.inner.name;
 		let version = self.inner.version;
 		let logo = self.inner.logo;
-		let working_dir = self.inner.working_dir;
+		let working_dir = self.inner.cwd_dir;
 		let loaders = self.inner.loaders;
 		let handlers = self.inner.handlers;
 		let plugins = self.inner.plugins;
 		let adapters = self.inner.adapters;
 		let configs = self.inner.configs;
+		let on_start = self.inner.on_start;
+		let on_exit = self.inner.on_exit;
 		use puniyu_path::{
 			adapter_dir, app_dir, config_dir, data_dir, log_dir, plugin_dir, resource_dir,
 		};
@@ -326,7 +375,10 @@ impl App {
 		if let Err(e) = init_app(plugins, adapters, LoaderRegistry::all()).await {
 			core_error!("Failed to init app: {}", e);
 		}
-		execute_hooks(StatusType::Start).await;
+
+		if let Some(callback) = on_start {
+			(callback)().await;
+		}
 
 		let app_name = app_name().to_case(Case::Lower);
 
@@ -352,7 +404,22 @@ impl App {
 		);
 
 		signal::ctrl_c().await?;
-		execute_hooks(StatusType::Stop).await;
+
+		if let Some(callback) = on_exit {
+			(callback)().await;
+		}
+
+		for adapter in puniyu_adapter_core::AdapterRegistry::all() {
+			if let Err(e) = adapter.on_unload().await {
+				core_error!("Adapter on_unload error: {}", e);
+			}
+		}
+		for plugin in puniyu_plugin_core::PluginRegistry::all() {
+			if let Err(e) = plugin.on_unload().await {
+				core_error!("Plugin on_unload error: {}", e);
+			}
+		}
+
 		puniyu_dispatch::EventEmitter::stop();
 		if let Err(e) = server_runtime.shutdown().await {
 			core_error!("Server exited with error: {}", e);
@@ -397,30 +464,5 @@ async fn init_app(
 	core_info!("plugins: {}", puniyu_plugin_core::PluginRegistry::all().len());
 	core_info!("commands: {}", puniyu_command::CommandRegistry::all().len());
 	core_info!("handlers: {}", puniyu_handler::HandlerRegistry::all().len());
-	core_info!("hooks: {}", puniyu_hook::HookRegistry::all().len());
 	Ok(())
-}
-
-async fn execute_hooks(status_type: StatusType) {
-	use puniyu_hook::HookRegistry;
-	let mut hooks = HookRegistry::all()
-		.into_iter()
-		.filter(|x| match x.builder.r#type() {
-			HookType::Status(status) => status == &status_type,
-			_ => false,
-		})
-		.collect::<Vec<_>>();
-	hooks.sort_unstable_by_key(|a| a.builder.priority());
-
-	for hook in hooks {
-		if let Err(e) = hook.builder.execute(None).await {
-			match status_type {
-				StatusType::Start => core_error!("Failed to execute start hook: {}", e),
-				StatusType::Stop => core_error!("Failed to execute stop hook: {}", e),
-			}
-		}
-		if let Err(e) = HookRegistry::unregister(hook.source) {
-			core_error!("Failed to unregister hook: {}", e);
-		}
-	}
 }

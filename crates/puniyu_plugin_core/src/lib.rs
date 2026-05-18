@@ -11,7 +11,6 @@ use log::info;
 use puniyu_command::Command;
 use puniyu_config::Config;
 use puniyu_error::Result;
-use puniyu_hook::Hook;
 use puniyu_server::ServerFunction;
 use puniyu_task::Task;
 use puniyu_version::Version;
@@ -53,11 +52,6 @@ pub trait Plugin: Send + Sync + 'static {
 		Vec::new()
 	}
 
-	/// 钩子列表
-	fn hooks(&self) -> Vec<Arc<dyn Hook>> {
-		Vec::new()
-	}
-
 	/// 插件配置文件
 	fn config(&self) -> Vec<Arc<dyn Config>> {
 		Vec::new()
@@ -67,9 +61,16 @@ pub trait Plugin: Send + Sync + 'static {
 	fn server(&self) -> Option<ServerFunction> {
 		None
 	}
-	/// 插件初始化函数
-	async fn init(&self) -> Result {
-		info!("plugin: {} v{} init", self.name(), self.version());
+
+	/// 插件加载时回调
+	async fn on_load(&self) -> Result {
+		info!("plugin: {} v{} loaded", self.name(), self.version());
+		Ok(())
+	}
+
+	/// 插件卸载时回调
+	async fn on_unload(&self) -> Result {
+		info!("plugin: {} v{} unloaded", self.name(), self.version());
 		Ok(())
 	}
 }
@@ -80,7 +81,6 @@ impl PartialEq for dyn Plugin {
 			&& self.prefix() == other.prefix()
 			&& self.tasks() == other.tasks()
 			&& self.commands() == other.commands()
-			&& self.hooks() == other.hooks()
 			&& self.config() == other.config()
 	}
 }

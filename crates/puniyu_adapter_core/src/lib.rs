@@ -11,7 +11,6 @@ mod types;
 pub use types::*;
 
 use puniyu_config::Config;
-use puniyu_hook::Hook;
 use puniyu_runtime::AdapterRuntime;
 use std::sync::Arc;
 
@@ -33,19 +32,20 @@ pub trait Adapter: Send + Sync + 'static {
 		Vec::new()
 	}
 
-	/// 获取钩子列表。
-	fn hook(&self) -> Vec<Arc<dyn Hook>> {
-		Vec::new()
-	}
-
 	/// 获取服务器扩展。
 	fn server(&self) -> Option<puniyu_server::ServerFunction> {
 		None
 	}
 
-	/// 初始化适配器。
-	async fn init(&self) -> puniyu_error::Result {
-		log::info!("Adapter: 初始化完成");
+	/// 适配器加载时回调。
+	async fn on_load(&self) -> puniyu_error::Result {
+		log::info!("Adapter: loaded");
+		Ok(())
+	}
+
+	/// 适配器卸载时回调。
+	async fn on_unload(&self) -> puniyu_error::Result {
+		log::info!("Adapter: unloaded");
 		Ok(())
 	}
 }
