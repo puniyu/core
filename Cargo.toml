@@ -44,7 +44,7 @@ puniyu_system_info = { version = "1.5.6" }
 
 puniyu_error = { version = "0.8.3", path = "./crates/puniyu_error", default-features = false }
 puniyu_semver = { version = "0.8.2", path = "./crates/puniyu_semver" }
-puniyu_version = { version = "0.8.6", path = "./crates/puniyu_version" }
+puniyu_version = { version = "0.8.8", path = "./crates/puniyu_version" }
 puniyu_common = { version = "0.8.3", path = "./crates/puniyu_common", default-features = false }
 puniyu_element = { version = "0.8.1", path = "./crates/puniyu_element" }
 puniyu_message = { version = "0.8.1", path = "./crates/puniyu_message" }
@@ -59,7 +59,7 @@ puniyu_context = { version = "0.8.5", path = "./crates/puniyu_context" }
 
 puniyu_config = { version = "0.8.3", path = "./crates/puniyu_config" }
 
-puniyu_adapter_core = { version = "0.8.6", path = "./crates/puniyu_adapter_core" }
+puniyu_adapter_core = { version = "0.8.8", path = "./crates/puniyu_adapter_core" }
 puniyu_adapter_types = { version = "0.8.6", path = "./crates/puniyu_adapter_types" }
 puniyu_runtime = { version = "0.8.5", path = "./crates/puniyu_runtime" }
 
@@ -75,11 +75,11 @@ puniyu_task = { version = "0.8.3", path = "./crates/puniyu_task" }
 puniyu_handler = { version = "0.8.5", path = "./crates/puniyu_handler" }
 puniyu_handler_command = { version = "0.8.0", path = "./crates/puniyu_handler_command" }
 puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook" }
-puniyu_plugin_core = { version = "0.8.6", path = "./crates/puniyu_plugin_core" }
+puniyu_plugin_core = { version = "0.8.8", path = "./crates/puniyu_plugin_core" }
 
-puniyu_loader = { version = "0.8.6", path = "./crates/puniyu_loader" }
-puniyu_core = { version = "0.8.6", path = "./crates/puniyu_core" }
-puniyu_api = { version = "0.8.6", path = "./crates/puniyu_api" }
+puniyu_loader = { version = "0.8.8", path = "./crates/puniyu_loader" }
+puniyu_core = { version = "0.8.8", path = "./crates/puniyu_core" }
+puniyu_api = { version = "0.8.8", path = "./crates/puniyu_api" }
 
 [profile.release]
 lto = "fat"
