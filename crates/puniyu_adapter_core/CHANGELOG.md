@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.9](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.8...puniyu_adapter_core-v0.8.9)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_semver, puniyu_adapter_types, puniyu_adapter_types, puniyu_server, puniyu_version, puniyu_config, puniyu_runtime, puniyu_runtime
+
+
+
 ## [0.8.8](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.7...puniyu_adapter_core-v0.8.8)
 
 ### ⚙️ 杂项

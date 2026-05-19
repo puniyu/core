@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_runtime-v0.8.7...puniyu_runtime-v0.8.8)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types
+
+
+
 ## [0.8.5](https://github.com/puniyu/core/compare/puniyu_runtime-v0.8.4...puniyu_runtime-v0.8.5)
 
 ### ⛰️ 新功能

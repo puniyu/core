@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_path"
-version = "0.8.7"
+version = "0.8.8"
 description = "puniyu 路径管理库，统一提供应用、插件与适配器目录路径"
 authors.workspace = true
 license.workspace = true

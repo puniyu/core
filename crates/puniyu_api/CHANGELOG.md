@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.9](https://github.com/puniyu/core/compare/puniyu_api-v0.8.8...puniyu_api-v0.8.9)
+
+### 🐛 Bug 修复
+
+
+- 修复adapter缺少的导入 - ([a75dee8](https://github.com/puniyu/core/commit/a75dee8b85bd495650f3c33a489d8893ee7f0a24))
+
+
+
+
 ## [0.8.8](https://github.com/puniyu/core/compare/puniyu_api-v0.8.7...puniyu_api-v0.8.8)
 
 ### 🐛 Bug 修复

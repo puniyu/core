@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_config-v0.8.7...puniyu_config-v0.8.8)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_common, puniyu_path
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_config-v0.8.2...puniyu_config-v0.8.3)
 
 ### ⛰️ 新功能

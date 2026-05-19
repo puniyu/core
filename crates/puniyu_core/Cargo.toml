@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_core"
-version = "0.8.8"
+version = "0.8.9"
 description = "puniyu 的核心模块，包含基础设施和通用功能"
 readme = "README.md"
 authors.workspace = true
