@@ -82,34 +82,3 @@ impl FromStr for Version {
 	}
 }
 
-/// 从当前 crate 的 `Cargo.toml` 自动构造 [`Version`]。
-///
-/// 无需依赖 `const_str`，在 const 上下文中即可使用。
-///
-/// # 示例
-///
-/// ```rust
-/// use puniyu_semver::{Version, pkg_version};
-///
-/// const VERSION: Version = pkg_version!();
-/// ```
-#[macro_export]
-macro_rules! pkg_version {
-	() => {{
-		const fn parse(s: &str) -> u64 {
-			let b = s.as_bytes();
-			let mut r: u64 = 0;
-			let mut i = 0;
-			while i < b.len() {
-				r = r * 10 + (b[i] - b'0') as u64;
-				i += 1;
-			}
-			r
-		}
-		$crate::Version::new(
-			parse(env!("CARGO_PKG_VERSION_MAJOR")),
-			parse(env!("CARGO_PKG_VERSION_MINOR")),
-			parse(env!("CARGO_PKG_VERSION_PATCH")),
-		)
-	}};
-}

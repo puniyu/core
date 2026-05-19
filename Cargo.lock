@@ -1846,6 +1846,8 @@ dependencies = [
  "puniyu_semver",
  "puniyu_sender",
  "puniyu_server",
+ "tokio",
+ "toml",
 ]
 
 [[package]]
@@ -1972,6 +1974,7 @@ dependencies = [
  "convert_case 0.11.0",
  "log",
  "puniyu_adapter_core",
+ "puniyu_adapter_types",
  "puniyu_api",
  "puniyu_command",
  "puniyu_common",

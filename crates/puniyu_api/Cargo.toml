@@ -16,6 +16,7 @@ workspace = true
 [dependencies]
 inventory = { version = "0.3.24" }
 
+toml.workspace = true
 puniyu_config.workspace = true
 puniyu_bot.workspace = true
 puniyu_semver.workspace = true
@@ -35,3 +36,5 @@ puniyu_runtime.workspace = true
 
 puniyu_plugin_core = { workspace = true, features = ["registry"] }
 puniyu_command = { workspace = true, features = ["registry"] }
+
+tokio = { workspace = true, features = ["full"] }
