@@ -18,6 +18,7 @@ pub mod server;
 pub use inventory;
 pub use tokio;
 pub use toml;
+pub use async_trait;
 pub use puniyu_common::app::{app_name, app_version};
 
 #[macro_export]

@@ -34,6 +34,8 @@ puniyu_segment.workspace = true
 puniyu_message.workspace = true
 puniyu_runtime.workspace = true
 
+async-trait.workspace = true
+
 puniyu_plugin_core = { workspace = true, features = ["registry"] }
 puniyu_command = { workspace = true, features = ["registry"] }
 

@@ -30,3 +30,4 @@ pub use puniyu_semver::Version;
 pub use puniyu_api::tokio;
 pub use puniyu_api::toml;
 pub use puniyu_api::inventory;
+pub use puniyu_api::async_trait;

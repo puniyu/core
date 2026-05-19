@@ -1827,6 +1827,7 @@ dependencies = [
 name = "puniyu_api"
 version = "0.8.9"
 dependencies = [
+ "async-trait",
  "inventory",
  "puniyu_account",
  "puniyu_bot",
