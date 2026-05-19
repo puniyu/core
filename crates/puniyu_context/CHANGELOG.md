@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_context-v0.8.7...puniyu_context-v0.8.8)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types, puniyu_config, puniyu_runtime, puniyu_bot, puniyu_event
+
+
+
 ## [0.8.5](https://github.com/puniyu/core/compare/puniyu_context-v0.8.4...puniyu_context-v0.8.5)
 
 ### ⛰️ 新功能
