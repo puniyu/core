@@ -14,6 +14,7 @@ pub mod segment;
 pub mod semver;
 pub mod sender;
 pub mod server;
+pub mod task;
 
 pub use inventory;
 pub use tokio;

@@ -1,1 +1,1 @@
-pub use puniyu_account::AccountInfo;
+pub use puniyu_account::*;

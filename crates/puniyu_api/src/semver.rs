@@ -1,1 +1,1 @@
-pub use puniyu_semver::Version;
+pub use puniyu_semver::*;

@@ -1,1 +1,1 @@
-pub use puniyu_message::Message;
+pub use puniyu_message::*;

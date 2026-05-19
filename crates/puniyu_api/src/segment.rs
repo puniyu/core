@@ -1,1 +1,1 @@
-pub use puniyu_segment::Segment;
+pub use puniyu_segment::*;
