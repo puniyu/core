@@ -1,13 +1,19 @@
 # puniyu_bot
 
-机器人实例库，统一机器人实例和注册访问模型。
+机器人实例库，统一机器人实例与注册表访问模型。
 
-## 特征
+## 特性
 
-- 提供机器人实例相关类型
-- 支持机器人注册与访问能力
-- 与运行时、联系人和消息模块协同工作
+- 提供 `Bot` 机器人实例类型
+- 提供 `BotId` 标识符，支持按索引或 UIN 定位
+- 提供 `BotRegistry` 管理多机器人实例
+- 提供 `BotRegistry` 注册表访问
 
 ## 快速开始
 
-从机器人实例类型开始阅读，理解 Bot 对象在框架中的表示和访问方式。
+```rust
+use puniyu_bot::{Bot, BotId, BotRegistry};
+
+let bot_id: BotId = 123u64.into();
+let self_id: BotId = "123456".into();
+```

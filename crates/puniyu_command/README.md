@@ -1,13 +1,37 @@
 # puniyu_command
 
-命令系统库，统一命令定义、元信息和注册管理流程。
+命令系统库，统一命令定义、元信息与注册表管理。
 
-## 特征
+## 特性
 
-- 提供命令定义与注册相关能力
-- 与命令类型、上下文和错误处理协同工作
-- 适合作为命令系统的基础入口
+- 提供 `Command` trait 定义命令行为
+- 提供 `CommandRegistry` 管理命令注册（需启用 `registry` feature）
+- 提供 `has_permission!` 宏判断权限
+- 支持命令别名、优先级和权限控制
+- 提供 `Arg`、`ArgValue`、`Permission`、`CommandAction` 等类型
 
 ## 快速开始
 
-从命令定义和注册流程开始阅读，配合 `puniyu_command_types` 理解命令系统结构。
+```rust
+use puniyu_command::{Arg, Command, CommandAction, Permission};
+use puniyu_context::MessageContext;
+
+struct HelloCommand;
+
+#[async_trait::async_trait]
+impl Command for HelloCommand {
+    fn name(&self) -> &str { "hello" }
+
+    fn args(&self) -> Vec<Arg<'_>> {
+        vec![Arg::string("name").required()]
+    }
+
+    fn permission(&self) -> Permission {
+        Permission::All
+    }
+
+    async fn execute(&self, ctx: &MessageContext) -> puniyu_error::Result<CommandAction> {
+        CommandAction::done()
+    }
+}
+```

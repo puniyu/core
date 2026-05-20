@@ -1,13 +1,23 @@
 # puniyu_account
 
-账户信息类型库，统一机器人账户相关的数据模型。
+机器人账户信息类型库，描述账号 UIN、昵称与头像数据。
 
-## 特征
+## 特性
 
-- 提供统一的账户信息模型
-- 适合作为机器人身份数据的基础类型层
-- 可与 bot、context 等模块配合使用
+- 提供 `AccountInfo` 结构体定义账户信息
+- 提供 `account_info!` 宏快速构建
+- 提供 `AccountInfoBuilder` 构建器（基于 bon）
+- 支持 `serde` 序列化与反序列化
 
 ## 快速开始
 
-从账户类型定义开始阅读源码，作为理解机器人身份模型的入口。
+```rust
+use puniyu_account::{AccountInfo, account_info};
+use bytes::Bytes;
+
+let account = account_info!(
+    uin: "123456789",
+    name: "Puniyu",
+    avatar: Bytes::from_static(b"avatar"),
+);
+```

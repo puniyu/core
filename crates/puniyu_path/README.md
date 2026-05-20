@@ -1,13 +1,20 @@
 # puniyu_path
 
-路径管理库，统一提供应用、插件和适配器相关目录路径。
+路径管理库，统一提供应用、插件与适配器目录路径。
 
-## 特征
+## 特性
 
-- 提供统一路径管理能力
-- 覆盖应用、插件和适配器目录场景
-- 适合作为文件与资源路径的基础工具层
+- 提供基础目录路径函数（`app_cwd_dir`、`app_dir`、`config_dir` 等）
+- 提供插件目录 `plugin_dir`
+- 提供适配器目录 `adapter_dir`
+- 所有路径基于 `puniyu_common::app` 当前应用信息生成
 
 ## 快速开始
 
-从路径模块开始阅读，了解应用运行过程中目录结构如何被统一管理。
+```rust
+use puniyu_path::{app_dir, plugin_dir, adapter_dir, config_dir, data_dir};
+
+let app = app_dir();
+let cfg = config_dir();
+let data = data_dir();
+```

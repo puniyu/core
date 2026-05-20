@@ -1,13 +1,29 @@
 # puniyu_loader
 
-加载器库，提供插件加载器相关类型和注册能力。
+加载器类型定义库，提供插件加载器的类型系统和注册管理。
 
-## 特征
+## 特性
 
-- 提供加载器类型定义
-- 支持加载器注册与管理
-- 可与插件系统配合完成动态或统一加载流程
+- 提供 `Loader` trait 定义加载器接口
+- 支持加载器注册表 `LoaderRegistry`（需启用 `registry` feature）
+- 每个加载器可管理多个插件
+- 支持插件生命周期管理
 
 ## 快速开始
 
-从加载器类型和注册流程开始阅读，理解插件加载能力如何接入应用。
+```rust
+use puniyu_loader::{Loader, LoaderRegistry};
+use puniyu_plugin_core::Plugin;
+use std::sync::Arc;
+
+struct MyLoader;
+
+#[async_trait::async_trait]
+impl Loader for MyLoader {
+    fn name(&self) -> &'static str { "my_loader" }
+    async fn plugins(&self) -> Vec<Arc<dyn Plugin>> { Vec::new() }
+}
+
+let loader = Arc::new(MyLoader);
+LoaderRegistry::register(loader);
+```

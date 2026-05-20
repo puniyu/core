@@ -1,13 +1,22 @@
 # puniyu_dispatch
 
-事件分发库，提供异步事件发射和分发能力。
+事件分发库，提供全局事件发射和分发能力。
 
-## 特征
+## 特性
 
-- 提供全局事件发射能力
-- 支持异步事件处理链路
-- 与事件和处理器模块协同工作
+- 提供 `EventEmitter` 全局事件发射器
+- 支持启动/停止事件发射器
+- 将事件分发到所有已注册的 Handler
+- Handler 按优先级顺序执行
 
 ## 快速开始
 
-从事件分发入口开始阅读，了解事件如何被发射并交给处理器处理。
+```rust
+use puniyu_dispatch::EventEmitter;
+use puniyu_event::Event;
+
+EventEmitter::run()?;
+
+// 在事件发生时发射
+EventEmitter::emit(event).await?;
+```

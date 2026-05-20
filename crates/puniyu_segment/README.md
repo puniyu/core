@@ -1,13 +1,22 @@
 # puniyu_segment
 
-消息段构建库，提供 `Segment` API 和消息段构建宏。
+消息段构建库，提供 `Segment` 结构体和 `segment!` 宏快速构建 `Elements`。
 
-## 特征
+## 特性
 
-- 提供消息段构建能力
-- 支持通过宏快速生成消息段
-- 与消息元素模块协同使用
+- 提供 `Segment` 结构体方法构建消息段
+- 支持 `segment!` 宏快速生成 `Elements`
+- 支持文本、At、表情、图片、语音、文件、视频、JSON、XML 等类型
+- 返回 `Elements` 类型，与 `puniyu_message` 配合使用
 
 ## 快速开始
 
-从 `Segment` API 和构建宏开始阅读，理解消息段如何被组合与生成。
+```rust
+use puniyu_segment::{Segment, segment};
+use bytes::Bytes;
+
+let at = Segment::at("123456");
+let text = segment!(text, "Hello");
+let face = segment!(face, 123u64);
+let image = segment!(image, Bytes::from("img"), "photo.jpg");
+```

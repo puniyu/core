@@ -2,12 +2,19 @@
 
 适配器类型库，统一适配器信息、消息结果和资料模型。
 
-## 特征
+## 特性
 
-- 提供适配器相关基础类型
-- 覆盖消息结果、群资料和好友资料等场景
-- 适合作为适配器系统的类型基础层
+- 提供 `AdapterInfo` 适配器信息类型
+- 提供 `MessageReceipt` 消息回执类型
+- 提供 `GroupProfile`、`FriendProfile` 等资料模型
+- 支持头像（Avatar）、频道（Guild）等扩展类型
+- 定义 `SendMsgType` 消息发送类型枚举
 
 ## 快速开始
 
-从适配器相关类型定义开始阅读，理解适配器层共享的数据结构。
+```rust
+use puniyu_adapter_types::{AdapterInfo, MessageReceipt, SendMsgType};
+
+let info = adapter_info!("MyAdapter", "1.0.0");
+let receipt = MessageReceipt { /* ... */ };
+```
