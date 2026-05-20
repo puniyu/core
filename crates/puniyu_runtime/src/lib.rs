@@ -31,8 +31,6 @@ use puniyu_message::Message;
 
 pub trait Runtime: Any + Send + Sync {}
 
-impl<T> Runtime for T where T: Any + Send + Sync {}
-
 impl dyn Runtime {
 	pub fn as_any(&self) -> &dyn Any {
 		self
@@ -49,7 +47,10 @@ pub trait AdapterProvider: Send + Sync {
 
 pub trait AdapterRuntime: Runtime + AdapterProvider + SendMessage {}
 
+
 impl<T> AdapterRuntime for T where T: Runtime + AdapterProvider + SendMessage {}
+
+impl<T: 'static> Runtime for T where T: AdapterProvider + SendMessage {}
 
 #[async_trait]
 pub trait SendMessage: Send + Sync {
