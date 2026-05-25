@@ -108,7 +108,7 @@ graph TB
 - **GitHub**：<https://github.com/puniyu/core>
 - **DeepWiki**：<https://deepwiki.com/puniyu/core>
 - **crates.io**：<https://crates.io/crates/puniyu_core>
-- **QQ 群**：[1022851882]("https://qun.qq.com/universal-share/share?ac=1&authKey=PKNBX8LArx1C8dmOpJG%2FVRPqivEZvCOwA9v9HNGC3TFxmtz1vjpT0OeoqsJzCZb3&busi_data=eyJncm91cENvZGUiOiIxMDIyODUxODgyIiwidG9rZW4iOiJxa3BNNTE0OFVsU25ETlFLVEx1NFBSWml2Ky9LaXhGd2VuYnphcmluaVZyRmJXa0lVdlIwSnFCeStxZXZvb3BWIiwidWluIjoiMzM2OTkwNjA3NyJ9&data=bPNY-UGLKcaZlWoL4qBAAM7OcMu4G3vifNNpLxB6luRVuFGcMjNqIcop4iU0Tn3igaekTbvQPUCuNPjo_F1P9g&svctype=4&tempid=h5_group_info")
+- **QQ 群**：[1022851882](https://qun.qq.com/universal-share/share?ac=1&authKey=PKNBX8LArx1C8dmOpJG%2FVRPqivEZvCOwA9v9HNGC3TFxmtz1vjpT0OeoqsJzCZb3&busi_data=eyJncm91cENvZGUiOiIxMDIyODUxODgyIiwidG9rZW4iOiJxa3BNNTE0OFVsU25ETlFLVEx1NFBSWml2Ky9LaXhGd2VuYnphcmluaVZyRmJXa0lVdlIwSnFCeStxZXZvb3BWIiwidWluIjoiMzM2OTkwNjA3NyJ9&data=bPNY-UGLKcaZlWoL4qBAAM7OcMu4G3vifNNpLxB6luRVuFGcMjNqIcop4iU0Tn3igaekTbvQPUCuNPjo_F1P9g&svctype=4&tempid=h5_group_info)
 
 ## 贡献指南
 
