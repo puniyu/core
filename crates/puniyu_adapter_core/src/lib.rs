@@ -10,12 +10,16 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+use puniyu_account::AccountInfo;
 use puniyu_config::Config;
 use puniyu_runtime::AdapterRuntime;
 use std::sync::Arc;
 
 #[async_trait::async_trait]
 pub trait Adapter: Send + Sync + 'static {
+	/// 返回该适配器下所有需要注册的账号列表
+	fn accounts(&self) -> Vec<AccountInfo> { Vec::new() }
+
 	/// 获取适配器运行时。
 	fn runtime(&self) -> Arc<dyn AdapterRuntime>;
 

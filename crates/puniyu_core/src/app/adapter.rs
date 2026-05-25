@@ -1,5 +1,6 @@
 use puniyu_adapter_core::Adapter;
 use puniyu_adapter_core::AdapterRegistry;
+use puniyu_bot::{Bot, BotRegistry};
 use puniyu_common::source::SourceType;
 use puniyu_error::Result;
 use puniyu_path::adapter::*;
@@ -38,6 +39,14 @@ pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
 	let source = SourceType::Adapter(index);
 
 	register_adapter_components(index, source, adapter.server()).await;
+
+	let runtime = adapter.runtime();
+	for account in adapter.accounts() {
+		let bot = Arc::new(Bot::new(Arc::clone(&runtime), account));
+		if let Err(e) = BotRegistry::register(bot) {
+			log::error!("[{}] Failed to register bot: {}", name, e);
+		}
+	}
 
 	Ok(())
 }
