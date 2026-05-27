@@ -24,7 +24,7 @@ use puniyu_adapter_api::AdapterApi;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
-pub use puniyu_runtime::{AdapterRuntime};
+pub use puniyu_runtime::AdapterRuntime;
 
 #[derive(Clone)]
 pub struct Bot {
