@@ -15,9 +15,9 @@ use crate::logger::core_warn;
 pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 	let name = plugin.name();
 	let core_version = plugin.core_version();
-	if core_version <= VERSION {
+	if core_version > VERSION {
 		core_warn!(
-			"{} ({}): plugin core version is too low, please upgrade to {} or higher",
+			"{}: plugin requires framework version >= {}, but current version is {}",
 			name,
 			core_version,
 			VERSION

@@ -15,9 +15,9 @@ use crate::logger::core_warn;
 pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
     let name = adapter.info().name.clone();
     let core_version = adapter.core_version();
-    if core_version <= VERSION {
+    if core_version > VERSION {
         core_warn!(
-            "{} ({}): adapter core version is too low, please upgrade to {} or higher",
+            "{}: adapter requires framework version >= {}, but current version is {}",
             name,
             core_version,
             VERSION
