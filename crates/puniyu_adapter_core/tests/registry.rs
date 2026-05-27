@@ -38,7 +38,7 @@ impl Clone for TestOneBotApi {
 
 struct TestAdapter {
     info: AdapterInfo,
-    api: Arc<dyn AdapterApi>,
+    api: Arc<TestOneBotApi>,
 }
 
 impl TestAdapter {
@@ -48,8 +48,7 @@ impl TestAdapter {
             .platform(AdapterPlatform::QQ)
             .protocol(AdapterProtocol::Console)
             .build();
-        let api = Arc::new(TestOneBotApi) as Arc<dyn AdapterApi>;
-        Self { info, api }
+        Self { info, api: Arc::new(TestOneBotApi) }
     }
 }
 
@@ -69,7 +68,7 @@ impl Adapter for TestAdapter {
     }
 
     fn api(&self) -> Arc<dyn AdapterApi> {
-        self.api.clone()
+        self.api.clone() as Arc<dyn AdapterApi>
     }
 }
 

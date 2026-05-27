@@ -37,7 +37,9 @@ impl<T: OneBotAdapterApi> AdapterApi for T {
             ContactType::Group(contact) => {
                 self.send_group_msg(contact.peer().parse::<u64>()?, message).await
             }
-            _ => panic!("不支持的 ContactType"),
+            _ => unimplemented!("不支持的 ContactType: {:?}", contact),
         }
     }
+
+    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> { Some(self) }
 }

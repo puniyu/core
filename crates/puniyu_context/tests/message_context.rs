@@ -8,7 +8,6 @@ use puniyu_adapter_types::{
     AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType,
 };
 use puniyu_adapter_api::{AdapterApi, OneBotAdapterApi};
-use puniyu_adapter_core::Adapter;
 use puniyu_bot::Bot;
 use puniyu_command_types::ArgValue;
 use puniyu_contact::{Contact, contact_friend, contact_group_temp};
@@ -45,38 +44,6 @@ impl OneBotAdapterApi for TestOneBotApi {
 impl Clone for TestOneBotApi {
     fn clone(&self) -> Self {
         Self
-    }
-}
-
-struct TestAdapter {
-    info: AdapterInfo,
-    api: Arc<dyn AdapterApi>,
-}
-
-impl TestAdapter {
-    fn new(info: AdapterInfo) -> Self {
-        let api = Arc::new(TestOneBotApi) as Arc<dyn AdapterApi>;
-        Self { info, api }
-    }
-}
-
-impl Clone for TestAdapter {
-    fn clone(&self) -> Self {
-        Self {
-            info: self.info.clone(),
-            api: self.api.clone(),
-        }
-    }
-}
-
-#[async_trait]
-impl Adapter for TestAdapter {
-    fn info(&self) -> AdapterInfo {
-        self.info.clone()
-    }
-
-    fn api(&self) -> Arc<dyn AdapterApi> {
-        self.api.clone()
     }
 }
 

@@ -17,15 +17,14 @@ use async_trait::async_trait;
 mod onebot;
 pub use onebot::OneBotAdapterApi;
 
-
-
 #[async_trait]
-pub trait AdapterApi: Send + Sync { 
+pub trait AdapterApi: Send + Sync {
     async fn send_message(
         &self,
         contact: &ContactType<'_>,
         message: &Message,
     ) -> Result<SendMsgType>;
 
+    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> { None }
 }
 
