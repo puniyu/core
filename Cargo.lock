@@ -1757,6 +1757,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "puniyu_adapter_api"
+version = "0.8.9"
+dependencies = [
+ "async-trait",
+ "puniyu_adapter_types",
+ "puniyu_contact",
+ "puniyu_error",
+ "puniyu_message",
+]
+
+[[package]]
 name = "puniyu_adapter_core"
 version = "0.8.9"
 dependencies = [
@@ -1764,12 +1775,11 @@ dependencies = [
  "const-str",
  "log",
  "puniyu_account",
+ "puniyu_adapter_api",
  "puniyu_adapter_types",
  "puniyu_config",
- "puniyu_contact",
  "puniyu_error",
  "puniyu_message",
- "puniyu_runtime",
  "puniyu_semver",
  "puniyu_server",
  "puniyu_version",
@@ -1797,6 +1807,7 @@ dependencies = [
  "async-trait",
  "inventory",
  "puniyu_account",
+ "puniyu_adapter_api",
  "puniyu_bot",
  "puniyu_command",
  "puniyu_common",
@@ -1825,6 +1836,7 @@ version = "0.8.8"
 dependencies = [
  "log",
  "puniyu_account",
+ "puniyu_adapter_api",
  "puniyu_adapter_types",
  "puniyu_contact",
  "puniyu_error",
@@ -1913,6 +1925,8 @@ dependencies = [
  "async-trait",
  "bytes",
  "puniyu_account",
+ "puniyu_adapter_api",
+ "puniyu_adapter_core",
  "puniyu_adapter_types",
  "puniyu_bot",
  "puniyu_command_types",
@@ -1952,6 +1966,7 @@ dependencies = [
  "puniyu_message",
  "puniyu_path",
  "puniyu_plugin_core",
+ "puniyu_runtime",
  "puniyu_segment",
  "puniyu_semver",
  "puniyu_sender",
@@ -1999,6 +2014,8 @@ dependencies = [
  "bytes",
  "derive_more",
  "puniyu_account",
+ "puniyu_adapter_api",
+ "puniyu_adapter_core",
  "puniyu_adapter_types",
  "puniyu_bot",
  "puniyu_contact",
@@ -2083,8 +2100,8 @@ name = "puniyu_runtime"
 version = "0.8.8"
 dependencies = [
  "actix-web",
- "async-trait",
  "puniyu_account",
+ "puniyu_adapter_api",
  "puniyu_adapter_types",
  "puniyu_contact",
  "puniyu_error",

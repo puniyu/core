@@ -4,7 +4,7 @@
 //!
 //! ## 特性
 //!
-//! - 提供 `Bot` trait
+//! - 提供 `Bot` 结构体
 //! - 提供 `BotRegistry` 与 `BotId`
 //! - 提供便捷函数 `get_bot`、`get_bot_count` 与 `get_all_bot`
 //! - 提供宏 `register_bot!` 与 `unregister_bot!`
@@ -20,67 +20,66 @@ pub use types::*;
 
 use puniyu_account::AccountInfo;
 use puniyu_adapter_types::AdapterInfo;
+use puniyu_adapter_api::AdapterApi;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
-pub use puniyu_runtime::{AdapterRuntime, Runtime};
-use std::sync::Arc;
+pub use puniyu_runtime::{AdapterRuntime};
 
 #[derive(Clone)]
 pub struct Bot {
-	adapter: Arc<dyn AdapterRuntime>,
-	account: AccountInfo,
+    runtime: AdapterRuntime,
+    account: AccountInfo,
 }
 
 impl Bot {
-	pub fn new(adapter: Arc<dyn AdapterRuntime>, account: AccountInfo) -> Self {
-		Self { adapter, account }
-	}
+    pub fn new(runtime: AdapterRuntime, account: AccountInfo) -> Self {
+        Self { runtime, account }
+    }
 
-	/// 获取适配器 Runtime
-	pub fn runtime<T: Runtime>(&self) -> Option<&T> {
-		let runtime: &dyn Runtime = self.adapter.as_ref();
-		runtime.downcast_ref()
-	}
+    pub fn runtime(&self) -> &AdapterRuntime {
+        &self.runtime
+    }
 
-	/// 返回适配器信息。
-	pub fn adapter_info(&self) -> &AdapterInfo {
-		self.adapter.adapter_info()
-	}
+    pub fn api(&self) -> &dyn AdapterApi {
+        self.runtime.api()
+    }
 
-	/// 返回账户信息。
-	pub fn account_info(&self) -> &AccountInfo {
-		&self.account
-	}
+    pub fn adapter_info(&self) -> &AdapterInfo {
+        self.runtime.info()
+    }
 
-	/// 发送消息。
-	pub async fn send_message(
-		&self,
-		contact: &ContactType<'_>,
-		message: &Message,
-	) -> puniyu_error::Result<puniyu_adapter_types::SendMsgType> {
-		let (msg_type, user_id) = match contact {
-			ContactType::Friend(friend) => ("PrivateMessage", &friend.peer()),
-			ContactType::Group(group) => ("GroupMssage", &group.peer()),
-			ContactType::GroupTemp(group) => ("Group TempMessage", &group.peer()),
-			ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
-		};
-		debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
-		self.adapter.send_message(contact, message).await
-	}
+    pub fn account_info(&self) -> &AccountInfo {
+        &self.account
+    }
+
+    pub async fn send_message(
+        &self,
+        contact: &ContactType<'_>,
+        message: &Message,
+    ) -> puniyu_error::Result<puniyu_adapter_types::SendMsgType> {
+        let (msg_type, user_id) = match contact {
+            ContactType::Friend(friend) => ("PrivateMessage", &friend.peer()),
+            ContactType::Group(group) => ("GroupMssage", &group.peer()),
+            ContactType::GroupTemp(group) => ("Group TempMessage", &group.peer()),
+            ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
+        };
+        debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
+        self.runtime.api().send_message(contact, message).await
+    }
 }
 
 impl std::fmt::Debug for Bot {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		f.debug_struct("Bot")
-			.field("adapter_info", &self.adapter_info())
-			.field("account_info", &self.account_info())
-			.finish()
-	}
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Bot")
+            .field("adapter_info", &self.adapter_info())
+            .field("account_info", &self.account_info())
+            .finish()
+    }
 }
 
 impl PartialEq for Bot {
-	fn eq(&self, other: &Self) -> bool {
-		self.adapter_info() == other.adapter_info() && self.account_info() == other.account_info()
-	}
+    fn eq(&self, other: &Self) -> bool {
+        self.adapter_info() == other.adapter_info() && self.account_info() == other.account_info()
+    }
 }

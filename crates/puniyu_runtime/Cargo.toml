@@ -11,12 +11,12 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-async-trait.workspace = true
 actix-web.workspace = true
 tokio = { workspace = true, features = ["rt"] }
 puniyu_error.workspace = true
 puniyu_account.workspace = true
 puniyu_adapter_types.workspace = true
+puniyu_adapter_api.workspace = true
 puniyu_contact.workspace = true
 puniyu_message.workspace = true
 

@@ -113,3 +113,43 @@ fn test_trait_methods() {
 	assert_eq!(contact.peer(), "123456");
 	assert_eq!(contact.name(), Some("Alice"));
 }
+
+#[test]
+fn test_from_friend_reference() {
+	let friend = FriendContact::new("123456", Some("Alice"));
+	let contact = ContactType::from(&friend);
+
+	assert!(contact.is_friend());
+	assert_eq!(contact.peer(), "123456");
+	assert_eq!(contact.name(), Some("Alice"));
+}
+
+#[test]
+fn test_from_group_reference() {
+	let group = GroupContact::new("789012", Some("Dev Team"));
+	let contact = ContactType::from(&group);
+
+	assert!(contact.is_group());
+	assert_eq!(contact.peer(), "789012");
+	assert_eq!(contact.name(), Some("Dev Team"));
+}
+
+#[test]
+fn test_from_group_temp_reference() {
+	let group_temp = GroupTempContact::new("246810", Some("Temp Team"));
+	let contact = ContactType::from(&group_temp);
+
+	assert!(contact.is_group_temp());
+	assert_eq!(contact.peer(), "246810");
+	assert_eq!(contact.name(), Some("Temp Team"));
+}
+
+#[test]
+fn test_from_guild_reference() {
+	let guild = GuildContact::new("9527", Some("Guild Channel"), Some("General"));
+	let contact = ContactType::from(&guild);
+
+	assert!(contact.is_guild());
+	assert_eq!(contact.peer(), "9527");
+	assert_eq!(contact.name(), Some("Guild Channel"));
+}
