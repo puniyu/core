@@ -10,22 +10,13 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
-use puniyu_account::AccountInfo;
-use puniyu_adapter_types::AdapterInfo;
-use puniyu_adapter_api::AdapterApi;
 use puniyu_config::Config;
 use puniyu_error::Result;
 use std::sync::Arc;
 
-pub use puniyu_adapter_api::OneBotAdapterApi;
-
 #[async_trait::async_trait]
 pub trait Adapter: Send + Sync + 'static {
-    fn accounts(&self) -> Vec<AccountInfo> { Vec::new() }
-
-    fn info(&self) -> AdapterInfo;
-
-    fn api(&self) -> Arc<dyn AdapterApi>;
+    fn name(&self) -> &str;
 
     fn core_version(&self) -> Version {
         puniyu_version::VERSION
@@ -47,11 +38,5 @@ pub trait Adapter: Send + Sync + 'static {
     async fn on_unload(&self) -> Result {
         log::info!("Adapter: unloaded");
         Ok(())
-    }
-}
-
-impl PartialEq for dyn Adapter {
-    fn eq(&self, other: &Self) -> bool {
-        self.info() == other.info()
     }
 }

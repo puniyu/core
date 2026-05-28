@@ -8,7 +8,8 @@
 //! - [`OneBotAdapterApi`]：OneBot 协议 API trait
 
 
-use puniyu_adapter_types::SendMsgType;
+use puniyu_account::AccountInfo;
+use puniyu_adapter_types::{AdapterInfo, SendMsgType};
 use puniyu_contact::ContactType;
 use puniyu_error::Result;
 use puniyu_message::Message;
@@ -19,12 +20,20 @@ pub use onebot::OneBotAdapterApi;
 
 #[async_trait]
 pub trait AdapterApi: Send + Sync {
+    /// 发送消息
     async fn send_message(
         &self,
         contact: &ContactType<'_>,
         message: &Message,
     ) -> Result<SendMsgType>;
 
+    /// 获取适配器信息
+    fn adapter_info(&self) -> AdapterInfo;
+
+    /// 获取账户信息
+    fn account_info(&self) -> AccountInfo;
+
+    /// 转换为OneBot适配器
     fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> { None }
 }
 

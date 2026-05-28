@@ -24,20 +24,25 @@ use puniyu_adapter_api::AdapterApi;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
-pub use puniyu_runtime::AdapterRuntime;
+pub use puniyu_runtime::{AdapterRuntime, BotRuntime};
 
 #[derive(Clone)]
 pub struct Bot {
-    runtime: AdapterRuntime,
-    account: AccountInfo,
+    runtime: BotRuntime,
+    uin: String,
 }
 
 impl Bot {
-    pub fn new(runtime: AdapterRuntime, account: AccountInfo) -> Self {
-        Self { runtime, account }
+    pub fn new(runtime: BotRuntime) -> Self {
+        let uin = runtime.account_info().uin.clone();
+        Self { runtime, uin }
     }
 
-    pub fn runtime(&self) -> &AdapterRuntime {
+    pub fn self_id(&self) -> &str {
+        &self.uin
+    }
+
+    pub fn runtime(&self) -> &BotRuntime {
         &self.runtime
     }
 
@@ -45,12 +50,12 @@ impl Bot {
         self.runtime.api()
     }
 
-    pub fn adapter_info(&self) -> &AdapterInfo {
-        self.runtime.info()
+    pub fn adapter_info(&self) -> AdapterInfo {
+        self.runtime.adapter_info()
     }
 
-    pub fn account_info(&self) -> &AccountInfo {
-        &self.account
+    pub fn account_info(&self) -> AccountInfo {
+        self.runtime.account_info()
     }
 
     pub async fn send_message(

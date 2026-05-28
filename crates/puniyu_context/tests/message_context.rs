@@ -7,7 +7,7 @@ use puniyu_account::AccountInfo;
 use puniyu_adapter_types::{
     AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType,
 };
-use puniyu_adapter_api::{AdapterApi, OneBotAdapterApi};
+use puniyu_adapter_api::OneBotAdapterApi;
 use puniyu_bot::Bot;
 use puniyu_command_types::ArgValue;
 use puniyu_contact::{Contact, contact_friend, contact_group_temp};
@@ -20,7 +20,10 @@ use puniyu_event::{
 use puniyu_message::Message;
 use puniyu_sender::{Sender, SenderType, sender_friend, sender_group_temp};
 
-struct TestOneBotApi;
+struct TestOneBotApi {
+    adapter_info: AdapterInfo,
+    account_info: AccountInfo,
+}
 
 #[async_trait]
 impl OneBotAdapterApi for TestOneBotApi {
@@ -39,12 +42,9 @@ impl OneBotAdapterApi for TestOneBotApi {
     ) -> puniyu_error::Result<SendMsgType> {
         Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
     }
-}
 
-impl Clone for TestOneBotApi {
-    fn clone(&self) -> Self {
-        Self
-    }
+    fn adapter_info(&self) -> AdapterInfo { self.adapter_info.clone() }
+    fn account_info(&self) -> AccountInfo { self.account_info.clone() }
 }
 
 struct TestData {
@@ -63,15 +63,16 @@ impl TestData {
             .platform(AdapterPlatform::Other)
             .protocol(AdapterProtocol::Console)
             .build();
-        let api = Arc::new(TestOneBotApi) as Arc<dyn AdapterApi>;
-        let runtime = puniyu_runtime::AdapterRuntime::new(info, api);
         let account = AccountInfo {
             uin: "10000".to_string(),
             name: "Puniyu".to_string(),
             avatar: Bytes::new(),
         };
+        let api = Arc::new(TestOneBotApi { adapter_info: info.clone(), account_info: account });
+        let adapter_runtime = puniyu_runtime::AdapterRuntime::new(info);
+        let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime, api);
         Self {
-            bot: Arc::new(Bot::new(runtime, account)),
+            bot: Arc::new(Bot::new(bot_runtime)),
             friend_contact: contact_friend!(peer: "123456", name: "Alice"),
             friend_sender: sender_friend!(user_id: "123456", nick: "Alice"),
             group_temp_contact: contact_group_temp!(peer: "654321", name: "Temp Group"),

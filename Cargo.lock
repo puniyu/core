@@ -1762,6 +1762,7 @@ version = "0.8.9"
 dependencies = [
  "anyhow",
  "async-trait",
+ "puniyu_account",
  "puniyu_adapter_types",
  "puniyu_contact",
  "puniyu_error",
@@ -1809,6 +1810,8 @@ dependencies = [
  "inventory",
  "puniyu_account",
  "puniyu_adapter_api",
+ "puniyu_adapter_core",
+ "puniyu_adapter_types",
  "puniyu_bot",
  "puniyu_command",
  "puniyu_common",

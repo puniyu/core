@@ -3,13 +3,16 @@
 use std::sync::{Arc, Mutex, MutexGuard};
 
 use async_trait::async_trait;
-use puniyu_adapter_api::{AdapterApi, OneBotAdapterApi};
+use puniyu_adapter_api::OneBotAdapterApi;
 use puniyu_adapter_core::{Adapter, AdapterRegistry};
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
 
 static TEST_LOCK: Mutex<()> = Mutex::new(());
 
-struct TestOneBotApi;
+#[allow(dead_code)]
+struct TestOneBotApi {
+    adapter_info: AdapterInfo,
+}
 
 #[async_trait]
 impl OneBotAdapterApi for TestOneBotApi {
@@ -28,17 +31,20 @@ impl OneBotAdapterApi for TestOneBotApi {
     ) -> puniyu_error::Result<SendMsgType> {
         Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
     }
-}
 
-impl Clone for TestOneBotApi {
-    fn clone(&self) -> Self {
-        Self
+    fn adapter_info(&self) -> AdapterInfo {
+        self.adapter_info.clone()
+    }
+
+    fn account_info(&self) -> puniyu_account::AccountInfo {
+        unimplemented!("not used in registry tests")
     }
 }
 
+#[allow(dead_code)]
 struct TestAdapter {
+    name: String,
     info: AdapterInfo,
-    api: Arc<TestOneBotApi>,
 }
 
 impl TestAdapter {
@@ -48,27 +54,15 @@ impl TestAdapter {
             .platform(AdapterPlatform::QQ)
             .protocol(AdapterProtocol::Console)
             .build();
-        Self { info, api: Arc::new(TestOneBotApi) }
-    }
-}
-
-impl Clone for TestAdapter {
-    fn clone(&self) -> Self {
-        Self {
-            info: self.info.clone(),
-            api: self.api.clone(),
-        }
+        let name = info.name.clone();
+        Self { name, info }
     }
 }
 
 #[async_trait]
 impl Adapter for TestAdapter {
-    fn info(&self) -> AdapterInfo {
-        self.info.clone()
-    }
-
-    fn api(&self) -> Arc<dyn AdapterApi> {
-        self.api.clone() as Arc<dyn AdapterApi>
+    fn name(&self) -> &str {
+        &self.name
     }
 }
 
@@ -89,7 +83,7 @@ fn register_returns_index_and_makes_adapter_queryable() {
     let index = AdapterRegistry::register(adapter).expect("failed to register adapter");
 
     let by_index = AdapterRegistry::get_with_index(index).expect("adapter should exist by index");
-    assert_eq!(by_index.info().name, "console");
+    assert_eq!(by_index.name(), "console");
 
     let by_name = AdapterRegistry::get_with_adapter_name("console");
     assert_eq!(by_name.len(), 1);

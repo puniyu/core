@@ -20,7 +20,7 @@ impl<'c> BotContext<'c> {
         self.inner.api()
     }
 
-    pub fn adapter_info(&self) -> &AdapterInfo {
+    pub fn adapter_info(&self) -> AdapterInfo {
         self.inner.adapter_info()
     }
 
@@ -36,7 +36,7 @@ impl<'c> BotContext<'c> {
         self.inner.send_message(contact, &message).await
     }
 
-    pub fn account(&self) -> &AccountInfo {
+    pub fn account(&self) -> AccountInfo {
         self.inner.account_info()
     }
 }

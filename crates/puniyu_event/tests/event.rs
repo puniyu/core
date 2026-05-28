@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
-use puniyu_adapter_api::{AdapterApi, OneBotAdapterApi};
+use puniyu_adapter_api::OneBotAdapterApi;
 use puniyu_bot::Bot;
 use puniyu_contact::{Contact, contact_friend};
 use puniyu_element::receive::Elements;
@@ -16,7 +16,10 @@ use puniyu_event::{
 use puniyu_message::Message;
 use puniyu_sender::{Sender, sender_friend};
 
-struct TestOneBotApi;
+struct TestOneBotApi {
+    adapter_info: AdapterInfo,
+    account_info: AccountInfo,
+}
 
 #[async_trait]
 impl OneBotAdapterApi for TestOneBotApi {
@@ -35,12 +38,9 @@ impl OneBotAdapterApi for TestOneBotApi {
     ) -> puniyu_error::Result<SendMsgType> {
         Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
     }
-}
 
-impl Clone for TestOneBotApi {
-    fn clone(&self) -> Self {
-        Self
-    }
+    fn adapter_info(&self) -> AdapterInfo { self.adapter_info.clone() }
+    fn account_info(&self) -> AccountInfo { self.account_info.clone() }
 }
 
 
@@ -58,15 +58,16 @@ impl TestData {
             .platform(AdapterPlatform::QQ)
             .protocol(AdapterProtocol::Console)
             .build();
-        let api = Arc::new(TestOneBotApi) as Arc<dyn AdapterApi>;
-        let runtime = puniyu_runtime::AdapterRuntime::new(info, api);
         let account = AccountInfo {
             uin: "10000".to_string(),
             name: "Puniyu".to_string(),
             avatar: Bytes::new(),
         };
+        let api = Arc::new(TestOneBotApi { adapter_info: info.clone(), account_info: account });
+        let adapter_runtime = puniyu_runtime::AdapterRuntime::new(info);
+        let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime, api);
         Self {
-            bot: Arc::new(Bot::new(runtime, account)),
+            bot: Arc::new(Bot::new(bot_runtime)),
             friend_contact: contact_friend!(peer: "123456", name: "Alice"),
             friend_sender: sender_friend!(user_id: "123456", nick: "Alice"),
             elements: Vec::new(),
@@ -128,7 +129,7 @@ impl puniyu_event::EventBase for TestExtensionEvent {
         self.bot.as_ref()
     }
     fn self_id(&self) -> &str {
-        self.bot.account_info().uin.as_str()
+        self.bot.self_id()
     }
     fn user_id(&self) -> &str {
         "123456"

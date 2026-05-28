@@ -6,12 +6,8 @@ macro_rules! register_bot {
         let bot: ::std::sync::Arc<$crate::Bot> = $bot;
         $crate::BotRegistry::register(bot)
     }};
-    (adapter: $adapter:expr, account: $account:expr $(,)?) => {{
-        let runtime = $crate::AdapterRuntime::new($adapter.info(), $adapter.api());
-        $crate::BotRegistry::register(::std::sync::Arc::new($crate::Bot::new(runtime, $account)))
-    }};
-    (runtime: $runtime:expr, account: $account:expr $(,)?) => {{
-        $crate::BotRegistry::register(::std::sync::Arc::new($crate::Bot::new($runtime, $account)))
+    (runtime: $runtime:expr $(,)?) => {{
+        $crate::BotRegistry::register(::std::sync::Arc::new($crate::Bot::new($runtime)))
     }};
 }
 

@@ -1,5 +1,6 @@
 use async_trait::async_trait;
-use puniyu_adapter_types::SendMsgType;
+use puniyu_account::AccountInfo;
+use puniyu_adapter_types::{AdapterInfo, SendMsgType};
 use puniyu_contact::{Contact, ContactType};
 use puniyu_error::Result;
 use puniyu_message::Message;
@@ -14,6 +15,12 @@ pub trait OneBotAdapterApi: Send + Sync {
 
     /// 发送群消息
 	async fn send_group_msg(&self, group_id: u64, message: &Message) -> Result<SendMsgType>;
+
+    // 适配器信息
+	fn adapter_info(&self) -> AdapterInfo;
+
+    // 账号信息
+	fn account_info(&self) -> AccountInfo;
 }
 
 #[async_trait]
@@ -35,6 +42,14 @@ impl<T: OneBotAdapterApi> AdapterApi for T {
 			}
 			_ => Err(anyhow!("unsupported contact type: {:?}", contact).into()),
 		}
+	}
+
+	fn adapter_info(&self) -> AdapterInfo {
+        self.adapter_info()
+	}
+
+	fn account_info(&self) -> AccountInfo {
+		self.account_info()
 	}
 
 	fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> {

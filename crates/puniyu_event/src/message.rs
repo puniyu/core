@@ -262,7 +262,7 @@ macro_rules! codegen_message {
 			fn event_id(&self) -> &str { self.event_id }
 			fn sub_event(&self) -> $crate::SubEventType { $crate::SubEventType::Message($sub_event) }
 			fn bot(&self) -> &puniyu_bot::Bot { self.bot }
-			fn self_id(&self) -> &str { self.bot.account_info().uin.as_str() }
+			fn self_id(&self) -> &str { self.bot.self_id() }
 			fn user_id(&self) -> &str { self.user_id }
 			fn contact(&self) -> puniyu_contact::ContactType<'_> { self.contact.clone().into() }
 			fn sender(&self) -> puniyu_sender::SenderType<'_> { self.sender.clone().into() }

@@ -33,6 +33,8 @@ puniyu_element.workspace = true
 puniyu_segment.workspace = true
 puniyu_message.workspace = true
 puniyu_adapter_api.workspace = true
+puniyu_adapter_core.workspace = true
+puniyu_adapter_types.workspace = true
 puniyu_runtime.workspace = true
 puniyu_task.workspace = true
 
