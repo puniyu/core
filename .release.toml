@@ -281,6 +281,8 @@ changelog_include = [
 name = "puniyu_loader"
 changelog_include = ["puniyu_plugin_core", "puniyu_error"]
 
+[[package]]
+name = "puniyu_adapter_api"
 
 [[package]]
 name = "puniyu_adapter_core"
