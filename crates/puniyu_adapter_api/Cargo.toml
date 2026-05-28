@@ -13,6 +13,7 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+anyhow = "1.0.102"
 async-trait.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_contact.workspace = true

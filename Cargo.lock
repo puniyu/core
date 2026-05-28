@@ -1760,6 +1760,7 @@ dependencies = [
 name = "puniyu_adapter_api"
 version = "0.8.9"
 dependencies = [
+ "anyhow",
  "async-trait",
  "puniyu_adapter_types",
  "puniyu_contact",
