@@ -2,61 +2,70 @@
 //!
 //! puniyu 的统一运行时抽象与运行时句柄定义。
 //!
-//! 该 crate 主要提供两类能力：
-//! - 运行时 trait 抽象，用于描述适配器、Bot 与消息发送等通用能力
-//! - 运行时句柄类型，用于管理框架内部的异步运行单元
-//!
 //! ## 提供内容
 //!
-//! - [`Runtime`]：运行时基础 trait，提供只读运行时访问视图
-//! - [`AdapterProvider`]：访问适配器信息
-//! - [`AdapterRuntime`]：适配器级运行时抽象
-//! - [`SendMessage`]：发送消息能力 trait
-//! - [`ServerRuntime`]：HTTP 服务运行句柄，封装服务停止与等待结束等生命周期能力
+//! - [`AdapterRuntime`]：适配器级运行时结构体
+//! - [`BotRuntime`]：Bot 级运行时结构体
+//! - `ServerRuntime`：HTTP 服务运行句柄
 //!
 //! ## 设计说明
 //!
-//! trait 抽象主要服务于上层业务与插件系统，便于以统一接口访问运行时能力；
-//! 具体句柄类型则用于承载框架内部异步任务的生命周期管理。
+//! 运行时仅做结构组合，元信息从 API 获取。
+
 mod server;
 #[doc(inline)]
 pub use server::ServerRuntime;
-use std::any::Any;
 
-use async_trait::async_trait;
-use puniyu_adapter_types::{AdapterInfo, SendMsgType};
-use puniyu_contact::ContactType;
-use puniyu_error::Result;
-use puniyu_message::Message;
+use std::sync::Arc;
+use puniyu_account::AccountInfo;
+use puniyu_adapter_api::AdapterApi;
+use puniyu_adapter_types::AdapterInfo;
 
-pub trait Runtime: Any + Send + Sync {}
-
-impl dyn Runtime {
-	pub fn as_any(&self) -> &dyn Any {
-		self
-	}
-
-	pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
-		self.as_any().downcast_ref::<T>()
-	}
+/// 适配器级运行时（所有 Bot 共享）。
+///
+/// 仅承载适配器元信息，作为 `BotRuntime` 的共享组合层。
+#[derive(Clone)]
+pub struct AdapterRuntime {
+    info: AdapterInfo,
 }
 
-pub trait AdapterProvider: Send + Sync {
-	fn adapter_info(&self) -> &AdapterInfo;
+impl AdapterRuntime {
+    pub fn new(info: AdapterInfo) -> Self {
+        Self { info }
+    }
+
+    pub fn info(&self) -> &AdapterInfo {
+        &self.info
+    }
 }
 
-pub trait AdapterRuntime: Runtime + AdapterProvider + SendMessage {}
+/// Bot 级运行时（每个账号独立）。
+///
+/// 组合适配器运行时与 per-account API，是 `Bot` 的核心数据结构。
+#[derive(Clone)]
+pub struct BotRuntime {
+    adapter: AdapterRuntime,
+    api: Arc<dyn AdapterApi>,
+}
 
+impl BotRuntime {
+    pub fn new(adapter: AdapterRuntime, api: Arc<dyn AdapterApi>) -> Self {
+        Self { adapter, api }
+    }
 
-impl<T> AdapterRuntime for T where T: Runtime + AdapterProvider + SendMessage {}
+    pub fn adapter_info(&self) -> AdapterInfo {
+        self.api.adapter_info()
+    }
 
-impl<T: 'static> Runtime for T where T: AdapterProvider + SendMessage {}
+    pub fn adapter_runtime(&self) -> &AdapterRuntime {
+        &self.adapter
+    }
 
-#[async_trait]
-pub trait SendMessage: Send + Sync {
-	async fn send_message(
-		&self,
-		contact: &ContactType<'_>,
-		message: &Message,
-	) -> Result<SendMsgType>;
+    pub fn account_info(&self) -> AccountInfo {
+        self.api.account_info()
+    }
+
+    pub fn api(&self) -> &dyn AdapterApi {
+        &*self.api
+    }
 }

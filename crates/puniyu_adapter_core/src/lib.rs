@@ -10,48 +10,33 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
-use puniyu_account::AccountInfo;
 use puniyu_config::Config;
-use puniyu_runtime::AdapterRuntime;
+use puniyu_error::Result;
 use std::sync::Arc;
 
 #[async_trait::async_trait]
 pub trait Adapter: Send + Sync + 'static {
-	/// 返回该适配器下所有需要注册的账号列表
-	fn accounts(&self) -> Vec<AccountInfo> { Vec::new() }
+    fn name(&self) -> &str;
 
-	/// 获取适配器运行时。
-	fn runtime(&self) -> Arc<dyn AdapterRuntime>;
+    fn core_version(&self) -> Version {
+        puniyu_version::VERSION
+    }
 
-	fn core_version(&self) -> Version {
-		puniyu_version::VERSION
-	}
+    fn config(&self) -> Vec<Arc<dyn Config>> {
+        Vec::new()
+    }
 
-	/// 获取配置列表。
-	fn config(&self) -> Vec<Arc<dyn Config>> {
-		Vec::new()
-	}
+    fn server(&self) -> Option<puniyu_server::ServerFunction> {
+        None
+    }
 
-	/// 获取服务器扩展。
-	fn server(&self) -> Option<puniyu_server::ServerFunction> {
-		None
-	}
+    async fn on_load(&self) -> Result {
+        log::info!("Adapter: loaded");
+        Ok(())
+    }
 
-	/// 适配器加载时回调。
-	async fn on_load(&self) -> puniyu_error::Result {
-		log::info!("Adapter: loaded");
-		Ok(())
-	}
-
-	/// 适配器卸载时回调。
-	async fn on_unload(&self) -> puniyu_error::Result {
-		log::info!("Adapter: unloaded");
-		Ok(())
-	}
-}
-
-impl PartialEq for dyn Adapter {
-	fn eq(&self, other: &Self) -> bool {
-		self.runtime().adapter_info() == other.runtime().adapter_info()
-	}
+    async fn on_unload(&self) -> Result {
+        log::info!("Adapter: unloaded");
+        Ok(())
+    }
 }

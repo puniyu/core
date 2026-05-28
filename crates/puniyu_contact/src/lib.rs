@@ -244,6 +244,30 @@ impl<'c> From<GuildContact<'c>> for ContactType<'c> {
 	}
 }
 
+impl<'c> From<&'c FriendContact<'c>> for ContactType<'c> {
+	fn from(value: &'c FriendContact<'c>) -> Self {
+		Self::Friend(FriendContact::new(value.peer(), value.name()))
+	}
+}
+
+impl<'c> From<&'c GroupContact<'c>> for ContactType<'c> {
+	fn from(value: &'c GroupContact<'c>) -> Self {
+		Self::Group(GroupContact::new(value.peer(), value.name()))
+	}
+}
+
+impl<'c> From<&'c GroupTempContact<'c>> for ContactType<'c> {
+	fn from(value: &'c GroupTempContact<'c>) -> Self {
+		Self::GroupTemp(GroupTempContact::new(value.peer(), value.name()))
+	}
+}
+
+impl<'c> From<&'c GuildContact<'c>> for ContactType<'c> {
+	fn from(value: &'c GuildContact<'c>) -> Self {
+		Self::Guild(GuildContact::new(value.peer(), value.name(), value.sub_name()))
+	}
+}
+
 #[macro_export]
 macro_rules! contact {
 	(Friend, $( $key:ident : $value:expr ),+ $(,)? ) => {

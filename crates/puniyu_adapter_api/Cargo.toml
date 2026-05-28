@@ -1,10 +1,9 @@
 [package]
-name = "puniyu_bot"
-version = "0.8.8"
-description = "puniyu 机器人实例库，统一机器人实例与注册表访问模型"
+name = "puniyu_adapter_api"
+version = "0.8.9"
 authors.workspace = true
 license.workspace = true
-readme = "README.md"
+readme.workspace = true
 homepage.workspace = true
 repository.workspace = true
 edition.workspace = true
@@ -14,12 +13,10 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-log.workspace = true
-puniyu_logger.workspace = true
+anyhow = "1.0.102"
+async-trait.workspace = true
 puniyu_account.workspace = true
 puniyu_adapter_types.workspace = true
-puniyu_adapter_api.workspace = true
 puniyu_contact.workspace = true
+puniyu_error.workspace = true
 puniyu_message.workspace = true
-puniyu_error = { workspace = true, features = ["registry"] }
-puniyu_runtime.workspace = true

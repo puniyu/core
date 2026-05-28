@@ -22,6 +22,7 @@ puniyu_bot.workspace = true
 puniyu_contact.workspace = true
 puniyu_sender.workspace = true
 puniyu_element.workspace = true
+puniyu_adapter_api.workspace = true
 
 derive_more = { workspace = true, features = ["display", "debug", "from"] }
 
@@ -30,6 +31,8 @@ puniyu_error.workspace = true
 async-trait.workspace = true
 serde_json.workspace = true
 puniyu_account.workspace = true
-puniyu_runtime.workspace = true
+puniyu_adapter_api.workspace = true
+puniyu_adapter_core.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_message.workspace = true
+puniyu_runtime.workspace = true

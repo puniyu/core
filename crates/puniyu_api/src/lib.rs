@@ -1,4 +1,5 @@
 pub mod account;
+pub mod adapter;
 pub mod bot;
 pub mod command;
 pub mod config;
@@ -8,6 +9,7 @@ pub mod element;
 pub mod event;
 pub mod message;
 pub mod path;
+pub mod plugin;
 pub mod result;
 pub mod runtime;
 pub mod segment;
@@ -16,17 +18,16 @@ pub mod sender;
 pub mod server;
 pub mod task;
 
+pub use async_trait;
 pub use inventory;
+pub use puniyu_common::app::{app_name, app_version};
 pub use tokio;
 pub use toml;
-pub use async_trait;
-pub use puniyu_common::app::{app_name, app_version};
 
 #[macro_export]
 macro_rules! pkg_name {
 	() => {{ env!("CARGO_PKG_NAME") }};
 }
-
 
 #[macro_export]
 macro_rules! pkg_version {
