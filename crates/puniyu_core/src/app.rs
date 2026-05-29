@@ -428,6 +428,19 @@ impl App {
 	}
 }
 
+pub(crate) fn is_enabled(name: &str, enable_list: &[&str], disable_list: &[&str]) -> bool {
+	if disable_list.contains(&name) {
+		return false;
+	}
+	if enable_list.is_empty() && disable_list.is_empty() {
+		return true;
+	}
+	if enable_list.is_empty() {
+		return true;
+	}
+	enable_list.contains(&name)
+}
+
 async fn init_app(
 	plugins: Vec<Arc<dyn Plugin>>,
 	adapters: Vec<Arc<dyn Adapter>>,

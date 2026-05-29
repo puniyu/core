@@ -21,6 +21,13 @@ pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
         return Ok(());
     }
 
+    let config = puniyu_config::app_config();
+    let adapter_config = config.adapter();
+    if !super::is_enabled(&name, &adapter_config.enable_list(), &adapter_config.disable_list()) {
+        core_warn!("adapter {} is disabled, skipping", name);
+        return Ok(());
+    }
+
     let index =
         AdapterRegistry::register(Arc::clone(&adapter)).unwrap_or_else(|e| {
             panic!("Failed to register adapter {}: {}", name, e)

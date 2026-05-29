@@ -22,6 +22,8 @@ use async_trait::async_trait;
 
 mod onebot;
 pub use onebot::OneBotAdapterApi;
+mod console;
+pub use console::ConsoleAdapterApi;
 
 #[async_trait]
 pub trait AdapterApi: Send + Sync {
@@ -38,7 +40,9 @@ pub trait AdapterApi: Send + Sync {
     /// 获取账户信息
     fn account_info(&self) -> AccountInfo;
 
+    /// 转换为Console适配器
+    fn as_console(&self) -> Option<&dyn ConsoleAdapterApi>;
+    
     /// 转换为OneBot适配器
-    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> { None }
+    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi>;
 }
-

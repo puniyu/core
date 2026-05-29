@@ -25,6 +25,13 @@ pub async fn init_plugin(plugin: Arc<dyn Plugin>) -> Result {
 		return Ok(());
 	}
 
+	let config = puniyu_config::app_config();
+	let plugin_config = config.plugin();
+	if !super::is_enabled(name, &plugin_config.enable_list(), &plugin_config.disable_list()) {
+		core_warn!("plugin {} is disabled, skipping", name);
+		return Ok(());
+	}
+
 	init_dir(config_dir().join(name), name, "config").await?;
 	init_dir(data_dir().join(name), name, "data").await?;
 	init_dir(resource_dir().join(name), name, "resource").await?;

@@ -1,5 +1,5 @@
 use crate::types::ListConfig;
-use crate::{AdapterConfig, LoggerConfig, ServerConfig};
+use crate::{AdapterConfig, LoggerConfig, PluginConfig, ServerConfig};
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
@@ -37,6 +37,12 @@ pub struct AppConfig {
 	#[serde(default)]
 	adapter: AdapterConfig,
 
+	/// 插件配置
+	///
+	/// 控制启用哪些插件
+	#[serde(default)]
+	plugin: PluginConfig,
+
 	/// 应用级群组配置
 	///
 	/// 包含群聊黑白名单等全局设置
@@ -69,6 +75,7 @@ impl Default for AppConfig {
 			logger: Default::default(),
 			server: Default::default(),
 			adapter: Default::default(),
+			plugin: Default::default(),
 			masters: default_master(),
 			prefix: default_prefix(),
 			group: Default::default(),
@@ -99,6 +106,11 @@ impl AppConfig {
 	/// 获取适配器配置。
 	pub fn adapter(&self) -> &AdapterConfig {
 		&self.adapter
+	}
+
+	/// 获取插件配置。
+	pub fn plugin(&self) -> &PluginConfig {
+		&self.plugin
 	}
 
 	/// 获取应用级群组名单配置。

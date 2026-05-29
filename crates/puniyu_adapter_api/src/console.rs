@@ -5,7 +5,7 @@ use puniyu_error::Result;
 use puniyu_message::Message;
 
 #[async_trait]
-pub trait OneBotAdapterApi: Send + Sync {
+pub trait ConsoleAdapterApi: Send + Sync {
 	/// 发送私聊消息
 	async fn send_private_msg(&self, user_id: u64, message: &Message) -> Result<SendMsgType>;
 
