@@ -1,11 +1,16 @@
 //! # puniyu_adapter_api
 //!
-//! 统一的适配器 API trait 定义。
+//! 统一的适配器 API trait 定义，描述协议层核心接口。
 //!
 //! ## 提供内容
 //!
-//! - [`AdapterApi`]：适配器基础 API trait
-//! - [`OneBotAdapterApi`]：OneBot 协议 API trait
+//! - [`AdapterApi`]：适配器基础 API trait，定义消息发送与元信息访问
+//! - [`OneBotAdapterApi`]：OneBot 协议 API trait，支持私聊与群消息
+//!
+//! ## 设计说明
+//!
+//! 每个 API 实例自包含适配器信息（[`AdapterApi::adapter_info`]）与账号信息（[`AdapterApi::account_info`]），
+//! 实现 `OneBotAdapterApi` 后通过 blanket impl 自动获得 `AdapterApi` 实现。
 
 
 use puniyu_account::AccountInfo;
