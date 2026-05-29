@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_sender"
-version = "0.8.7"
+version = "0.8.8"
 description = "puniyu 发送者类型库，统一好友、群聊与频道发送者信息模型"
 authors.workspace = true
 license.workspace = true

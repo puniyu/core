@@ -1,5 +1,49 @@
 # 变更日志
 
+## [0.8.10](https://github.com/puniyu/core/compare/v0.8.9...v0.8.10)
+
+### ⛰️ 新功能
+
+
+- *(api)* 添加 async-trait 依赖导出 - ([1c6d11f](https://github.com/puniyu/core/commit/1c6d11fe58f6aa77989ebd3d25f113488e68b599))
+
+
+
+### 🐛 Bug 修复
+
+
+- Ci - ([03acf4a](https://github.com/puniyu/core/commit/03acf4a1277e6488e8ae2add52378f738d66021b))
+
+
+
+### 🚜 重构
+
+
+- 重构适配器API模块 ([#245](https://github.com/puniyu/core/pull/245)) - ([4743d6d](https://github.com/puniyu/core/commit/4743d6d98a22000f84b80c974fde9c821982600a))
+
+
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter_api)* 添加Console适配器API并重构OneBot适配器 - ([f37ed65](https://github.com/puniyu/core/commit/f37ed6542ec2c9f6da7f686f5ffca10713e6f6d6))
+
+
+- *(adapter_core)* 添加账号管理功能支持, 默认由框架接管账号注册 - ([c78f2d8](https://github.com/puniyu/core/commit/c78f2d85ed1f6bad890966f3f545a5bda72daa86))
+
+
+- *(api)* 更新模块导出 - ([f0d6b3b](https://github.com/puniyu/core/commit/f0d6b3b59969262372f5b97447b2b19eeb0d86f0))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/v0.8.8...v0.8.9)
 
 ### 🐛 Bug 修复

@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.9](https://github.com/puniyu/core/compare/puniyu_config-v0.8.8...puniyu_config-v0.8.9)
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter_api)* 添加Console适配器API并重构OneBot适配器 - ([f37ed65](https://github.com/puniyu/core/commit/f37ed6542ec2c9f6da7f686f5ffca10713e6f6d6))
+
+
+
+
 ## [0.8.8](https://github.com/puniyu/core/compare/puniyu_config-v0.8.7...puniyu_config-v0.8.8)
 
 ### ⚙️ 杂项

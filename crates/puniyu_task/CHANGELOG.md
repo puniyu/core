@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_task-v0.8.7...puniyu_task-v0.8.8)
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+
 ## [0.8.3](https://github.com/puniyu/core/compare/puniyu_task-v0.8.2...puniyu_task-v0.8.3)
 
 ### ⛰️ 新功能

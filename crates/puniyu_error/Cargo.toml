@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_error"
-version = "0.8.7"
+version = "0.8.8"
 description = "puniyu 错误类型库，提供配置与注册表场景的统一错误定义"
 authors.workspace = true
 license.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_message"
-version = "0.8.7"
+version = "0.8.8"
 description = "puniyu 消息链封装库，提供 Message 类型与 message! 构建宏"
 authors.workspace = true
 license.workspace = true

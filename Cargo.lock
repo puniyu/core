@@ -1748,7 +1748,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_account"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "bon",
  "bytes",
@@ -1758,7 +1758,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_api"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1771,7 +1771,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_core"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "async-trait",
  "const-str",
@@ -1789,7 +1789,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_adapter_types"
-version = "0.8.8"
+version = "0.8.10"
 dependencies = [
  "bon",
  "bytes",
@@ -1804,7 +1804,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_api"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "async-trait",
  "inventory",
@@ -1836,7 +1836,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_bot"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "log",
  "puniyu_account",
@@ -1851,7 +1851,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "async-trait",
  "clap",
@@ -1862,7 +1862,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_parser"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "async-trait",
  "clap",
@@ -1876,7 +1876,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_types"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "puniyu_error",
  "serde",
@@ -1886,7 +1886,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_common"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "puniyu_error",
  "puniyu_semver",
@@ -1897,7 +1897,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_config"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "log",
  "notify-debouncer-full",
@@ -1914,7 +1914,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_contact"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "bon",
  "serde",
@@ -1924,7 +1924,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_context"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1946,7 +1946,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_core"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "bytes",
  "const-str",
@@ -1983,7 +1983,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_dispatch"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "log",
  "puniyu_event",
@@ -1994,7 +1994,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_element"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "bytes",
  "serde",
@@ -2004,7 +2004,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_error"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "thiserror 2.0.18",
  "toml",
@@ -2012,7 +2012,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_event"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2035,7 +2035,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_handler"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2044,7 +2044,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_loader"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "async-trait",
  "puniyu_error",
@@ -2068,7 +2068,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_message"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "puniyu_element",
  "serde",
@@ -2076,7 +2076,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_path"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "puniyu_common",
  "puniyu_semver",
@@ -2084,7 +2084,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_plugin_core"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "async-trait",
  "const-str",
@@ -2101,7 +2101,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_runtime"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "actix-web",
  "puniyu_account",
@@ -2115,7 +2115,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_segment"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "bytes",
  "puniyu_element",
@@ -2123,7 +2123,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_semver"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "derive_more",
  "semver",
@@ -2133,7 +2133,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_sender"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "bon",
  "serde",
@@ -2143,7 +2143,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_server"
-version = "0.8.8"
+version = "0.8.9"
 dependencies = [
  "actix-web",
  "bytes",
@@ -2185,7 +2185,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_task"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "async-trait",
  "chrono",
@@ -2199,7 +2199,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_version"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "const-str",
  "puniyu_semver",
