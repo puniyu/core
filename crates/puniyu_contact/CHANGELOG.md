@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_contact-v0.8.7...puniyu_contact-v0.8.8)
+
+### 🚜 重构
+
+
+- 重构适配器API模块 ([#245](https://github.com/puniyu/core/pull/245)) - ([4743d6d](https://github.com/puniyu/core/commit/4743d6d98a22000f84b80c974fde9c821982600a))
+
+
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+
 ## [0.8.2](https://github.com/puniyu/core/compare/puniyu_contact-v0.8.1...puniyu_contact-v0.8.2)
 
 ### 🎨 样式

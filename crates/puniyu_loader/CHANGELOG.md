@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.10](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.9...puniyu_loader-v0.8.10)
+
+### 🐛 Bug 修复
+
+
+- Ci - ([03acf4a](https://github.com/puniyu/core/commit/03acf4a1277e6488e8ae2add52378f738d66021b))
+
+
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.8...puniyu_loader-v0.8.9)
 
 ### ⚙️ 杂项

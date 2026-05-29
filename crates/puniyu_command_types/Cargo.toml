@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_command_types"
-version = "0.8.7"
+version = "0.8.8"
 description = "puniyu 命令类型库，统一命令参数、参数值、权限与执行动作模型"
 authors.workspace = true
 license.workspace = true
