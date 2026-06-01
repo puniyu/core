@@ -1,0 +1,28 @@
+[package]
+name = "puniyu_command_parser"
+version = "0.8.9"
+description = "puniyu 命令解析器，统一命令文本解析、别名剥离与参数验证流程"
+authors.workspace = true
+license.workspace = true
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+shlex = "2.0"
+
+thiserror.workspace = true
+
+clap = { workspace = true, features = ["string", "error-context"] }
+puniyu_command.workspace = true
+
+[dev-dependencies]
+async-trait.workspace = true
+puniyu_command.workspace = true
+puniyu_context.workspace = true
+puniyu_error.workspace = true

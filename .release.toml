@@ -252,6 +252,16 @@ version_group = "command"
 changelog_include = ["puniyu_command_types", "puniyu_context", "puniyu_error"]
 
 [[package]]
+name = "puniyu_command_parser"
+version_group = "command"
+changelog_include = [
+    "puniyu_command_types",
+    "puniyu_command",
+    "puniyu_context",
+    "puniyu_error",
+]
+
+[[package]]
 name = "puniyu_dispatch"
 changelog_include = ["puniyu_event", "puniyu_handler"]
 

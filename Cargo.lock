@@ -375,7 +375,7 @@ dependencies = [
  "find-msvc-tools",
  "jobserver",
  "libc",
- "shlex",
+ "shlex 1.3.0",
 ]
 
 [[package]]
@@ -1862,6 +1862,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "puniyu_command_parser"
+version = "0.8.9"
+dependencies = [
+ "async-trait",
+ "clap",
+ "puniyu_command",
+ "puniyu_context",
+ "puniyu_error",
+ "shlex 2.0.1",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "puniyu_command_types"
 version = "0.8.8"
 dependencies = [
@@ -2431,6 +2444,12 @@ name = "shlex"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
+
+[[package]]
+name = "shlex"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
 
 [[package]]
 name = "signal-hook-registry"

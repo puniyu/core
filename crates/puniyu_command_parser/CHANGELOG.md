@@ -1,0 +1,123 @@
+# 变更日志
+
+## [0.8.9](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.8...puniyu_command_parser-v0.8.9)
+
+### 🐛 Bug 修复
+
+
+- Ci - ([03acf4a](https://github.com/puniyu/core/commit/03acf4a1277e6488e8ae2add52378f738d66021b))
+
+
+
+### 🚜 重构
+
+
+- 重构适配器API模块 ([#245](https://github.com/puniyu/core/pull/245)) - ([4743d6d](https://github.com/puniyu/core/commit/4743d6d98a22000f84b80c974fde9c821982600a))
+
+
+
+### 📚 文档
+
+
+- 完善doc文档 - ([80f5206](https://github.com/puniyu/core/commit/80f5206397be9d4cdf85a8342361e3971a0331c2))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter_api)* 添加Console适配器API并重构OneBot适配器 - ([f37ed65](https://github.com/puniyu/core/commit/f37ed6542ec2c9f6da7f686f5ffca10713e6f6d6))
+
+
+
+
+## [0.8.8](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.7...puniyu_command_parser-v0.8.8)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_context, puniyu_command, puniyu_command
+
+
+
+## [0.8.5](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.4...puniyu_command_parser-v0.8.5)
+
+### ⛰️ 新功能
+
+
+- *(config)* 添加配置目录自动创建和错误日志记录 - ([3c144ce](https://github.com/puniyu/core/commit/3c144ced8136d5ca95a943b2ed929c220e2fde4c))
+
+
+
+### 🎨 样式
+
+
+- Format - ([625cf92](https://github.com/puniyu/core/commit/625cf9250625c35c19e0cedabd7fdde0a368ebfd))
+
+
+
+### ⚙️ 杂项
+
+
+- *(message)* 更新消息时间字段类型 - ([1404d4a](https://github.com/puniyu/core/commit/1404d4a9d0887f3dea9546411d4f5363e21dc812))
+
+
+
+
+## [0.8.4](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.3...puniyu_command_parser-v0.8.4)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+- 使用 SmolStr 优化字符串存储和性能 - ([2ee2f25](https://github.com/puniyu/core/commit/2ee2f25ebbff6357443a1b77bef89c5039d7ddab))
+
+
+
+
+## [0.8.3](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.2...puniyu_command_parser-v0.8.3)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_context, puniyu_command, puniyu_command
+
+
+
+## [0.8.2](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.1...puniyu_command_parser-v0.8.2)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_context, puniyu_command, puniyu_command
+
+
+
+## [0.8.1](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.0...puniyu_command_parser-v0.8.1)
+
+### ⚙️ 杂项
+
+
+- 更新项目配置 - ([548e4d9](https://github.com/puniyu/core/commit/548e4d9166f6bcb7b36d936e73015966e6927462))
+
+
+## [0.8.0]
+
+### ⛰️ 新功能
+
+
+- 添加命令解析器和配置管理功能 - ([075d485](https://github.com/puniyu/core/commit/075d48589a9da7ec45fbd88c60cbe5a3435a3163))
+
+### 🐛 Bug 修复
+
+
+- *(core)* 更新应用logo设置逻辑 - ([b805b79](https://github.com/puniyu/core/commit/b805b79c71198d5acb56daa892e6eef825f60b8b))
+
+### 🚜 重构
+
+
+- *(command)* 重构命令系统API并优化参数处理 - ([014c60c](https://github.com/puniyu/core/commit/014c60c1658ac6a3624cf7e44d05fe31329981eb))
+- *(core)* 重构整个框架的核心实现 ([#165](https://github.com/puniyu/core/pull/165)) - ([9482b34](https://github.com/puniyu/core/commit/9482b34a76fecf05b3475aecf01df93d9e8994ff))
+- 重构事件模块 ([#180](https://github.com/puniyu/core/pull/180)) - ([bfbb9a7](https://github.com/puniyu/core/commit/bfbb9a73d6c5cdeaa2a139cdb353988e28d16fac))
+
