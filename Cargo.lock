@@ -1863,7 +1863,7 @@ dependencies = [
 
 [[package]]
 name = "puniyu_command_parser"
-version = "0.8.9"
+version = "0.8.10"
 dependencies = [
  "async-trait",
  "clap",
