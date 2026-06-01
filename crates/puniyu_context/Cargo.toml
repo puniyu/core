@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_context"
-version = "0.8.10"
+version = "0.8.11"
 description = "puniyu 上下文类型库，统一机器人、事件与消息处理上下文模型"
 authors.workspace = true
 license.workspace = true

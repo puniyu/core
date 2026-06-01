@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.12](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.11...puniyu_plugin_core-v0.8.12)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_version, puniyu_server, puniyu_command
+
+
+
 ## [0.8.11](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.10...puniyu_plugin_core-v0.8.11)
 
 ### 🚜 重构
