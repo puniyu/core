@@ -23,7 +23,6 @@ puniyu_semver.workspace = true
 puniyu_account.workspace = true
 puniyu_path.workspace = true
 puniyu_server.workspace = true
-puniyu_error.workspace = true
 puniyu_common.workspace = true
 puniyu_event.workspace = true
 puniyu_context.workspace = true
@@ -36,11 +35,15 @@ puniyu_adapter_api.workspace = true
 puniyu_adapter_core.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_runtime.workspace = true
-puniyu_task.workspace = true
 
 async-trait.workspace = true
 
+puniyu_error = { workspace = true, features = ["registry"] }
+puniyu_task = { workspace = true, features = ["registry"] }
+puniyu_handler = { workspace = true, features = ["registry"] }
 puniyu_plugin_core = { workspace = true, features = ["registry"] }
 puniyu_command = { workspace = true, features = ["registry"] }
 
 tokio = { workspace = true, features = ["full"] }
+
+

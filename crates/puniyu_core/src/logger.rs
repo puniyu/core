@@ -54,7 +54,7 @@ pub(crate) use core_error;
 
 /// 初始化日志系统
 #[cfg(feature = "log")]
-pub fn log_init() {
+pub(crate) fn log_init() {
 	use puniyu_path::log_dir;
 	let config = app_config();
 	let logger = config.logger();
@@ -70,3 +70,5 @@ pub fn log_init() {
 		.with_retention_days(log_retention_days);
 	puniyu_logger::init(Some(options));
 }
+
+pub use puniyu_logger::owo_colors;
