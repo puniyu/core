@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.10](https://github.com/puniyu/core/compare/puniyu_command-v0.8.9...puniyu_command-v0.8.10)
+
+### 🚜 重构
+
+
+- *(api)* 移除has_permission宏并重构命令解析器 - ([73bf7db](https://github.com/puniyu/core/commit/73bf7db2b148a5ead6c205db4406dca8805f5129))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/puniyu_command-v0.8.8...puniyu_command-v0.8.9)
 
 ### 🐛 Bug 修复
