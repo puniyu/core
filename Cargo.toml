@@ -67,7 +67,7 @@ puniyu_runtime = { version = "0.8.10", path = "./crates/puniyu_runtime" }
 puniyu_bot = { version = "0.8.10", path = "./crates/puniyu_bot" }
 
 puniyu_command = { version = "0.8.10", path = "./crates/puniyu_command" }
-puniyu_command_parser = { version = "0.8.9", path = "./crates/puniyu_command_parser" }
+puniyu_command_parser = { version = "0.8.10", path = "./crates/puniyu_command_parser" }
 puniyu_command_types = { version = "0.8.8", path = "./crates/puniyu_command_types" }
 
 puniyu_server = { version = "0.8.10", path = "./crates/puniyu_server", default-features = false }
