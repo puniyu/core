@@ -50,13 +50,6 @@ pub use types::*;
 
 use puniyu_context::MessageContext;
 
-/// 判断当前权限是否满足目标权限。
-#[macro_export]
-macro_rules! has_permission {
-	($perm:expr, $required:expr $(,)?) => {
-		$perm.satisfies($required)
-	};
-}
 
 /// 命令行为接口。
 #[async_trait]

@@ -17,6 +17,7 @@ pub mod semver;
 pub mod sender;
 pub mod server;
 pub mod task;
+pub mod handler;
 
 pub use async_trait;
 pub use inventory;
