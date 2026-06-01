@@ -1,5 +1,16 @@
 # 变更日志
 
+## [0.8.11](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.10...puniyu_adapter_core-v0.8.11)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.toml dependencies
+
+- Update Cargo.lock dependencies
+
+
+
 ## [0.8.10](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.9...puniyu_adapter_core-v0.8.10)
 
 ### 🐛 Bug 修复

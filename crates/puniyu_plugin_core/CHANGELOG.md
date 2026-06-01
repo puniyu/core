@@ -1,5 +1,21 @@
 # 变更日志
 
+## [0.8.11](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.10...puniyu_plugin_core-v0.8.11)
+
+### 🚜 重构
+
+
+- *(api)* 移除has_permission宏并重构命令解析器 - ([73bf7db](https://github.com/puniyu/core/commit/73bf7db2b148a5ead6c205db4406dca8805f5129))
+
+
+
+### ⚙️ 杂项
+
+
+- Update Cargo.lock dependencies
+
+
+
 ## [0.8.10](https://github.com/puniyu/core/compare/puniyu_plugin_core-v0.8.9...puniyu_plugin_core-v0.8.10)
 
 ### 🐛 Bug 修复
