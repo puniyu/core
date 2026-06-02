@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.11](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.10...puniyu_command_parser-v0.8.11)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_context, puniyu_command, puniyu_command
+
+
+
 ## [0.8.10](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.9...puniyu_command_parser-v0.8.10)
 
 ### 🚜 重构

@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.11](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.10...puniyu_bot-v0.8.11)
+
+### 🚜 重构
+
+
+- *(runtime)* 重构运行时模块结构并修复依赖配置 - ([1fa0d3f](https://github.com/puniyu/core/commit/1fa0d3f4456d8be5b97c32e1437b9a7bd2bf686a))
+
+
+
+
 ## [0.8.10](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.9...puniyu_bot-v0.8.10)
 
 ### ⚙️ 杂项

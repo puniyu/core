@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.12](https://github.com/puniyu/core/compare/v0.8.11...v0.8.12)
+
+### 🐛 Bug 修复
+
+
+- 修正adapter导出 - ([75977d5](https://github.com/puniyu/core/commit/75977d56916cfaab1a97e2db699053544b91b199))
+
+
+
+### 🚜 重构
+
+
+- *(runtime)* 重构运行时模块结构并修复依赖配置 - ([1fa0d3f](https://github.com/puniyu/core/commit/1fa0d3f4456d8be5b97c32e1437b9a7bd2bf686a))
+
+
+
+
 ## [0.8.11](https://github.com/puniyu/core/compare/v0.8.10...v0.8.11)
 
 ### 🚜 重构

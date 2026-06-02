@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_loader"
-version = "0.8.11"
+version = "0.8.12"
 description = "Puniyu 加载器类型定义库，提供插件加载器的统一类型系统和注册管理"
 authors.workspace = true
 license.workspace = true
