@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_loader"
-version = "0.8.12"
+version = "0.8.13"
 description = "Puniyu 加载器类型定义库，提供统一的 Loader trait 和组件发现类型"
 authors.workspace = true
 license.workspace = true

@@ -1,5 +1,18 @@
 # 变更日志
 
+## [0.8.13](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.12...puniyu_loader-v0.8.13)
+
+### ⚙️ 杂项
+
+
+- *(adapter_api)* 移除特定协议APItrait并简化适配器实现 - ([e1f55be](https://github.com/puniyu/core/commit/e1f55be59ffbaaa5c6c2153dc3c7fb371af00f1b))
+
+
+- *(puniyu_core)* 引入内置加载器和三层组件管理架构 - ([b6c5a01](https://github.com/puniyu/core/commit/b6c5a0116f7e34832d20cb7a059d7ef9944aa616))
+
+
+
+
 ## [0.8.12](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.11...puniyu_loader-v0.8.12)
 
 ### ⚙️ 杂项
