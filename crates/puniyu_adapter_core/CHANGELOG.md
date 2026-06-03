@@ -1,5 +1,17 @@
 # 变更日志
 
+## [0.8.13](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.12...puniyu_adapter_core-v0.8.13)
+
+### ⚙️ 杂项
+
+
+- *(adapter_api)* 移除特定协议APItrait并简化适配器实现 - ([e1f55be](https://github.com/puniyu/core/commit/e1f55be59ffbaaa5c6c2153dc3c7fb371af00f1b))
+
+
+- Update Cargo.lock dependencies
+
+
+
 ## [0.8.12](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.11...puniyu_adapter_core-v0.8.12)
 
 ### 🚜 重构

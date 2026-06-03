@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.12](https://github.com/puniyu/core/compare/puniyu_server-v0.8.11...puniyu_server-v0.8.12)
+
+### ⚙️ 杂项
+
+
+- Update Cargo.lock dependencies
+
+
+
 ## [0.8.11](https://github.com/puniyu/core/compare/puniyu_server-v0.8.10...puniyu_server-v0.8.11)
 
 ### ⚙️ 杂项
