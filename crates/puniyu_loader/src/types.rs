@@ -13,10 +13,6 @@ pub enum ComponentSource {
     Builtin,
     /// 从文件路径加载
     Path(std::path::PathBuf),
-    /// 从包管理器安装
-    Package(String),
-    /// 远程下载
-    Remote(String),
 }
 
 /// 发现元信息，描述组件是如何被发现的。

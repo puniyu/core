@@ -66,7 +66,7 @@ impl Loader for BuiltinLoader {
             .map(|a| DiscoveredAdapter {
                 instance: Arc::clone(a),
                 meta: DiscoveryMeta {
-                    loader_name: "builtin",
+                    loader_name: self.name(),
                     source: ComponentSource::Builtin,
                     priority: 0,
                 },
