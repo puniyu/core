@@ -1,75 +1,23 @@
 //! # puniyu_loader
 //!
-//! 加载器类型定义库，提供插件加载器的类型系统和注册管理。
+//! Loader trait 定义及组件发现类型，作为 puniyu 系统中组件发现、解析和安装三层架构的第一层。
 //!
-//! ## 概述
+//! ## 设计原则
 //!
-//! `puniyu_loader` 提供了统一的加载器类型定义，用于管理聊天机器人中的插件加载器。
-//! 加载器负责加载和管理一组相关的插件，提供插件的生命周期管理。
-//!
-//! ## 特性
-//!
-//! - 🎯 **类型安全** - 使用 Rust 类型系统确保加载器的正确性
-//! - 🔧 **注册管理** - 提供全局注册表管理加载器实例（需启用 `registry` 特性）
-//! - 🔄 **统一接口** - 通过 `Loader` trait 提供统一的访问接口
-//! - 📦 **插件管理** - 每个加载器可以管理多个插件
-//! - 🎨 **线程安全** - 所有加载器都是线程安全的
-//!
-//! ## 使用方式
-//!
-//! ### 实现自定义加载器
-//!
-//! ```rust, ignore
-//! use puniyu_loader::Loader;
-//! use puniyu_plugin::Plugin;
-//!
-//! struct MyLoader;
-//!
-//! impl Loader for MyLoader {
-//!     fn name(&self) -> &'static str {
-//!         "my_loader"
-//!     }
-//!
-//!     fn plugins(&self) -> Vec<Arc<dyn Plugin>> {
-//!         // 返回加载的插件列表
-//!         vec![]
-//!     }
-//! }
-//! ```
-//!
-//! ### 使用加载器注册表（需启用 `registry` 特性）
-//!
-//! ```rust,ignore
-//! use puniyu_loader::{Loader, LoaderRegistry};
-//! use std::sync::Arc;
-//!
-//! // 注册加载器
-//! let loader = Arc::new(MyLoader);
-//! let index = LoaderRegistry::register(loader)?;
-//!
-//! // 获取加载器
-//! let loaders = LoaderRegistry::get(index);
-//!
-//! // 注销加载器
-//! LoaderRegistry::unregister(index)?;
-//! ```
+//! - Loader **只负责 discover**，不负责注册与生命周期
+//! - Loader 是临时一次性的，不进入 registry，不长期持有组件
+//! - core 统一负责 resolve 和 install
 
-#[cfg(feature = "registry")]
-mod registry;
-
-use async_trait::async_trait;
-#[cfg(feature = "registry")]
-pub use registry::LoaderRegistry;
-use std::sync::Arc;
 mod types;
 #[doc(inline)]
 pub use types::*;
 
-use puniyu_plugin_core::Plugin;
+use async_trait::async_trait;
+use puniyu_error::Result;
 
 /// 加载器 trait
 ///
-/// 定义了加载器的基本接口，所有加载器都必须实现此 trait。
+/// 定义了组件的发现接口。每个加载器实现 `discover` 方法返回一组候选组件。
 ///
 /// # 要求
 ///
@@ -78,37 +26,33 @@ use puniyu_plugin_core::Plugin;
 ///
 /// # 示例
 ///
-/// ```rust, ignore
-/// use puniyu_loader::Loader;
-/// use puniyu_plugin::Plugin;
+/// ```rust,ignore
+/// use async_trait::async_trait;
+/// use puniyu_loader::{Loader, LoadContext, ComponentSet};
 ///
 /// struct MyLoader;
 ///
+/// #[async_trait]
 /// impl Loader for MyLoader {
 ///     fn name(&self) -> &'static str {
 ///         "my_loader"
 ///     }
 ///
-///     fn plugins(&self) -> Vec<Arc<dyn Plugin>> {
-///         vec![]
+///     async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
+///         Ok(ComponentSet {
+///             adapters: vec![],
+///             plugins: vec![],
+///         })
 ///     }
 /// }
 /// ```
 #[async_trait]
 pub trait Loader: Send + Sync + 'static {
-	/// 获取加载器名称
-	///
-	/// 返回加载器的唯一标识名称。
-	fn name(&self) -> &'static str;
+    /// 获取加载器名称
+    fn name(&self) -> &'static str;
 
-	/// 获取加载器管理的插件列表
-	///
-	/// 返回此加载器加载的所有插件。
-	async fn plugins(&self) -> Vec<Arc<dyn Plugin>>;
-}
-
-impl PartialEq for dyn Loader {
-	fn eq(&self, other: &Self) -> bool {
-		self.name() == other.name()
-	}
+    /// 执行组件发现
+    ///
+    /// 根据给定的上下文发现可用的适配器和插件。
+    async fn discover(&self, ctx: &LoadContext) -> Result<ComponentSet>;
 }

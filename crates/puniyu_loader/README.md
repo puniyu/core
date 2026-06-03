@@ -1,29 +1,32 @@
 # puniyu_loader
 
-加载器类型定义库，提供插件加载器的类型系统和注册管理。
+加载器 trait 定义及组件发现类型，作为 Puniyu 组件发现、解析和安装三层架构的第一层。
 
 ## 特性
 
-- 提供 `Loader` trait 定义加载器接口
-- 支持加载器注册表 `LoaderRegistry`（需启用 `registry` feature）
-- 每个加载器可管理多个插件
-- 支持插件生命周期管理
+- 提供 `Loader` trait，定义组件的发现接口
+- 通过 `discover()` 产出 `ComponentSet`（含 adapter 和 plugin）
+- 提供 `DiscoveredAdapter` / `DiscoveredPlugin` 包装类型，携带发现元信息
+- 提供 `DiscoveryMeta`、`ComponentSource`、`LoadContext` 辅助类型
+- Loader 是临时一次性的，不进入 registry
 
 ## 快速开始
 
 ```rust
-use puniyu_loader::{Loader, LoaderRegistry};
-use puniyu_plugin_core::Plugin;
-use std::sync::Arc;
+use puniyu_loader::{Loader, LoadContext, ComponentSet};
+use puniyu_error::Result;
 
 struct MyLoader;
 
 #[async_trait::async_trait]
 impl Loader for MyLoader {
     fn name(&self) -> &'static str { "my_loader" }
-    async fn plugins(&self) -> Vec<Arc<dyn Plugin>> { Vec::new() }
-}
 
-let loader = Arc::new(MyLoader);
-LoaderRegistry::register(loader);
+    async fn discover(&self, ctx: &LoadContext) -> Result<ComponentSet> {
+        Ok(ComponentSet {
+            adapters: vec![],
+            plugins: vec![],
+        })
+    }
+}
 ```

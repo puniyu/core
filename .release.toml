@@ -282,6 +282,10 @@ name = "puniyu_loader"
 changelog_include = ["puniyu_plugin_core", "puniyu_error"]
 
 [[package]]
+name = "puniyu_loader_builtin"
+changelog_include = ["puniyu_loader"]
+
+[[package]]
 name = "puniyu_adapter_api"
 
 [[package]]
@@ -339,6 +343,7 @@ changelog_include = [
     "puniyu_task",
     "puniyu_plugin_core",
     "puniyu_loader",
+    "puniyu_loader_builtin",
     "puniyu_handler",
     "puniyu_adapter_core",
     "puniyu_server",

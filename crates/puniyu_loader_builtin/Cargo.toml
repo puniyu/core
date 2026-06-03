@@ -1,7 +1,7 @@
 [package]
-name = "puniyu_loader"
+name = "puniyu_loader_builtin"
 version = "0.8.12"
-description = "Puniyu 加载器类型定义库，提供统一的 Loader trait 和组件发现类型"
+description = "Puniyu 内置加载器，用于在编译期注册 adapter 和 plugin"
 authors.workspace = true
 license.workspace = true
 readme = "README.md"
@@ -15,9 +15,11 @@ workspace = true
 
 [dependencies]
 async-trait.workspace = true
-puniyu_error.workspace = true
+puniyu_loader.workspace = true
 puniyu_adapter_core.workspace = true
 puniyu_plugin_core.workspace = true
+puniyu_error.workspace = true
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["macros", "rt"] }
+puniyu_error.workspace = true

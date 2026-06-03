@@ -79,6 +79,7 @@ puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook"
 puniyu_plugin_core = { version = "0.8.12", path = "./crates/puniyu_plugin_core" }
 
 puniyu_loader = { version = "0.8.12", path = "./crates/puniyu_loader" }
+puniyu_loader_builtin = { version = "0.8.12", path = "./crates/puniyu_loader_builtin" }
 puniyu_core = { version = "0.8.12", path = "./crates/puniyu_core" }
 puniyu_api = { version = "0.8.12", path = "./crates/puniyu_api" }
 
@@ -91,3 +92,4 @@ incremental = false
 lto = false
 opt-level = 1
 incremental = true
+

@@ -1,78 +1,66 @@
 use async_trait::async_trait;
 use std::sync::Arc;
 
-use puniyu_loader::Loader;
-use puniyu_plugin_core::Plugin;
+use puniyu_loader::{Loader, LoadContext, ComponentSet};
 
-struct TestLoader {
-	name: &'static str,
-}
+struct TestLoader;
 
 #[async_trait]
 impl Loader for TestLoader {
-	fn name(&self) -> &'static str {
-		self.name
-	}
+    fn name(&self) -> &'static str {
+        "test_loader"
+    }
 
-	async fn plugins(&self) -> Vec<Arc<dyn Plugin>> {
-		vec![]
-	}
-}
-
-#[test]
-fn test_loader_creation() {
-	let loader = TestLoader { name: "test_loader" };
-	assert_eq!(loader.name(), "test_loader");
-}
-
-#[test]
-fn test_loader_name() {
-	let loader = TestLoader { name: "my_loader" };
-	assert_eq!(loader.name(), "my_loader");
+    async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
+        Ok(ComponentSet {
+            adapters: vec![],
+            plugins: vec![],
+        })
+    }
 }
 
 #[tokio::test]
-async fn test_loader_plugins_empty() {
-	let loader = TestLoader { name: "test_loader" };
-	let plugins = loader.plugins().await;
-	assert_eq!(plugins.len(), 0);
+async fn test_loader_name() {
+    let loader = TestLoader;
+    assert_eq!(loader.name(), "test_loader");
 }
 
-#[test]
-fn test_loader_equality() {
-	let loader1 = TestLoader { name: "loader1" };
-	let loader2 = TestLoader { name: "loader1" };
-	let loader3 = TestLoader { name: "loader2" };
-
-	assert_eq!(loader1.name(), loader2.name());
-	assert_ne!(loader1.name(), loader3.name());
+#[tokio::test]
+async fn test_loader_discover_empty() {
+    let loader = TestLoader;
+    let ctx = LoadContext {
+        app_name: "test",
+        cwd_dir: std::env::current_dir().unwrap(),
+    };
+    let result = loader.discover(&ctx).await;
+    assert!(result.is_ok());
+    let set = result.unwrap();
+    assert!(set.adapters.is_empty());
+    assert!(set.plugins.is_empty());
 }
 
-#[test]
-fn test_loader_trait_object() {
-	let loader: Box<dyn Loader> = Box::new(TestLoader { name: "boxed_loader" });
-	assert_eq!(loader.name(), "boxed_loader");
+#[tokio::test]
+async fn test_loader_trait_object() {
+    let loader: Arc<dyn Loader> = Arc::new(TestLoader);
+    assert_eq!(loader.name(), "test_loader");
+    let ctx = LoadContext {
+        app_name: "test",
+        cwd_dir: std::env::current_dir().unwrap(),
+    };
+    let set = loader.discover(&ctx).await.unwrap();
+    assert!(set.adapters.is_empty());
+    assert!(set.plugins.is_empty());
 }
 
-#[test]
-fn test_loader_different_names() {
-	let loader1 = TestLoader { name: "loader_a" };
-	let loader2 = TestLoader { name: "loader_b" };
-	let loader3 = TestLoader { name: "loader_c" };
-
-	assert_eq!(loader1.name(), "loader_a");
-	assert_eq!(loader2.name(), "loader_b");
-	assert_eq!(loader3.name(), "loader_c");
-}
-
-#[test]
-fn test_loader_special_characters() {
-	let loader = TestLoader { name: "loader_123" };
-	assert_eq!(loader.name(), "loader_123");
-}
-
-#[test]
-fn test_loader_unicode_name() {
-	let loader = TestLoader { name: "加载器" };
-	assert_eq!(loader.name(), "加载器");
+#[tokio::test]
+async fn test_loader_discover_with_context() {
+    let loader = TestLoader;
+    let ctx = LoadContext {
+        app_name: "my_app",
+        cwd_dir: std::path::PathBuf::from("/tmp"),
+    };
+    assert_eq!(ctx.app_name, "my_app");
+    let set = loader.discover(&ctx).await.unwrap();
+    assert!(set.adapters.is_empty());
+    assert!(set.plugins.is_empty());
 }
