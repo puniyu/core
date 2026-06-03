@@ -10,8 +10,10 @@
 //! ## 设计说明
 //!
 //! 每个 API 实例自包含适配器信息（[`AdapterApi::adapter_info`]）与账号信息（[`AdapterApi::account_info`]），
-//! 实现 `OneBotAdapterApi` 后通过 blanket impl 自动获得 `AdapterApi` 实现。
+//! 实现 `OneBotAdapterApi` 后自动获得 `AdapterApi` 实现。
 
+
+use std::any::Any;
 
 use puniyu_account::AccountInfo;
 use puniyu_adapter_types::{AdapterInfo, SendMsgType};
@@ -20,13 +22,8 @@ use puniyu_error::Result;
 use puniyu_message::Message;
 use async_trait::async_trait;
 
-mod onebot;
-pub use onebot::OneBotAdapterApi;
-mod console;
-pub use console::ConsoleAdapterApi;
-
 #[async_trait]
-pub trait AdapterApi: Send + Sync {
+pub trait AdapterApi: Any + Send + Sync {
     /// 发送消息
     async fn send_message(
         &self,
@@ -39,10 +36,11 @@ pub trait AdapterApi: Send + Sync {
 
     /// 获取账户信息
     fn account_info(&self) -> AccountInfo;
+}
 
-    /// 转换为Console适配器
-    fn as_console(&self) -> Option<&dyn ConsoleAdapterApi>;
-    
-    /// 转换为OneBot适配器
-    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi>;
+impl dyn AdapterApi + 'static {
+    /// 转换到指定协议适配器
+    pub fn as_protocol<T: 'static>(&self) -> Option<&T> {
+        (self as &dyn Any).downcast_ref::<T>()
+    }
 }

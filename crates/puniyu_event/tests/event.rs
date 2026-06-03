@@ -4,9 +4,10 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
-use puniyu_adapter_api::{AdapterApi, ConsoleAdapterApi, OneBotAdapterApi};
+use puniyu_adapter_api::AdapterApi;
+use puniyu_adapter_core::Adapter;
 use puniyu_bot::Bot;
-use puniyu_contact::{Contact, contact_friend};
+use puniyu_contact::{Contact, ContactType, contact_friend};
 use puniyu_element::receive::Elements;
 use puniyu_event::{
     Event, EventType, SubEventType,
@@ -22,43 +23,15 @@ struct TestOneBotApi {
 }
 
 #[async_trait]
-impl OneBotAdapterApi for TestOneBotApi {
-    async fn send_private_msg(
-        &self,
-        _user_id: u64,
-        _message: &Message,
-    ) -> puniyu_error::Result<SendMsgType> {
+impl AdapterApi for TestOneBotApi {
+    async fn send_message(&self, _contact: &ContactType<'_>, _message: &Message) -> puniyu_error::Result<SendMsgType> {
         Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
     }
-
-    async fn send_group_msg(
-        &self,
-        _group_id: u64,
-        _message: &Message,
-    ) -> puniyu_error::Result<SendMsgType> {
-        Ok(SendMsgType { message_id: "test-msg".to_string(), time: std::time::Duration::ZERO })
-    }
-
     fn adapter_info(&self) -> AdapterInfo { self.adapter_info.clone() }
     fn account_info(&self) -> AccountInfo { self.account_info.clone() }
 }
 
-#[async_trait]
-impl AdapterApi for TestOneBotApi {
-    async fn send_message(&self, contact: &puniyu_contact::ContactType<'_>, message: &Message) -> puniyu_error::Result<SendMsgType> {
-        match contact {
-            puniyu_contact::ContactType::Friend(c) => self.send_private_msg(c.peer().parse()?, message).await,
-            puniyu_contact::ContactType::Group(c) => self.send_group_msg(c.peer().parse()?, message).await,
-            puniyu_contact::ContactType::GroupTemp(c) => self.send_private_msg(c.peer().parse()?, message).await,
-            _ => Err(Box::new(std::io::Error::other("unsupported contact type"))),
-        }
-    }
-    fn adapter_info(&self) -> AdapterInfo { OneBotAdapterApi::adapter_info(self) }
-    fn account_info(&self) -> AccountInfo { OneBotAdapterApi::account_info(self) }
-    fn as_console(&self) -> Option<&dyn ConsoleAdapterApi> { None }
-    fn as_onebot(&self) -> Option<&dyn OneBotAdapterApi> { Some(self) }
-}
-
+impl Adapter for TestOneBotApi {}
 
 struct TestData {
     bot: Arc<Bot>,
@@ -79,9 +52,9 @@ impl TestData {
             name: "Puniyu".to_string(),
             avatar: Bytes::new(),
         };
-        let api = Arc::new(TestOneBotApi { adapter_info: info.clone(), account_info: account });
-        let adapter_runtime = puniyu_runtime::AdapterRuntime::new(info);
-        let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime, api);
+        let adapter: Arc<dyn AdapterApi> = Arc::new(TestOneBotApi { adapter_info: info, account_info: account });
+        let adapter_runtime = puniyu_runtime::AdapterRuntime::new(adapter);
+        let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime);
         Self {
             bot: Arc::new(Bot::new(bot_runtime)),
             friend_contact: contact_friend!(peer: "123456", name: "Alice"),

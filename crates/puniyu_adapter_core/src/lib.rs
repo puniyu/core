@@ -10,14 +10,13 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+use puniyu_adapter_api::AdapterApi;
 use puniyu_config::Config;
 use puniyu_error::Result;
 use std::sync::Arc;
 
 #[async_trait::async_trait]
-pub trait Adapter: Send + Sync + 'static {
-    fn name(&self) -> &str;
-
+pub trait Adapter: AdapterApi + Send + Sync + 'static {
     fn core_version(&self) -> Version {
         puniyu_version::VERSION
     }
@@ -31,12 +30,10 @@ pub trait Adapter: Send + Sync + 'static {
     }
 
     async fn on_load(&self) -> Result {
-        log::info!("Adapter: loaded");
         Ok(())
     }
 
     async fn on_unload(&self) -> Result {
-        log::info!("Adapter: unloaded");
         Ok(())
     }
 }

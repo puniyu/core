@@ -1780,6 +1780,7 @@ dependencies = [
  "puniyu_adapter_api",
  "puniyu_adapter_types",
  "puniyu_config",
+ "puniyu_contact",
  "puniyu_error",
  "puniyu_message",
  "puniyu_semver",

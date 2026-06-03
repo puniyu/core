@@ -13,7 +13,7 @@ impl PluginStore {
 		Self::default()
 	}
 	pub fn insert(&self, plugin: Arc<dyn Plugin>) -> Result<u64, Error> {
-		let index = PLUGIN_INDEX.fetch_add(1, Ordering::SeqCst);
+		let index = PLUGIN_INDEX.fetch_add(1, Ordering::Relaxed);
 		let mut map = self.0.write().expect("Failed to acquire lock");
 		if map.values().any(|v| v == &plugin) {
 			return Err(Error::Exists("Plugin".to_string()));

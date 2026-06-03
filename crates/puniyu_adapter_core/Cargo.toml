@@ -28,6 +28,9 @@ puniyu_version.workspace = true
 puniyu_account.workspace = true
 puniyu_message.workspace = true
 
+[dev-dependencies]
+puniyu_contact.workspace = true
+
 [features]
 default = []
 registry = ["puniyu_error/registry"]

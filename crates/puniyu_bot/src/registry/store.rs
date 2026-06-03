@@ -24,7 +24,7 @@ impl BotStore {
 		if map.values().any(|v| Arc::ptr_eq(v, &bot) || v.account_info().uin == *bot_uin) {
 			return Err(Error::Exists("Bot".to_string()));
 		}
-		let index = BOT_INDEX.fetch_add(1, Ordering::SeqCst);
+		let index = BOT_INDEX.fetch_add(1, Ordering::Relaxed);
 		map.insert(index, bot);
 		Ok(index)
 	}

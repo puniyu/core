@@ -9,7 +9,7 @@ use puniyu_version::VERSION;
 use crate::logger::core_warn;
 
 pub async fn init_adapter(adapter: Arc<dyn Adapter>) -> Result {
-    let name = adapter.name().to_string();
+    let name = adapter.adapter_info().name.to_string();
     let core_version = adapter.core_version();
     if core_version > VERSION {
         core_warn!(
