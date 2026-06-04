@@ -30,10 +30,12 @@ pub trait Adapter: AdapterApi + Send + Sync + 'static {
     }
 
     async fn on_load(&self) -> Result {
+        log::info!("Adapter {} loaded", self.adapter_info().name);
         Ok(())
     }
 
     async fn on_unload(&self) -> Result {
+        log::info!("Adapter {} unloaded", self.adapter_info().name);
         Ok(())
     }
 }
