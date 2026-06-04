@@ -1774,6 +1774,7 @@ name = "puniyu_adapter_core"
 version = "0.8.13"
 dependencies = [
  "async-trait",
+ "bytes",
  "const-str",
  "log",
  "puniyu_account",
@@ -1786,6 +1787,7 @@ dependencies = [
  "puniyu_semver",
  "puniyu_server",
  "puniyu_version",
+ "tokio",
 ]
 
 [[package]]

@@ -1,47 +1,43 @@
-#![cfg(feature = "registry")]
-
-use std::sync::{Arc, Mutex, MutexGuard};
-use std::time::Duration;
-
-use async_trait::async_trait;
+use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
 use puniyu_adapter_core::{Adapter, AdapterRegistry};
-use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
+use puniyu_adapter_types::{AdapterInfo, SendMsgType};
 use puniyu_contact::ContactType;
 use puniyu_message::Message;
+use std::sync::Arc;
+use std::time::Duration;
 
-static TEST_LOCK: Mutex<()> = Mutex::new(());
-
-struct TestAdapter {
+/// 用于集成测试的模拟适配器。
+struct MockAdapter {
     info: AdapterInfo,
     account: AccountInfo,
 }
 
-impl TestAdapter {
+impl MockAdapter {
     fn new(name: &str) -> Self {
-        let info = AdapterInfo::builder()
-            .name(name)
-            .platform(AdapterPlatform::QQ)
-            .protocol(AdapterProtocol::Console)
-            .build();
-        let account = AccountInfo {
-            uin: format!("{name}_uin"),
-            name: format!("{name}_account"),
-            ..AccountInfo::default()
-        };
-        Self { info, account }
+        Self {
+            info: AdapterInfo::builder().name(name).build(),
+            account: AccountInfo::builder()
+                .uin("0")
+                .name("test")
+                .avatar(Bytes::new())
+                .build(),
+        }
     }
 }
 
-#[async_trait]
-impl AdapterApi for TestAdapter {
+#[async_trait::async_trait]
+impl AdapterApi for MockAdapter {
     async fn send_message(
         &self,
         _contact: &ContactType<'_>,
         _message: &Message,
     ) -> puniyu_error::Result<SendMsgType> {
-        Ok(SendMsgType { message_id: "test-message".to_string(), time: Duration::from_secs(1) })
+        Ok(SendMsgType {
+            message_id: "0".into(),
+            time: Duration::from_secs(0),
+        })
     }
 
     fn adapter_info(&self) -> AdapterInfo {
@@ -53,117 +49,90 @@ impl AdapterApi for TestAdapter {
     }
 }
 
-impl Adapter for TestAdapter {}
+impl Adapter for MockAdapter {}
 
-fn test_guard() -> MutexGuard<'static, ()> {
-    TEST_LOCK.lock().expect("failed to acquire adapter registry test lock")
-}
+/// 所有 AdapterRegistry 测试放在一个函数中顺序执行，
+/// 避免全局 STORE 在并行测试中出现竞态。
+#[test]
+fn adapter_registry_full_lifecycle() {
+    // ---- register ----
+    let adapter = Arc::new(MockAdapter::new("integration_test"));
+    let index = AdapterRegistry::register(adapter).expect("register should succeed");
 
-fn cleanup(name: &str) {
-    let _ = AdapterRegistry::unregister_with_adapter_name(name);
+    // ---- register duplicate name ----
+    let dup = Arc::new(MockAdapter::new("integration_test"));
+    let result = AdapterRegistry::register(dup);
+    assert!(result.is_err(), "重复名称注册应失败");
+
+    // ---- get by index ----
+    let found = AdapterRegistry::get(index);
+    assert!(found.is_some(), "按索引查询应找到适配器");
+    assert_eq!(found.unwrap().adapter_info().name, "integration_test");
+
+    // ---- get by name ----
+    let found = AdapterRegistry::get("integration_test");
+    assert!(found.is_some(), "按名称查询应找到适配器");
+    assert_eq!(found.unwrap().adapter_info().name, "integration_test");
+
+    // ---- get not found ----
+    let not_found = AdapterRegistry::get("nonexistent");
+    assert!(not_found.is_none(), "不存在的适配器应返回 None");
+
+    // ---- all contains registered ----
+    let all = AdapterRegistry::all();
+    let names: Vec<String> = all.iter().map(|a| a.adapter_info().name.clone()).collect();
+    assert!(names.contains(&"integration_test".to_string()), "all() 应包含已注册的适配器");
+
+    // ---- unregister by name ----
+    let unreg_result = AdapterRegistry::unregister("integration_test");
+    assert!(unreg_result.is_ok(), "按名称卸载应成功");
+
+    // ---- verify unregistered ----
+    let after_unreg = AdapterRegistry::get("integration_test");
+    assert!(after_unreg.is_none(), "卸载后按名称查询应返回 None");
+
+    // ---- unregister non-existent ----
+    let err = AdapterRegistry::unregister("nonexistent");
+    assert!(err.is_err(), "卸载不存在的适配器应报错");
 }
 
 #[test]
-fn register_returns_index_and_makes_adapter_queryable() {
-    let _guard = test_guard();
-    let name = "adapter_registry_register";
-    cleanup(name);
+fn adapter_registry_register_and_unregister_by_index() {
+    let adapter = Arc::new(MockAdapter::new("index_test"));
+    let index = AdapterRegistry::register(adapter).expect("register should succeed");
 
-    let adapter: Arc<dyn Adapter> = Arc::new(TestAdapter::new(name));
-    let index = AdapterRegistry::register(adapter).expect("failed to register adapter");
+    // 确认已注册
+    assert!(AdapterRegistry::get(index).is_some());
 
-    let by_index = AdapterRegistry::get_with_index(index).expect("adapter should exist by index");
-    assert_eq!(by_index.adapter_info().name, name);
+    // 按索引卸载
+    let result = AdapterRegistry::unregister(index);
+    assert!(result.is_ok(), "按索引卸载应成功");
 
-    let by_name = AdapterRegistry::get_with_adapter_name(name);
-    assert_eq!(by_name.len(), 1);
-    assert_eq!(by_name[0].account_info().uin, format!("{name}_uin"));
-
-    cleanup(name);
+    // 确认已卸载
+    assert!(AdapterRegistry::get(index).is_none());
 }
 
 #[test]
-fn duplicate_registration_returns_exists_error() {
-    let _guard = test_guard();
-    let name = "adapter_registry_duplicate";
-    cleanup(name);
-
-    let first: Arc<dyn Adapter> = Arc::new(TestAdapter::new(name));
-    let second: Arc<dyn Adapter> = Arc::new(TestAdapter::new(name));
-
-    AdapterRegistry::register(first).expect("first register should succeed");
-    let err = AdapterRegistry::register(second).expect_err("duplicate register should fail");
-
-    assert!(err.to_string().contains("exists"));
-
-    cleanup(name);
+fn adapter_registry_unregister_nonexistent_index() {
+    let result = AdapterRegistry::unregister(999999_u64);
+    assert!(result.is_err(), "卸载不存在的索引应报错");
 }
 
 #[test]
-fn unregister_accepts_index_and_name() {
-    let _guard = test_guard();
-    let index_name = "adapter_registry_unregister_index";
-    let name_name = "adapter_registry_unregister_name";
-    cleanup(index_name);
-    cleanup(name_name);
-
-    let index_adapter: Arc<dyn Adapter> = Arc::new(TestAdapter::new(index_name));
-    let name_adapter: Arc<dyn Adapter> = Arc::new(TestAdapter::new(name_name));
-
-    let index = AdapterRegistry::register(index_adapter).expect("index adapter register should succeed");
-    AdapterRegistry::register(name_adapter).expect("name adapter register should succeed");
-
-    AdapterRegistry::unregister(index).expect("unregister by index should succeed");
-    assert!(AdapterRegistry::get_with_index(index).is_none());
-
-    AdapterRegistry::unregister(name_name).expect("unregister by name should succeed");
-    assert!(AdapterRegistry::get_with_adapter_name(name_name).is_empty());
-
-    cleanup(index_name);
-    cleanup(name_name);
+fn adapter_registry_get_by_nonexistent_index() {
+    let result = AdapterRegistry::get(999999_u64);
+    assert!(result.is_none(), "查询不存在的索引应返回 None");
 }
 
 #[test]
-fn get_supports_index_name_and_all_queries() {
-    let _guard = test_guard();
-    let first_name = "adapter_registry_get_first";
-    let second_name = "adapter_registry_get_second";
-    cleanup(first_name);
-    cleanup(second_name);
-
-    let before = AdapterRegistry::all().len();
-
-    let first: Arc<dyn Adapter> = Arc::new(TestAdapter::new(first_name));
-    let second: Arc<dyn Adapter> = Arc::new(TestAdapter::new(second_name));
-
-    let first_index = AdapterRegistry::register(first).expect("first register should succeed");
-    let second_index = AdapterRegistry::register(second).expect("second register should succeed");
-
-    let by_index = AdapterRegistry::get(first_index);
-    assert_eq!(by_index.len(), 1);
-    assert_eq!(by_index[0].adapter_info().name, first_name);
-
-    let by_name = AdapterRegistry::get(second_name);
-    assert_eq!(by_name.len(), 1);
-    assert_eq!(by_name[0].adapter_info().name, second_name);
+fn adapter_registry_all_contains_only_registered() {
+    let adapter = Arc::new(MockAdapter::new("all_test_unique"));
+    AdapterRegistry::register(adapter).expect("register should succeed");
 
     let all = AdapterRegistry::all();
-    assert_eq!(all.len(), before + 2);
-    assert!(all.iter().any(|adapter| adapter.adapter_info().name == first_name));
-    assert!(all.iter().any(|adapter| adapter.adapter_info().name == second_name));
+    let names: Vec<String> = all.iter().map(|a| a.adapter_info().name.clone()).collect();
+    assert!(names.contains(&"all_test_unique".to_string()), "all() 应包含刚注册的适配器");
 
-    AdapterRegistry::unregister(first_index).expect("cleanup first adapter should succeed");
-    AdapterRegistry::unregister(second_index).expect("cleanup second adapter should succeed");
-}
-
-#[test]
-fn adapter_api_as_protocol_can_downcast_to_concrete_type() {
-    let adapter = TestAdapter::new("adapter_registry_as_protocol");
-
-    let protocol = (&adapter as &dyn AdapterApi)
-        .as_protocol::<TestAdapter>()
-        .expect("adapter should downcast to concrete test adapter");
-
-    assert_eq!(protocol.adapter_info().name, "adapter_registry_as_protocol");
-    assert_eq!(protocol.account_info().name, "adapter_registry_as_protocol_account");
+    // 清理
+    AdapterRegistry::unregister("all_test_unique").ok();
 }

@@ -29,6 +29,8 @@ puniyu_account.workspace = true
 puniyu_message.workspace = true
 
 [dev-dependencies]
+tokio = { workspace = true, features = ["rt", "macros"] }
+bytes.workspace = true
 puniyu_contact.workspace = true
 
 [features]

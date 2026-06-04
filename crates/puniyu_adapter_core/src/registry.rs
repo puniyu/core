@@ -52,13 +52,13 @@ impl<'a> AdapterRegistry {
 	}
 
 	/// 按索引或名称查询适配器。
-	pub fn get<A>(adapter: A) -> Vec<Arc<dyn Adapter>>
+	pub fn get<A>(adapter: A) -> Option<Arc<dyn Adapter>>
 	where
 		A: Into<AdapterId<'a>>,
 	{
 		let adapter = adapter.into();
 		match adapter {
-			AdapterId::Index(index) => Self::get_with_index(index).into_iter().collect(),
+			AdapterId::Index(index) => Self::get_with_index(index),
 			AdapterId::Name(name) => Self::get_with_adapter_name(name.as_ref()),
 		}
 	}
@@ -71,10 +71,10 @@ impl<'a> AdapterRegistry {
 	}
 
 	/// 通过名称查询适配器。
-	pub fn get_with_adapter_name(name: &str) -> Vec<Arc<dyn Adapter>> {
+	pub fn get_with_adapter_name(name: &str) -> Option<Arc<dyn Adapter>> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().filter(|v| v.adapter_info().name == name).cloned().collect()
+		map.values().find(|v| v.adapter_info().name == name).cloned()
 	}
 
 	/// 获取所有已注册适配器。
