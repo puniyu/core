@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.16](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.15...puniyu_bot-v0.8.16)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types, puniyu_adapter_api, puniyu_runtime
+
+
+
 ## [0.8.15](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.14...puniyu_bot-v0.8.15)
 
 ### 🐛 Bug 修复

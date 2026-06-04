@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.17](https://github.com/puniyu/core/compare/v0.8.16...v0.8.17)
+
+### 🐛 Bug 修复
+
+
+- App init - ([aa91efe](https://github.com/puniyu/core/commit/aa91efe38f0406bc48589bb92d5e0266c10bdeaa))
+
+
+
+
 ## [0.8.16](https://github.com/puniyu/core/compare/v0.8.15...v0.8.16)
 
 ### ⚙️ 杂项
