@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.16](https://github.com/puniyu/core/compare/puniyu_context-v0.8.15...puniyu_context-v0.8.16)
+
+### 🐛 Bug 修复
+
+
+- App init - ([aa91efe](https://github.com/puniyu/core/commit/aa91efe38f0406bc48589bb92d5e0266c10bdeaa))
+
+
+
+
 ## [0.8.15](https://github.com/puniyu/core/compare/puniyu_context-v0.8.14...puniyu_context-v0.8.15)
 
 ### 🐛 Bug 修复

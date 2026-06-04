@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_event"
-version = "0.8.15"
+version = "0.8.16"
 description = "puniyu 事件类型库，统一消息、通知与请求事件模型"
 authors.workspace = true
 license.workspace = true
