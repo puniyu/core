@@ -1,5 +1,21 @@
 # 变更日志
 
+## [0.8.18](https://github.com/puniyu/core/compare/puniyu_api-v0.8.17...puniyu_api-v0.8.18)
+
+### 🐛 Bug 修复
+
+
+- Trait default impl - ([ecd5aab](https://github.com/puniyu/core/commit/ecd5aab6174f8c7b93064dc42f617b45b4deecc0))
+
+
+
+### ⚙️ 杂项
+
+
+- Update Cargo.lock dependencies
+
+
+
 ## [0.8.17](https://github.com/puniyu/core/compare/puniyu_api-v0.8.16...puniyu_api-v0.8.17)
 
 ### 🐛 Bug 修复

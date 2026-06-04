@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.17](https://github.com/puniyu/core/compare/puniyu_command-v0.8.16...puniyu_command-v0.8.17)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_context
+
+
+
 ## [0.8.16](https://github.com/puniyu/core/compare/puniyu_command-v0.8.15...puniyu_command-v0.8.16)
 
 ### ⚙️ 杂项

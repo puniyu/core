@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.18](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.17...puniyu_loader-v0.8.18)
+
+### 🐛 Bug 修复
+
+
+- Trait default impl - ([ecd5aab](https://github.com/puniyu/core/commit/ecd5aab6174f8c7b93064dc42f617b45b4deecc0))
+
+
+
+
 ## [0.8.17](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.16...puniyu_loader-v0.8.17)
 
 ### ⚙️ 杂项
