@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.18](https://github.com/puniyu/core/compare/puniyu_adapter_api-v0.8.17...puniyu_adapter_api-v0.8.18)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types
+
+
+
 ## [0.8.17](https://github.com/puniyu/core/compare/puniyu_adapter_api-v0.8.16...puniyu_adapter_api-v0.8.17)
 
 ### ⚙️ 杂项
