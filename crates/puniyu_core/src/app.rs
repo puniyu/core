@@ -58,7 +58,7 @@ impl Default for AppBuilder {
         #[allow(clippy::unwrap_used)]
         Self {
             name: "Core",
-            version: &VERSION,
+            version: &VERSION, 
             logo: None,
             cwd_dir: std::env::current_dir().unwrap(),
             loaders: Vec::new(),
@@ -184,7 +184,8 @@ impl App {
         let on_start = self.inner.on_start;
         let on_exit = self.inner.on_exit;
 
-        // 创建目录
+        let info = AppInfo::new(name, version, working_dir.clone());
+        set_app_info(info);
         {
             use puniyu_path::{
                 adapter_dir, app_dir, config_dir, data_dir, log_dir, plugin_dir, resource_dir,
@@ -211,10 +212,6 @@ impl App {
             }
         }
 
-        let info = AppInfo::new(name, version, working_dir.clone());
-        set_app_info(info);
-
-        // 注册顶层 configs
         if !configs.is_empty() {
             for config in configs {
                 let config_name = config.name().to_string();
@@ -236,15 +233,12 @@ impl App {
         {
             crate::logger::log_init();
         }
-
-        // 注册 handlers
         for handler in handlers.into_iter() {
             if let Err(e) = puniyu_handler::HandlerRegistry::register(handler) {
                 core_error!("Failed to register handler: {}", e);
             }
         }
 
-        // === 三层架构：Discovery → Resolve → Install ===
         core_debug!("discovering components...");
         let load_ctx = LoadContext {
             app_name: name,

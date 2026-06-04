@@ -32,7 +32,7 @@ const fn default_server_host() -> IpAddr {
 	IpAddr::V4(addr)
 }
 const fn default_server_port() -> u16 {
-	33720
+	10721
 }
 
 impl Default for ServerConfig {
