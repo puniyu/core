@@ -44,7 +44,7 @@ puniyu_system_info = { version = "1.5.6" }
 
 puniyu_error = { version = "0.8.8", path = "./crates/puniyu_error", default-features = false }
 puniyu_semver = { version = "0.8.9", path = "./crates/puniyu_semver" }
-puniyu_version = { version = "0.8.13", path = "./crates/puniyu_version" }
+puniyu_version = { version = "0.8.14", path = "./crates/puniyu_version" }
 puniyu_common = { version = "0.8.9", path = "./crates/puniyu_common", default-features = false }
 puniyu_element = { version = "0.8.8", path = "./crates/puniyu_element" }
 puniyu_message = { version = "0.8.8", path = "./crates/puniyu_message" }
@@ -53,35 +53,35 @@ puniyu_contact = { version = "0.8.8", path = "./crates/puniyu_contact" }
 puniyu_sender = { version = "0.8.8", path = "./crates/puniyu_sender" }
 puniyu_account = { version = "0.8.8", path = "./crates/puniyu_account" }
 puniyu_path = { version = "0.8.9", path = "./crates/puniyu_path" }
-puniyu_event = { version = "0.8.12", path = "./crates/puniyu_event" }
-puniyu_dispatch = { version = "0.8.12", path = "./crates/puniyu_dispatch" }
-puniyu_context = { version = "0.8.12", path = "./crates/puniyu_context" }
+puniyu_event = { version = "0.8.13", path = "./crates/puniyu_event" }
+puniyu_dispatch = { version = "0.8.13", path = "./crates/puniyu_dispatch" }
+puniyu_context = { version = "0.8.13", path = "./crates/puniyu_context" }
 
 puniyu_config = { version = "0.8.9", path = "./crates/puniyu_config" }
 
-puniyu_adapter_core = { version = "0.8.13", path = "./crates/puniyu_adapter_core" }
-puniyu_adapter_types = { version = "0.8.13", path = "./crates/puniyu_adapter_types" }
-puniyu_adapter_api = { version = "0.8.13", path = "./crates/puniyu_adapter_api" }
-puniyu_runtime = { version = "0.8.12", path = "./crates/puniyu_runtime" }
+puniyu_adapter_core = { version = "0.8.14", path = "./crates/puniyu_adapter_core" }
+puniyu_adapter_types = { version = "0.8.14", path = "./crates/puniyu_adapter_types" }
+puniyu_adapter_api = { version = "0.8.14", path = "./crates/puniyu_adapter_api" }
+puniyu_runtime = { version = "0.8.13", path = "./crates/puniyu_runtime" }
 
-puniyu_bot = { version = "0.8.12", path = "./crates/puniyu_bot" }
+puniyu_bot = { version = "0.8.13", path = "./crates/puniyu_bot" }
 
-puniyu_command = { version = "0.8.12", path = "./crates/puniyu_command" }
-puniyu_command_parser = { version = "0.8.12", path = "./crates/puniyu_command_parser" }
+puniyu_command = { version = "0.8.13", path = "./crates/puniyu_command" }
+puniyu_command_parser = { version = "0.8.13", path = "./crates/puniyu_command_parser" }
 puniyu_command_types = { version = "0.8.8", path = "./crates/puniyu_command_types" }
 
-puniyu_server = { version = "0.8.12", path = "./crates/puniyu_server", default-features = false }
+puniyu_server = { version = "0.8.13", path = "./crates/puniyu_server", default-features = false }
 
 puniyu_task = { version = "0.8.8", path = "./crates/puniyu_task" }
-puniyu_handler = { version = "0.8.12", path = "./crates/puniyu_handler" }
+puniyu_handler = { version = "0.8.13", path = "./crates/puniyu_handler" }
 puniyu_handler_command = { version = "0.8.0", path = "./crates/puniyu_handler_command" }
 puniyu_handler_hook = { version = "0.8.0", path = "./crates/puniyu_handler_hook" }
-puniyu_plugin_core = { version = "0.8.13", path = "./crates/puniyu_plugin_core" }
+puniyu_plugin_core = { version = "0.8.14", path = "./crates/puniyu_plugin_core" }
 
-puniyu_loader = { version = "0.8.13", path = "./crates/puniyu_loader" }
-puniyu_loader_builtin = { version = "0.8.13", path = "./crates/puniyu_loader_builtin" }
-puniyu_core = { version = "0.8.13", path = "./crates/puniyu_core" }
-puniyu_api = { version = "0.8.13", path = "./crates/puniyu_api" }
+puniyu_loader = { version = "0.8.14", path = "./crates/puniyu_loader" }
+puniyu_loader_builtin = { version = "0.8.14", path = "./crates/puniyu_loader_builtin" }
+puniyu_core = { version = "0.8.14", path = "./crates/puniyu_core" }
+puniyu_api = { version = "0.8.14", path = "./crates/puniyu_api" }
 
 [profile.release]
 lto = "fat"
