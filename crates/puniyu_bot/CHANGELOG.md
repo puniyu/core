@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.14](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.13...puniyu_bot-v0.8.14)
+
+### ⚙️ 杂项
+
+
+- *(puniyu_adapter_types)* 使用SmolStr优化内存性能并更新AdapterInfo结构 - ([c4e110b](https://github.com/puniyu/core/commit/c4e110bf3bf0f0ed136858df34fc9513824b1762))
+
+
+
+
 ## [0.8.13](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.12...puniyu_bot-v0.8.13)
 
 ### ⚙️ 杂项
