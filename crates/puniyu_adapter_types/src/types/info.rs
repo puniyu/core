@@ -3,6 +3,7 @@ use jiff::Timestamp;
 use puniyu_semver::Version;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString, IntoStaticStr};
+use smol_str::SmolStr;
 
 /// 适配器平台。
 #[derive(
@@ -106,13 +107,14 @@ pub enum AdapterCommunication {
 
 /// 适配器元信息。
 #[derive(Debug, Clone, Builder, Deserialize, Serialize)]
-#[builder(on(String, into))]
+#[builder(on(SmolStr, into))]
 pub struct AdapterInfo {
 	/// 适配器名称
 	#[builder(default)]
-	pub name: String,
+	pub name: SmolStr,
 	/// 适配器作者
-	pub author: Option<String>,
+	#[builder(default)]
+	pub author: Vec<SmolStr>,
 	/// 适配器版本。
 	#[builder(default = AdapterInfo::default_version())]
 	pub version: Version,

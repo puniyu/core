@@ -15,14 +15,14 @@ fn adapter_info_short_macro_builds_basic_info() {
 fn adapter_info_named_macro_applies_custom_fields() {
 	let info = adapter_info!(
 		name: "napcat",
-		author: "Puniyu",
+		author: vec!["Puniyu".into()],
 		version: Version::new(1, 2, 3),
-		address: "127.0.0.1:8080",
-		secret: "token",
+		address: "127.0.0.1:8080".to_string(),
+		secret: "token".to_string(),
 	);
 
 	assert_eq!(info.name, "napcat");
-	assert_eq!(info.author.as_deref(), Some("Puniyu"));
+	assert_eq!(info.author.first().map(|s| s.as_str()), Some("Puniyu"));
 	assert_eq!(info.version, Version::new(1, 2, 3));
 	assert_eq!(info.address.as_deref(), Some("127.0.0.1:8080"));
 	assert_eq!(info.secret.as_deref(), Some("token"));

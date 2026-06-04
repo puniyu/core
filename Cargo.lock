@@ -1802,6 +1802,7 @@ dependencies = [
  "puniyu_semver",
  "puniyu_sender",
  "serde",
+ "smol_str",
  "strum 0.28.0",
 ]
 
