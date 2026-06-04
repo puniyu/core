@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.15](https://github.com/puniyu/core/compare/puniyu_context-v0.8.14...puniyu_context-v0.8.15)
+
+### 🐛 Bug 修复
+
+
+- Adapter types - ([c4c6805](https://github.com/puniyu/core/commit/c4c6805637483049b757713b5f4f75f00f85ad6d))
+
+
+
+
 ## [0.8.14](https://github.com/puniyu/core/compare/puniyu_context-v0.8.13...puniyu_context-v0.8.14)
 
 ### ⚙️ 杂项

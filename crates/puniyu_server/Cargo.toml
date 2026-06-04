@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_server"
-version = "0.8.14"
+version = "0.8.15"
 description = "puniyu HTTP 服务器库，提供基于 Actix-Web 的 Web 服务功能"
 readme = "README.md"
 authors.workspace = true

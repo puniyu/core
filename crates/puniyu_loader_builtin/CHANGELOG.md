@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.16](https://github.com/puniyu/core/compare/puniyu_loader_builtin-v0.8.15...puniyu_loader_builtin-v0.8.16)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_core, puniyu_plugin_core, puniyu_loader
+
+
+
 ## [0.8.15](https://github.com/puniyu/core/compare/puniyu_loader_builtin-v0.8.14...puniyu_loader_builtin-v0.8.15)
 
 ### ⚙️ 杂项

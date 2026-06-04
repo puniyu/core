@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.15](https://github.com/puniyu/core/compare/puniyu_dispatch-v0.8.14...puniyu_dispatch-v0.8.15)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_event, puniyu_handler
+
+
+
 ## [0.8.14](https://github.com/puniyu/core/compare/puniyu_dispatch-v0.8.13...puniyu_dispatch-v0.8.14)
 
 ### ⚙️ 杂项
