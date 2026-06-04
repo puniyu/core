@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.14](https://github.com/puniyu/core/compare/puniyu_loader_builtin-v0.8.13...puniyu_loader_builtin-v0.8.14)
+
+### 🚜 重构
+
+
+- *(puniyu_loader)* 移除不再使用的组件源类型 - ([0689984](https://github.com/puniyu/core/commit/068998405b37f7bfbbf17726e4144df342fe60d8))
+
+
+
+
 ## [0.8.13](https://github.com/puniyu/core/compare/puniyu_loader_builtin-v0.8.12...puniyu_loader_builtin-v0.8.13)
 
 ### ⚙️ 杂项

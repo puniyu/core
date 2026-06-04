@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_adapter_types"
-version = "0.8.13"
+version = "0.8.14"
 description = "puniyu 适配器类型库，统一适配器信息、消息结果与群好友资料模型"
 authors.workspace = true
 license.workspace = true

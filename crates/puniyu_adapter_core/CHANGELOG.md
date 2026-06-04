@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.14](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.13...puniyu_adapter_core-v0.8.14)
+
+### 🐛 Bug 修复
+
+
+- Adapter - ([9065fb8](https://github.com/puniyu/core/commit/9065fb8566f7ebc99f65865dbe9198c425f84fea))
+
+
+
+
 ## [0.8.13](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.8.12...puniyu_adapter_core-v0.8.13)
 
 ### ⚙️ 杂项

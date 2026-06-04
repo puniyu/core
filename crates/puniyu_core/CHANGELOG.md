@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.14](https://github.com/puniyu/core/compare/v0.8.13...v0.8.14)
+
+### 🐛 Bug 修复
+
+
+- Adapter - ([9065fb8](https://github.com/puniyu/core/commit/9065fb8566f7ebc99f65865dbe9198c425f84fea))
+
+
+
+### 🚜 重构
+
+
+- *(puniyu_loader)* 移除不再使用的组件源类型 - ([0689984](https://github.com/puniyu/core/commit/068998405b37f7bfbbf17726e4144df342fe60d8))
+
+
+
+
 ## [0.8.13](https://github.com/puniyu/core/compare/v0.8.12...v0.8.13)
 
 ### ⚙️ 杂项

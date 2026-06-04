@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.8.14](https://github.com/puniyu/core/compare/puniyu_api-v0.8.13...puniyu_api-v0.8.14)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types, puniyu_adapter_core, puniyu_adapter_api, puniyu_runtime, puniyu_server, puniyu_bot, puniyu_event, puniyu_context, puniyu_command, puniyu_handler, puniyu_plugin_core
+
+
+
 ## [0.8.13](https://github.com/puniyu/core/compare/puniyu_api-v0.8.12...puniyu_api-v0.8.13)
 
 ### ⚙️ 杂项
