@@ -115,6 +115,8 @@ pub struct AdapterInfo {
 	/// 适配器作者
 	#[builder(default)]
 	pub author: Vec<SmolStr>,
+	/// 适配器描述
+	pub description: Option<SmolStr>,
 	/// 适配器版本。
 	#[builder(default = AdapterInfo::default_version())]
 	pub version: Version,
