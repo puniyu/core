@@ -27,7 +27,9 @@ pub trait Plugin: Send + Sync + 'static {
 		puniyu_version::VERSION
 	}
 	/// 插件描述
-	fn description(&self) -> Option<&str>;
+	fn description(&self) -> Option<&str> {
+		None
+	}
 	/// 插件作者
 	fn author(&self) -> Vec<&str> {
 		vec![]
