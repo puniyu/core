@@ -7,6 +7,7 @@ pub mod contact;
 pub mod context;
 pub mod element;
 pub mod event;
+pub mod dispatch;
 pub mod message;
 pub mod path;
 pub mod plugin;

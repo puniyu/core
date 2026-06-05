@@ -1,5 +1,4 @@
-use crate::types::empty_vec_as_none;
-use crate::{ReactiveMode, default_cd};
+use crate::types::{ReactiveMode, default_cd, empty_vec_as_none};
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
 /// 群组配置选项

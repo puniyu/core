@@ -1,4 +1,4 @@
-use crate::BotOption;
+use crate::types::BotOption;
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};

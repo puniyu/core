@@ -1818,10 +1818,12 @@ dependencies = [
  "puniyu_adapter_types",
  "puniyu_bot",
  "puniyu_command",
+ "puniyu_command_parser",
  "puniyu_common",
  "puniyu_config",
  "puniyu_contact",
  "puniyu_context",
+ "puniyu_dispatch",
  "puniyu_element",
  "puniyu_error",
  "puniyu_event",
@@ -1952,6 +1954,7 @@ dependencies = [
 name = "puniyu_core"
 version = "0.8.18"
 dependencies = [
+ "actix-web",
  "bytes",
  "const-str",
  "convert_case 0.11.0",

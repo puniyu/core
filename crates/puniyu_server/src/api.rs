@@ -1,8 +1,7 @@
-mod info;
+use actix_web::web;
+
 mod logo;
 
-pub(crate) fn register_routes(cfg: &mut actix_web::web::ServiceConfig) {
-	use actix_web::web;
-	cfg.service(info::info);
+pub(crate) fn register_routes(cfg: &mut web::ServiceConfig) {
 	cfg.service(web::resource("/logo").route(web::get().to(logo::logo)));
 }

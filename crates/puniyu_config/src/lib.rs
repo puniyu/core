@@ -23,9 +23,9 @@
 //! let _ = bot.cd();
 //! ```
 
-mod app;
+mod core;
 #[doc(inline)]
-pub use app::AppConfig;
+pub use core::AppConfig;
 mod bot;
 #[doc(inline)]
 pub use bot::BotConfig;
@@ -42,7 +42,6 @@ mod common;
 mod config;
 mod logger;
 mod registry;
-use logger::{config_debug, config_error};
 
 pub use registry::ConfigRegistry;
 
@@ -94,20 +93,15 @@ pub fn group_config() -> GroupConfig {
 
 pub fn init() {
 	macro_rules! register_config {
-		($config:expr) => {{
-			let cfg = $config;
-			if let Err(e) = ConfigRegistry::register(cfg) {
-				config_error!("Failed to register config: {}", e);
-			} else {
-				config_debug!("{} config registered", stringify!($config));
-			}
+		($ty:ty) => {{
+			let _ = ConfigRegistry::register(<$ty>::default());
 		}};
 	}
 
-	register_config!(AppConfig::default());
-	register_config!(BotConfig::default());
-	register_config!(GroupConfig::default());
-	register_config!(FriendConfig::default());
+	register_config!(AppConfig);
+	register_config!(BotConfig);
+	register_config!(GroupConfig);
+	register_config!(FriendConfig);
 
 	config::start_config_watcher();
 }

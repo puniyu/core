@@ -1,4 +1,4 @@
-use crate::{ReactiveMode, default_cd};
+use crate::types::{ReactiveMode, default_cd};
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
 

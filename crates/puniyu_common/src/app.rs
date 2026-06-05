@@ -32,7 +32,7 @@ impl AppInfo {
 static APP_INFO: OnceLock<AppInfo> = OnceLock::new();
 
 pub fn set_app_info(info: AppInfo) {
-	APP_INFO.set(info).expect("AppInfo already initialized");
+	let _ = APP_INFO.set(info);
 }
 
 pub fn app_info() -> &'static AppInfo {

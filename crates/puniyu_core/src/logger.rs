@@ -1,9 +1,4 @@
-#![allow(unused_macros)]
-
-use puniyu_common::app::app_name;
-use puniyu_config::app_config;
-use puniyu_logger::{LogLevel, LoggerOptions};
-use std::{env, str::FromStr};
+#![allow(unused_macros, unused_imports)]
 
 macro_rules! core_trace {
 	($($arg:tt)+) => {{
@@ -12,7 +7,6 @@ macro_rules! core_trace {
 		::log::trace!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-#[allow(unused_imports)]
 pub(crate) use core_trace;
 
 macro_rules! core_debug {
@@ -40,7 +34,6 @@ macro_rules! core_warn {
 		::log::warn!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-#[allow(unused_imports)]
 pub(crate) use core_warn;
 
 macro_rules! core_error {
@@ -51,24 +44,4 @@ macro_rules! core_error {
 	}};
 }
 pub(crate) use core_error;
-
-/// 初始化日志系统
-#[cfg(feature = "log")]
-pub(crate) fn log_init() {
-	use puniyu_path::log_dir;
-	let config = app_config();
-	let logger = config.logger();
-	let log_level = env::var("LOGGER_LEVEL").unwrap_or(logger.level().to_string());
-	let log_path = log_dir().to_string_lossy().to_string();
-	let log_retention_days = logger.retention_days();
-	let is_file_logging = logger.enable_file();
-	let options = LoggerOptions::default()
-		.with_prefix(app_name())
-		.with_level(LogLevel::from_str(log_level.as_str()).unwrap_or(LogLevel::Info))
-		.with_file_logging(is_file_logging)
-		.with_log_directory(log_path)
-		.with_retention_days(log_retention_days);
-	puniyu_logger::init(Some(options));
-}
-
 pub use puniyu_logger::owo_colors;

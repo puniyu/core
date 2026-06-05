@@ -1,5 +1,4 @@
-use crate::types::ListConfig;
-use crate::{AdapterConfig, LoggerConfig, PluginConfig, ServerConfig};
+use crate::types::{AdapterConfig, ListConfig, PluginConfig, ServerConfig};
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
@@ -7,7 +6,7 @@ use smol_str::SmolStr;
 use std::path::PathBuf;
 use std::sync::LazyLock;
 
-static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("app.toml"));
+static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| config_dir().join("core.toml"));
 
 fn default_master() -> Vec<SmolStr> {
 	vec![SmolStr::new("console")]
@@ -19,12 +18,6 @@ fn default_prefix() -> Option<SmolStr> {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppConfig {
-	/// 日志配置
-	///
-	/// 包括日志级别、文件记录、保留天数等设置
-	#[serde(default)]
-	logger: LoggerConfig,
-
 	/// 服务器配置
 	///
 	/// 包括服务器主机地址和端口号
@@ -72,7 +65,6 @@ impl Default for AppConfig {
 	#[inline]
 	fn default() -> Self {
 		Self {
-			logger: Default::default(),
 			server: Default::default(),
 			adapter: Default::default(),
 			plugin: Default::default(),
@@ -89,13 +81,8 @@ impl AppConfig {
 	pub fn get() -> Self {
 		use crate::ConfigRegistry;
 		ConfigRegistry::get(CONFIG_PATH.as_path()).and_then(|v| v.try_into().ok()).unwrap_or_else(
-			|| read_config::<Self>(config_dir().as_path(), "app").unwrap_or_default(),
+			|| read_config::<Self>(config_dir().as_path(), "core").unwrap_or_default(),
 		)
-	}
-
-	/// 获取日志配置。
-	pub fn logger(&self) -> &LoggerConfig {
-		&self.logger
 	}
 
 	/// 获取服务配置。
@@ -136,7 +123,7 @@ impl AppConfig {
 
 impl crate::Config for AppConfig {
 	fn name(&self) -> &str {
-		"app"
+		"core"
 	}
 
 	fn to_value(&self) -> toml::Value {

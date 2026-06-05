@@ -9,6 +9,7 @@ mod server;
 #[doc(inline)]
 pub use server::{restart_server, run_server, start_server, stop_server};
 mod response;
+#[allow(unused_imports)]
 pub(crate) use response::Response;
 mod types;
 #[doc(inline)]

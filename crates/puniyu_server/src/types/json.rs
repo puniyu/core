@@ -3,6 +3,7 @@ use actix_web::http::{StatusCode, header};
 use actix_web::{HttpRequest, HttpResponse, Responder};
 use serde::Serialize;
 
+#[allow(dead_code)]
 pub struct PrettyJson<T> {
 	pub(crate) inner: T,
 	pub(crate) status: StatusCode,

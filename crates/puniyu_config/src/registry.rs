@@ -1,6 +1,6 @@
 mod store;
 
-use crate::logger::config_error;
+use crate::logger::{config_debug, config_error};
 use crate::types::ConfigId;
 use puniyu_error::registry::Error;
 use std::{fs, path::Path, sync::LazyLock};
@@ -15,7 +15,6 @@ pub struct ConfigRegistry;
 impl ConfigRegistry {
 	/// 注册配置到注册表。
 	///
-	/// 注册时自动读取用户配置文件并合并到默认配置中
 	pub fn register<C: crate::Config>(config: C) -> Result<u64, Error> {
 		let dir = config.path();
 		let name = config.name();
@@ -35,7 +34,16 @@ impl ConfigRegistry {
 			config_error!("Failed to write config file: {}", e);
 		}
 
-		STORE.insert(name.to_string(), file_path, merged)
+		match STORE.insert(name.to_string(), file_path, merged) {
+			Ok(index) => {
+				config_debug!("{} config registered", name);
+				Ok(index)
+			}
+			Err(e) => {
+				config_error!("Failed to register config: {}", e);
+				Err(e)
+			}
+		}
 	}
 
 	pub fn register_entry(
@@ -43,7 +51,16 @@ impl ConfigRegistry {
 		path: std::path::PathBuf,
 		value: Value,
 	) -> Result<u64, Error> {
-		STORE.insert(name.to_string(), path, value)
+		match STORE.insert(name.to_string(), path, value) {
+			Ok(index) => {
+				config_debug!("{} config registered", name);
+				Ok(index)
+			}
+			Err(e) => {
+				config_error!("Failed to register config entry: {}", e);
+				Err(e)
+			}
+		}
 	}
 
 	fn merge_with_file(dir: &Path, name: &str, default: &Value) -> Value {

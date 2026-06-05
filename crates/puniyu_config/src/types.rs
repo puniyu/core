@@ -1,6 +1,6 @@
-mod app;
+mod core;
 #[doc(inline)]
-pub use app::*;
+pub use core::*;
 mod bot;
 #[doc(inline)]
 pub use bot::*;

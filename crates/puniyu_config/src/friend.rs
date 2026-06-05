@@ -1,4 +1,4 @@
-use crate::FriendOption;
+use crate::types::FriendOption;
 use puniyu_common::read_config;
 use puniyu_path::config_dir;
 use serde::{Deserialize, Serialize};
