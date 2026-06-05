@@ -19,8 +19,8 @@ mod types;
 pub use types::*;
 
 use puniyu_account::AccountInfo;
-use puniyu_adapter_types::AdapterInfo;
 use puniyu_adapter_api::AdapterApi;
+use puniyu_adapter_types::AdapterInfo;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
@@ -28,63 +28,63 @@ pub use puniyu_runtime::{AdapterRuntime, BotRuntime};
 
 #[derive(Clone)]
 pub struct Bot {
-    runtime: BotRuntime,
-    uin: String,
+	runtime: BotRuntime,
+	uin: String,
 }
 
 impl Bot {
-    pub fn new(runtime: BotRuntime) -> Self {
-        let uin = runtime.account_info().uin.clone();
-        Self { runtime, uin }
-    }
+	pub fn new(runtime: BotRuntime) -> Self {
+		let uin = runtime.account_info().uin.clone();
+		Self { runtime, uin }
+	}
 
-    pub fn self_id(&self) -> &str {
-        &self.uin
-    }
+	pub fn self_id(&self) -> &str {
+		&self.uin
+	}
 
-    pub fn runtime(&self) -> &BotRuntime {
-        &self.runtime
-    }
+	pub fn runtime(&self) -> &BotRuntime {
+		&self.runtime
+	}
 
-    pub fn api(&self) -> &dyn AdapterApi {
-        self.runtime.api()
-    }
+	pub fn api(&self) -> &dyn AdapterApi {
+		self.runtime.api()
+	}
 
-    pub fn adapter_info(&self) -> AdapterInfo {
-        self.runtime.adapter_info()
-    }
+	pub fn adapter_info(&self) -> AdapterInfo {
+		self.runtime.adapter_info()
+	}
 
-    pub fn account_info(&self) -> AccountInfo {
-        self.runtime.account_info()
-    }
+	pub fn account_info(&self) -> AccountInfo {
+		self.runtime.account_info()
+	}
 
-    pub async fn send_message(
-        &self,
-        contact: &ContactType<'_>,
-        message: &Message,
-    ) -> puniyu_error::Result<puniyu_adapter_types::SendMsgType> {
-        let (msg_type, user_id) = match contact {
-            ContactType::Friend(friend) => ("PrivateMessage", &friend.peer()),
-            ContactType::Group(group) => ("GroupMssage", &group.peer()),
-            ContactType::GroupTemp(group) => ("Group TempMessage", &group.peer()),
-            ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
-        };
-        debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
-        self.runtime.api().send_message(contact, message).await
-    }
+	pub async fn send_message(
+		&self,
+		contact: &ContactType<'_>,
+		message: &Message,
+	) -> puniyu_error::Result<puniyu_adapter_types::SendMsgType> {
+		let (msg_type, user_id) = match contact {
+			ContactType::Friend(friend) => ("PrivateMessage", &friend.peer()),
+			ContactType::Group(group) => ("GroupMssage", &group.peer()),
+			ContactType::GroupTemp(group) => ("Group TempMessage", &group.peer()),
+			ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
+		};
+		debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
+		self.runtime.api().send_message(contact, message).await
+	}
 }
 
 impl std::fmt::Debug for Bot {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Bot")
-            .field("adapter_info", &self.adapter_info())
-            .field("account_info", &self.account_info())
-            .finish()
-    }
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		f.debug_struct("Bot")
+			.field("adapter_info", &self.adapter_info())
+			.field("account_info", &self.account_info())
+			.finish()
+	}
 }
 
 impl PartialEq for Bot {
-    fn eq(&self, other: &Self) -> bool {
-        self.adapter_info() == other.adapter_info() && self.account_info() == other.account_info()
-    }
+	fn eq(&self, other: &Self) -> bool {
+		self.adapter_info() == other.adapter_info() && self.account_info() == other.account_info()
+	}
 }

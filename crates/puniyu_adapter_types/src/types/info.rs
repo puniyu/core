@@ -2,8 +2,8 @@ use bon::Builder;
 use jiff::Timestamp;
 use puniyu_semver::Version;
 use serde::{Deserialize, Serialize};
-use strum::{Display, EnumString, IntoStaticStr};
 use smol_str::SmolStr;
+use strum::{Display, EnumString, IntoStaticStr};
 
 /// 适配器平台。
 #[derive(

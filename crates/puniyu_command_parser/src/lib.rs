@@ -29,7 +29,7 @@ mod error;
 pub use error::Error;
 
 use clap::builder::ValueParser;
-use puniyu_command::{CommandRegistry, Arg, ArgMode, ArgType, ArgValue};
+use puniyu_command::{Arg, ArgMode, ArgType, ArgValue, CommandRegistry};
 use std::collections::HashMap;
 
 /// 命令解析器构建器。

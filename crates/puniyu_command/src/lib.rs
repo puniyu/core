@@ -50,7 +50,6 @@ pub use types::*;
 
 use puniyu_context::MessageContext;
 
-
 /// 命令行为接口。
 #[async_trait]
 pub trait Command: Send + Sync + 'static {

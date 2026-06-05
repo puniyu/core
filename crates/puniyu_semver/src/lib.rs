@@ -81,4 +81,3 @@ impl FromStr for Version {
 		semver::Version::from_str(s).map(Into::into)
 	}
 }
-

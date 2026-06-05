@@ -3,8 +3,8 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use puniyu_adapter_core::Adapter;
 use puniyu_loader::{
-    ComponentSet, ComponentSource, DiscoveredAdapter, DiscoveredPlugin,
-    DiscoveryMeta, LoadContext, Loader,
+	ComponentSet, ComponentSource, DiscoveredAdapter, DiscoveredPlugin, DiscoveryMeta, LoadContext,
+	Loader,
 };
 use puniyu_plugin_core::Plugin;
 
@@ -21,71 +21,68 @@ use puniyu_plugin_core::Plugin;
 ///     .with_plugin(MyPlugin);
 /// ```
 pub struct BuiltinLoader {
-    adapters: Vec<Arc<dyn Adapter>>,
-    plugins: Vec<Arc<dyn Plugin>>,
+	adapters: Vec<Arc<dyn Adapter>>,
+	plugins: Vec<Arc<dyn Plugin>>,
 }
 
 impl BuiltinLoader {
-    /// 创建空的内置加载器
-    pub fn new() -> Self {
-        Self {
-            adapters: Vec::new(),
-            plugins: Vec::new(),
-        }
-    }
+	/// 创建空的内置加载器
+	pub fn new() -> Self {
+		Self { adapters: Vec::new(), plugins: Vec::new() }
+	}
 
-    /// 添加适配器
-    pub fn with_adapter<A: Adapter + 'static>(mut self, adapter: A) -> Self {
-        self.adapters.push(Arc::new(adapter));
-        self
-    }
+	/// 添加适配器
+	pub fn with_adapter<A: Adapter + 'static>(mut self, adapter: A) -> Self {
+		self.adapters.push(Arc::new(adapter));
+		self
+	}
 
-    /// 添加插件
-    pub fn with_plugin<P: Plugin + 'static>(mut self, plugin: P) -> Self {
-        self.plugins.push(Arc::new(plugin));
-        self
-    }
+	/// 添加插件
+	pub fn with_plugin<P: Plugin + 'static>(mut self, plugin: P) -> Self {
+		self.plugins.push(Arc::new(plugin));
+		self
+	}
 }
 
 impl Default for BuiltinLoader {
-    fn default() -> Self {
-        Self::new()
-    }
+	fn default() -> Self {
+		Self::new()
+	}
 }
 
 #[async_trait]
 impl Loader for BuiltinLoader {
-    fn name(&self) -> &'static str {
-        "builtin"
-    }
+	fn name(&self) -> &'static str {
+		"builtin"
+	}
 
-    async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
-        let adapters = self
-            .adapters
-            .iter()
-            .map(|a| DiscoveredAdapter {
-                instance: Arc::clone(a),
-                meta: DiscoveryMeta {
-                    loader_name: self.name(),
-                    source: ComponentSource::Builtin,
-                    priority: 0,
-                },
-            })
-            .collect();
+	async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
+		let adapters = self
+			.adapters
+			.iter()
+			.map(|a| DiscoveredAdapter {
+				instance: Arc::clone(a),
+				meta: DiscoveryMeta {
+					loader_name: self.name(),
+					source: ComponentSource::Builtin,
+					priority: 0,
+				},
+			})
+			.collect();
 
-        let plugins = self
-            .plugins
-            .iter()
-            .map(|p| DiscoveredPlugin {
-                instance: Arc::clone(p),
-                meta: DiscoveryMeta {
-                    loader_name: "builtin",
-                    source: ComponentSource::Builtin,
-                    priority: 0,
-                },
-            })
-            .collect();
+		let plugins = self
+			.plugins
+			.iter()
+			.map(|p| DiscoveredPlugin {
+				instance: Arc::clone(p),
+				meta: DiscoveryMeta {
+					loader_name: "builtin",
+					source: ComponentSource::Builtin,
+					priority: 0,
+				},
+			})
+			.collect();
 
-        Ok(ComponentSet { adapters, plugins })
-    }
+		Ok(ComponentSet { adapters, plugins })
+	}
 }

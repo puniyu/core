@@ -11,9 +11,9 @@ use log::info;
 use puniyu_command::Command;
 use puniyu_config::Config;
 use puniyu_error::Result;
+use puniyu_semver::Version;
 use puniyu_server::ServerFunction;
 use puniyu_task::Task;
-use puniyu_semver::Version;
 use std::sync::Arc;
 
 #[async_trait]

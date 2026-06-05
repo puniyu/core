@@ -212,7 +212,7 @@ impl App {
 			(callback)().await;
 		}
 
-        puniyu_config::init();
+		puniyu_config::init();
 		if !configs.is_empty() {
 			for config in configs {
 				let config_name = config.name().to_string();
@@ -224,7 +224,7 @@ impl App {
 				);
 			}
 		}
-		
+
 		puniyu_task::init().await;
 
 		for handler in handlers.into_iter() {
