@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_config"
-version = "0.8.10"
+version = "0.8.11"
 description = "puniyu 配置管理库，统一应用、Bot、群聊与好友配置读取与热重载"
 readme = "README.md"
 authors.workspace = true

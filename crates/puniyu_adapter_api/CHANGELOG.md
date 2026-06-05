@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.9.0](https://github.com/puniyu/core/compare/puniyu_adapter_api-v0.8.18...puniyu_adapter_api-v0.9.0)
+
+### ⚙️ 杂项
+
+
+- [**breaking**] Release v0.9 - ([6a715c7](https://github.com/puniyu/core/commit/6a715c78e0807dc300f4ec8de6d8e234183d17c4))
+
+
+
+
 ## [0.8.18](https://github.com/puniyu/core/compare/puniyu_adapter_api-v0.8.17...puniyu_adapter_api-v0.8.18)
 
 ### ⚙️ 杂项

@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.9.0](https://github.com/puniyu/core/compare/puniyu_common-v0.8.9...puniyu_common-v0.9.0)
+
+### 🚜 重构
+
+
+- *(config)* 重命名 app 配置为 core 并移除日志配置 - ([f4d73e7](https://github.com/puniyu/core/commit/f4d73e7a0cb44b87230a7e59e74b46eeb056294b))
+
+
+
+### ⚙️ 杂项
+
+
+- [**breaking**] Release v0.9 - ([6a715c7](https://github.com/puniyu/core/commit/6a715c78e0807dc300f4ec8de6d8e234183d17c4))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/puniyu_common-v0.8.8...puniyu_common-v0.8.9)
 
 ### 📚 文档
