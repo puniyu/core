@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_bot"
-version = "0.8.17"
+version = "0.9.0"
 description = "puniyu 机器人实例库，统一机器人实例与注册表访问模型"
 authors.workspace = true
 license.workspace = true

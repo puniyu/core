@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.10](https://github.com/puniyu/core/compare/puniyu_path-v0.8.9...puniyu_path-v0.8.10)
+
+### 🚜 重构
+
+
+- *(config)* 重命名 app 配置为 core 并移除日志配置 - ([f4d73e7](https://github.com/puniyu/core/commit/f4d73e7a0cb44b87230a7e59e74b46eeb056294b))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/puniyu_path-v0.8.8...puniyu_path-v0.8.9)
 
 ### 📚 文档
