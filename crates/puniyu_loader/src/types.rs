@@ -1,4 +1,8 @@
-/// 加载器上下文，传递给 Loader::discover。
+use puniyu_adapter_core::Adapter;
+use puniyu_plugin_core::Plugin;
+use std::sync::Arc;
+
+/// 加载器上下文
 pub struct LoadContext {
 	/// 应用名称
 	pub app_name: &'static str,
@@ -15,20 +19,14 @@ pub enum ComponentSource {
 	Path(std::path::PathBuf),
 }
 
-/// 发现元信息，描述组件是如何被发现的。
+/// 元信息
 #[derive(Debug, Clone)]
 pub struct DiscoveryMeta {
-	/// 来源加载器名称
-	pub loader_name: &'static str,
 	/// 组件来源
 	pub source: ComponentSource,
-	/// 优先级（越大越优先）
+	/// 优先级
 	pub priority: i32,
 }
-
-use puniyu_adapter_core::Adapter;
-use puniyu_plugin_core::Plugin;
-use std::sync::Arc;
 
 /// 已发现的适配器。
 pub struct DiscoveredAdapter {
@@ -46,7 +44,7 @@ pub struct DiscoveredPlugin {
 	pub meta: DiscoveryMeta,
 }
 
-/// 组件集合，由 Loader::discover 返回。
+/// 组件集合
 pub struct ComponentSet {
 	/// 发现的适配器列表
 	pub adapters: Vec<DiscoveredAdapter>,
