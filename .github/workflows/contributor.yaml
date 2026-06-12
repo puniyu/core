@@ -22,7 +22,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: 贡献消息
-        uses: plbstl/first-contribution@fa732d1b5586da1a72ba34290a32e87467a59b78 # v4.3.2
+        uses: plbstl/first-contribution@2c36bdb58684587f60549a69aaa3ec00b9d5f4fe # v4.3.3
         with:
           token: ${{ steps.app-token.outputs.token }}
           issue-opened-msg: 👋 你好, @{fc-author}！感谢你提交了第一个问题！🔍 你的细心帮助我们发现了新的改进机会，我们会尽快处理。🚀 如果你有更多的想法或疑问，请继续分享，我们非常乐意听取你的声音！🌟 感谢你的支持！
@@ -43,7 +43,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: 添加贡献者
-        uses: plbstl/first-contribution@fa732d1b5586da1a72ba34290a32e87467a59b78 # v4.3.2
+        uses: plbstl/first-contribution@2c36bdb58684587f60549a69aaa3ec00b9d5f4fe # v4.3.3
         with:
           token: ${{ steps.app-token.outputs.token }}
           pr-merged-msg: >
