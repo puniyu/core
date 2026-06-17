@@ -10,6 +10,8 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+pub use puniyu_adapter_api::AdapterHandle;
+
 use puniyu_adapter_api::AdapterApi;
 use puniyu_config::Config;
 use puniyu_error::Result;

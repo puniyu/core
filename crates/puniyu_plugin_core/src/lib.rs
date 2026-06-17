@@ -6,14 +6,15 @@ mod registry;
 #[cfg(feature = "registry")]
 pub use registry::PluginRegistry;
 
+mod handle;
+pub use handle::PluginHandle;
+
 use async_trait::async_trait;
 use log::info;
-use puniyu_command::Command;
 use puniyu_config::Config;
 use puniyu_error::Result;
 use puniyu_semver::Version;
 use puniyu_server::ServerFunction;
-use puniyu_task::Task;
 use std::sync::Arc;
 
 #[async_trait]
@@ -41,12 +42,12 @@ pub trait Plugin: Send + Sync + 'static {
 	}
 
 	/// 任务列表
-	fn tasks(&self) -> Vec<Arc<dyn Task>> {
+	fn tasks(&self) -> Vec<puniyu_task::TaskHandle> {
 		Vec::new()
 	}
 
 	/// 命令列表
-	fn commands(&self) -> Vec<Arc<dyn Command>> {
+	fn commands(&self) -> Vec<puniyu_command::CommandHandle> {
 		Vec::new()
 	}
 

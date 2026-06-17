@@ -1,45 +1,37 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use puniyu_adapter_core::Adapter;
+use puniyu_adapter_core::{Adapter, AdapterHandle};
 use puniyu_loader::{
 	ComponentSet, ComponentSource, DiscoveredAdapter, DiscoveredPlugin, DiscoveryMeta, LoadContext,
 	Loader,
 };
-use puniyu_plugin_core::Plugin;
+use puniyu_plugin_core::{Plugin, PluginHandle};
 
-/// 内置加载器
-///
-/// 在编译期通过构建器模式注册 adapter 和 plugin。
-/// `discover` 时将已注册的组件包装为带有 `DiscoveryMeta` 的发现结果。
-///
-/// # 示例
-///
-/// ```rust,ignore
-/// let loader = BuiltinLoader::new()
-///     .with_adapter(MyAdapter)
-///     .with_plugin(MyPlugin);
-/// ```
+struct BuiltinAdapter {
+	adapter: Arc<dyn Adapter>,
+	handle: AdapterHandle,
+}
+
 pub struct BuiltinLoader {
-	adapters: Vec<Arc<dyn Adapter>>,
-	plugins: Vec<Arc<dyn Plugin>>,
+	adapters: Vec<BuiltinAdapter>,
+	plugins: Vec<PluginHandle>,
 }
 
 impl BuiltinLoader {
-	/// 创建空的内置加载器
 	pub fn new() -> Self {
 		Self { adapters: Vec::new(), plugins: Vec::new() }
 	}
 
-	/// 添加适配器
 	pub fn with_adapter<A: Adapter + 'static>(mut self, adapter: A) -> Self {
-		self.adapters.push(Arc::new(adapter));
+		let arc: Arc<dyn Adapter> = Arc::new(adapter);
+		let handle = AdapterHandle::new(arc.clone());
+		self.adapters.push(BuiltinAdapter { adapter: arc, handle });
 		self
 	}
 
-	/// 添加插件
 	pub fn with_plugin<P: Plugin + 'static>(mut self, plugin: P) -> Self {
-		self.plugins.push(Arc::new(plugin));
+		self.plugins.push(PluginHandle::new(Arc::new(plugin)));
 		self
 	}
 }
@@ -61,7 +53,8 @@ impl Loader for BuiltinLoader {
 			.adapters
 			.iter()
 			.map(|a| DiscoveredAdapter {
-				instance: Arc::clone(a),
+				adapter: a.adapter.clone(),
+				handle: a.handle.clone(),
 				meta: DiscoveryMeta {
 					source: ComponentSource::Builtin,
 					priority: 0,
@@ -73,7 +66,7 @@ impl Loader for BuiltinLoader {
 			.plugins
 			.iter()
 			.map(|p| DiscoveredPlugin {
-				instance: Arc::clone(p),
+				instance: p.clone(),
 				meta: DiscoveryMeta {
 					source: ComponentSource::Builtin,
 					priority: 0,

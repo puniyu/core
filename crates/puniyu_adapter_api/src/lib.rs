@@ -12,6 +12,9 @@
 //! 每个 API 实例自包含适配器信息（[`AdapterApi::adapter_info`]）与账号信息（[`AdapterApi::account_info`]），
 //! 实现 `OneBotAdapterApi` 后自动获得 `AdapterApi` 实现。
 
+mod handle;
+pub use handle::AdapterHandle;
+
 use std::any::Any;
 
 use async_trait::async_trait;
@@ -23,17 +26,14 @@ use puniyu_message::Message;
 
 #[async_trait]
 pub trait AdapterApi: Any + Send + Sync {
-	/// 发送消息
 	async fn send_message(
 		&self,
 		contact: &ContactType<'_>,
 		message: &Message,
 	) -> Result<SendMsgType>;
 
-	/// 获取适配器信息
 	fn adapter_info(&self) -> AdapterInfo;
 
-	/// 获取账户信息
 	fn account_info(&self) -> AccountInfo;
 }
 

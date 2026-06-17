@@ -1,6 +1,7 @@
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
 use puniyu_adapter_types::AdapterInfo;
+use std::sync::Arc;
 
 use crate::AdapterRuntime;
 
@@ -26,7 +27,7 @@ impl BotRuntime {
 		self.adapter.account_info()
 	}
 
-	pub fn api(&self) -> &dyn AdapterApi {
-		self.adapter.adapter().as_ref()
+	pub fn api(&self) -> Arc<dyn AdapterApi> {
+		self.adapter.adapter()
 	}
 }

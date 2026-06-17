@@ -48,6 +48,9 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+mod handle;
+pub use handle::CommandHandle;
+
 use puniyu_context::MessageContext;
 
 /// 命令行为接口。

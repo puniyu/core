@@ -18,6 +18,9 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+mod handle;
+pub use handle::BotHandle;
+
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
 use puniyu_adapter_types::AdapterInfo;
@@ -46,7 +49,7 @@ impl Bot {
 		&self.runtime
 	}
 
-	pub fn api(&self) -> &dyn AdapterApi {
+	pub fn api(&self) -> std::sync::Arc<dyn AdapterApi> {
 		self.runtime.api()
 	}
 

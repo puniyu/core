@@ -1,7 +1,8 @@
 mod store;
-use crate::{Handler, HandlerId};
+use crate::HandlerId;
+use crate::handle::HandlerHandle;
 use puniyu_error::registry::Error;
-use std::sync::{Arc, LazyLock};
+use std::sync::LazyLock;
 use store::HandlerStore;
 
 static STORE: LazyLock<HandlerStore> = LazyLock::new(HandlerStore::new);
@@ -11,8 +12,8 @@ pub struct HandlerRegistry;
 
 impl<'h> HandlerRegistry {
 	/// 注册处理器。
-	pub fn register(handler: Arc<dyn Handler>) -> Result<u64, Error> {
-		STORE.insert(handler)
+	pub fn register(handle: HandlerHandle) -> Result<u64, Error> {
+		STORE.insert(handle)
 	}
 
 	/// 卸载处理器（按索引或名称）。
@@ -38,12 +39,12 @@ impl<'h> HandlerRegistry {
 	pub fn unregister_with_handler_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		map.retain(|_, handler| handler.name() != name);
+		map.retain(|_, handler| handler.get().name() != name);
 		Ok(())
 	}
 
 	/// 获取处理器（按索引或名称）。
-	pub fn get<H>(handler: H) -> Option<Arc<dyn Handler>>
+	pub fn get<H>(handler: H) -> Option<HandlerHandle>
 	where
 		H: Into<HandlerId<'h>>,
 	{
@@ -54,21 +55,21 @@ impl<'h> HandlerRegistry {
 		}
 	}
 	/// 按索引获取处理器。
-	pub fn get_with_index(index: u64) -> Option<Arc<dyn Handler>> {
+	pub fn get_with_index(index: u64) -> Option<HandlerHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
 		map.get(&index).cloned()
 	}
 
 	/// 按名称获取处理器。
-	pub fn get_with_handler_name(name: &str) -> Option<Arc<dyn Handler>> {
+	pub fn get_with_handler_name(name: &str) -> Option<HandlerHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().find(|handler| handler.name() == name).cloned()
+		map.values().find(|handler| handler.get().name() == name).cloned()
 	}
 
 	/// 获取所有处理器。
-	pub fn all() -> Vec<Arc<dyn Handler>> {
+	pub fn all() -> Vec<HandlerHandle> {
 		STORE.all()
 	}
 }

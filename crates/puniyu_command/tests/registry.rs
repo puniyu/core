@@ -1,7 +1,7 @@
 #![cfg(feature = "registry")]
 
 use async_trait::async_trait;
-use puniyu_command::{Command, CommandAction, CommandRegistry};
+use puniyu_command::{Command, CommandAction, CommandHandle, CommandRegistry};
 use puniyu_context::MessageContext;
 use std::sync::{Arc, Mutex, MutexGuard};
 
@@ -37,11 +37,11 @@ fn register_returns_index_and_makes_command_queryable() {
 	let _guard = test_guard();
 	cleanup();
 
-	let index =
-		CommandRegistry::register(7, Arc::new(HelloCommand)).expect("failed to register command");
+	let index = CommandRegistry::register(7, CommandHandle::new(Arc::new(HelloCommand)))
+		.expect("failed to register command");
 
 	let by_id = CommandRegistry::get_with_command_id(index).expect("command should exist by id");
-	assert_eq!(by_id.builder.name(), "hello");
+	assert_eq!(by_id.handle.get().name(), "hello");
 
 	let by_name = CommandRegistry::get_with_command_name("hello");
 	assert_eq!(by_name.len(), 1);
@@ -54,11 +54,12 @@ fn command_can_be_queried_by_alias() {
 	let _guard = test_guard();
 	cleanup();
 
-	CommandRegistry::register(7, Arc::new(HelloCommand)).expect("failed to register command");
+	CommandRegistry::register(7, CommandHandle::new(Arc::new(HelloCommand)))
+		.expect("failed to register command");
 
 	let by_alias = CommandRegistry::get_with_command_alias("hi");
 	assert_eq!(by_alias.len(), 1);
-	assert_eq!(by_alias[0].builder.name(), "hello");
+	assert_eq!(by_alias[0].handle.get().name(), "hello");
 
 	cleanup();
 }

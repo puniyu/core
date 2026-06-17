@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use puniyu_common::source::SourceType;
 use puniyu_loader::*;
 use puniyu_version::VERSION;
@@ -7,7 +5,6 @@ use puniyu_version::VERSION;
 use crate::app::resolve::ResolvedComponents;
 use crate::logger::{core_debug, core_error, core_info, core_warn};
 
-/// 安装已解析的组件
 pub(crate) async fn install(resolved: ResolvedComponents) -> std::io::Result<()> {
 	core_debug!("adapter loading...");
 	for adapter in resolved.adapters {
@@ -33,8 +30,9 @@ pub(crate) async fn install(resolved: ResolvedComponents) -> std::io::Result<()>
 }
 
 async fn install_adapter(discovered: DiscoveredAdapter) -> puniyu_error::Result {
-	let name = discovered.instance.adapter_info().name.to_string();
-	let core_version = discovered.instance.core_version();
+	let adapter = discovered.adapter;
+	let name = adapter.adapter_info().name.to_string();
+	let core_version = adapter.core_version();
 
 	if core_version > VERSION {
 		core_warn!(
@@ -46,17 +44,16 @@ async fn install_adapter(discovered: DiscoveredAdapter) -> puniyu_error::Result 
 		return Ok(());
 	}
 
-	let index = puniyu_adapter_core::AdapterRegistry::register(Arc::clone(&discovered.instance))
+	let index = puniyu_adapter_core::AdapterRegistry::register(discovered.handle)
 		.unwrap_or_else(|e| panic!("Failed to register adapter {}: {}", name, e));
 	let source = SourceType::Adapter(index);
 
-	if let Some(server) = discovered.instance.server() {
+	if let Some(server) = adapter.server() {
 		super::server::init_server(source, server)
 			.unwrap_or_else(|e| panic!("Failed to register server for adapter {}: {:?}", name, e));
 	}
 
-	discovered
-		.instance
+	adapter
 		.on_load()
 		.await
 		.map_err(|e| std::io::Error::other(format!("Failed to on_load adapter {}: {}", name, e)))?;
@@ -65,8 +62,9 @@ async fn install_adapter(discovered: DiscoveredAdapter) -> puniyu_error::Result 
 }
 
 async fn install_plugin(discovered: DiscoveredPlugin) -> puniyu_error::Result {
-	let name = discovered.instance.name().to_string();
-	let core_version = discovered.instance.core_version();
+	let plugin = discovered.instance.get();
+	let name = plugin.name().to_string();
+	let core_version = plugin.core_version();
 
 	if core_version > VERSION {
 		core_warn!(
@@ -78,24 +76,23 @@ async fn install_plugin(discovered: DiscoveredPlugin) -> puniyu_error::Result {
 		return Ok(());
 	}
 	init_plugin_dirs(&name).await?;
-	super::config::init_config(&name, discovered.instance.config()).await?;
+	super::config::init_config(&name, plugin.config()).await?;
 
-	// 调用 on_load
-	discovered.instance.on_load().await.map_err(|e| {
+	plugin.on_load().await.map_err(|e| {
 		std::io::Error::other(format!("Failed to on_load plugin {}: {:?}", name, e))
 	})?;
 
-	let index = puniyu_plugin_core::PluginRegistry::register(Arc::clone(&discovered.instance))
+	let index = puniyu_plugin_core::PluginRegistry::register(discovered.instance)
 		.unwrap_or_else(|e| panic!("Failed to register plugin {}: {}", name, e));
 	let source = SourceType::Plugin(index);
 
-	init_commands(index, discovered.instance.commands())
+	init_commands(index, plugin.commands())
 		.unwrap_or_else(|e| panic!("Failed to register command for plugin {}: {:?}", name, e));
 
-	init_tasks(index, discovered.instance.tasks())
+	init_tasks(index, plugin.tasks())
 		.await
 		.unwrap_or_else(|e| panic!("Failed to register task for plugin {}: {:?}", name, e));
-	if let Some(server) = discovered.instance.server() {
+	if let Some(server) = plugin.server() {
 		super::server::init_server(source, server)
 			.unwrap_or_else(|e| panic!("Failed to register server for plugin {}: {:?}", name, e));
 	}
@@ -130,7 +127,7 @@ async fn init_plugin_dirs(name: &str) -> puniyu_error::Result {
 
 fn init_commands(
 	plugin_id: u64,
-	commands: Vec<Arc<dyn puniyu_command::Command>>,
+	commands: Vec<puniyu_command::CommandHandle>,
 ) -> std::result::Result<(), puniyu_error::registry::Error> {
 	use puniyu_command::CommandRegistry;
 	for command in commands {
@@ -141,7 +138,7 @@ fn init_commands(
 
 async fn init_tasks(
 	plugin_id: u64,
-	tasks: Vec<Arc<dyn puniyu_task::Task>>,
+	tasks: Vec<puniyu_task::TaskHandle>,
 ) -> std::result::Result<(), puniyu_error::registry::Error> {
 	use puniyu_task::TaskRegistry;
 	for task in tasks {

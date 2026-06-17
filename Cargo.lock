@@ -2055,6 +2055,7 @@ name = "puniyu_loader"
 version = "0.9.0"
 dependencies = [
  "async-trait",
+ "puniyu_adapter_api",
  "puniyu_adapter_core",
  "puniyu_error",
  "puniyu_plugin_core",

@@ -5,6 +5,7 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
+use puniyu_adapter_api::AdapterHandle;
 use puniyu_adapter_core::Adapter;
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
 use puniyu_bot::Bot;
@@ -64,7 +65,7 @@ impl TestData {
 		};
 		let adapter: Arc<dyn AdapterApi> =
 			Arc::new(TestOneBotApi { adapter_info: info, account_info: account });
-		let adapter_runtime = puniyu_runtime::AdapterRuntime::new(adapter);
+		let adapter_runtime = puniyu_runtime::AdapterRuntime::new(AdapterHandle::new(adapter));
 		let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime);
 		Self {
 			bot: Arc::new(Bot::new(bot_runtime)),

@@ -2,7 +2,7 @@
 
 use async_trait::async_trait;
 use puniyu_error::Result;
-use puniyu_task::{Task, TaskId, TaskInfo};
+use puniyu_task::{Task, TaskHandle, TaskId, TaskInfo};
 use std::sync::Arc;
 
 struct DummyTask;
@@ -24,21 +24,21 @@ impl Task for DummyTask {
 
 #[test]
 fn test_task_info_creation() {
-	let task = Arc::new(DummyTask);
-	let task_info = TaskInfo { plugin_id: 1, builder: task };
+	let handle = TaskHandle::new(Arc::new(DummyTask));
+	let task_info = TaskInfo { plugin_id: 1, handle };
 
 	assert_eq!(task_info.plugin_id, 1);
-	assert_eq!(task_info.builder.name(), "dummy");
+	assert_eq!(task_info.handle.get().name(), "dummy");
 }
 
 #[test]
 fn test_task_info_clone() {
-	let task = Arc::new(DummyTask);
-	let task_info = TaskInfo { plugin_id: 2, builder: task };
+	let handle = TaskHandle::new(Arc::new(DummyTask));
+	let task_info = TaskInfo { plugin_id: 2, handle };
 
 	let cloned = task_info.clone();
 	assert_eq!(cloned.plugin_id, task_info.plugin_id);
-	assert_eq!(cloned.builder.name(), task_info.builder.name());
+	assert_eq!(cloned.handle.get().name(), task_info.handle.get().name());
 }
 
 #[test]
@@ -99,8 +99,8 @@ fn test_task_id_clone() {
 fn test_task_info_to_job_conversion() {
 	use tokio_cron_scheduler::Job;
 
-	let task = Arc::new(DummyTask);
-	let task_info = TaskInfo { plugin_id: 1, builder: task };
+	let handle = TaskHandle::new(Arc::new(DummyTask));
+	let task_info = TaskInfo { plugin_id: 1, handle };
 
 	let job: Job = task_info.into();
 	// 验证 Job 创建成功，guid 不为空

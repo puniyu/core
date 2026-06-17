@@ -43,6 +43,9 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+mod handle;
+pub use handle::TaskHandle;
+
 use async_trait::async_trait;
 use puniyu_error::Result;
 

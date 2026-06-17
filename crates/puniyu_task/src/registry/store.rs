@@ -45,7 +45,7 @@ impl TaskStore {
 			let map = self.tasks.read().expect("Failed to acquire read lock");
 			if map
 				.values()
-				.any(|v| v.plugin_id == task.plugin_id && v.builder.name() == task.builder.name())
+				.any(|v| v.plugin_id == task.plugin_id && v.handle.get().name() == task.handle.get().name())
 			{
 				return Err(Error::Exists("Task".to_string()));
 			}

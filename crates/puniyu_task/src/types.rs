@@ -1,10 +1,9 @@
-use crate::Task;
+use crate::handle::TaskHandle;
 #[cfg(feature = "registry")]
 use log::{error, info};
 #[cfg(feature = "registry")]
 use puniyu_logger::owo_colors::OwoColorize;
 use std::borrow::Cow;
-use std::sync::Arc;
 #[cfg(feature = "registry")]
 use std::time::Instant;
 #[cfg(feature = "registry")]
@@ -16,37 +15,38 @@ use tokio_cron_scheduler::JobBuilder;
 /// # 字段
 ///
 /// - `plugin_id` - 关联的插件 ID
-/// - `builder` - 任务构建器
+/// - `handle` - 任务句柄
 #[derive(Clone)]
 pub struct TaskInfo {
 	/// 关联的插件 ID
 	pub plugin_id: u64,
-	/// 任务构建器
-	pub builder: Arc<dyn Task>,
+	/// 任务句柄
+	pub handle: TaskHandle,
 }
 
 #[cfg(feature = "registry")]
 impl From<&TaskInfo> for tokio_cron_scheduler::Job {
 	fn from(task: &TaskInfo) -> Self {
-		let cron_str = task.builder.cron().to_string();
+		let builder = task.handle.get();
+		let cron_str = builder.cron().to_string();
 		JobBuilder::new()
 			.with_timezone(chrono::Local)
 			.with_cron_job_type()
 			.with_schedule(&cron_str)
 			.expect("Invalid cron schedule")
 			.with_run_async(Box::new({
-				let task_name = task.builder.name().to_string();
-				let builder = task.builder.clone();
+				let task_name = builder.name().to_string();
+				let handle = task.handle.clone();
 				move |_uuid, _lock| {
 					let task_name = task_name.clone();
-					let builder = builder.clone();
+					let handle = handle.clone();
 					Box::pin(async move {
 						let tag_str = format!("[task:{}]", task_name);
 						let tag = tag_str.fg_rgb::<255, 192, 203>();
 						info!("{} 开始执行", tag);
 
 						let start_time = Instant::now();
-						let result = builder.execute().await;
+						let result = handle.get().execute().await;
 						let duration = start_time.elapsed().as_millis();
 
 						match result {

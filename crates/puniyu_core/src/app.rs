@@ -47,7 +47,7 @@ pub struct AppBuilder {
 	logo: Option<Bytes>,
 	cwd_dir: PathBuf,
 	loaders: Vec<Arc<dyn Loader>>,
-	handlers: Vec<Arc<dyn Handler>>,
+	handlers: Vec<puniyu_handler::HandlerHandle>,
 	configs: Vec<Arc<dyn puniyu_config::Config>>,
 	on_start: Option<AsyncFn>,
 	on_exit: Option<AsyncFn>,
@@ -119,7 +119,7 @@ impl AppBuilder {
 
 	/// 添加处理器
 	pub fn with_handler<H: Handler + 'static>(mut self, handler: H) -> Self {
-		self.handlers.push(Arc::new(handler));
+		self.handlers.push(puniyu_handler::HandlerHandle::new(Arc::new(handler)));
 		self
 	}
 
@@ -279,13 +279,8 @@ impl App {
 			(callback)().await;
 		}
 
-		for adapter in puniyu_adapter_core::AdapterRegistry::all() {
-			if let Err(e) = adapter.on_unload().await {
-				core_error!("Adapter on_unload error: {}", e);
-			}
-		}
-		for plugin in puniyu_plugin_core::PluginRegistry::all() {
-			if let Err(e) = plugin.on_unload().await {
+		for handle in puniyu_plugin_core::PluginRegistry::all() {
+			if let Err(e) = handle.get().on_unload().await {
 				core_error!("Plugin on_unload error: {}", e);
 			}
 		}

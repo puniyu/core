@@ -1,7 +1,7 @@
 #[doc(inline)]
 pub use puniyu_command_types::*;
 use std::borrow::Cow;
-use std::sync::Arc;
+use crate::handle::CommandHandle;
 
 /// 命令信息
 ///
@@ -11,12 +11,12 @@ pub struct CommandInfo {
 	/// 所属插件 ID。
 	pub plugin_id: u64,
 	/// 命令构建器。
-	pub builder: Arc<dyn crate::Command>,
+	pub handle: CommandHandle,
 }
 
 impl PartialEq for CommandInfo {
 	fn eq(&self, other: &Self) -> bool {
-		self.plugin_id == other.plugin_id && self.builder.name() == other.builder.name()
+		self.plugin_id == other.plugin_id && self.handle == other.handle
 	}
 }
 
