@@ -47,8 +47,9 @@ impl EventEmitter {
 		let mut handles = puniyu_handler::HandlerRegistry::all();
 		handles.sort_by_key(|h| h.get().priority());
 		for handle in handles {
-			if let Err(e) = handle.get().handle(&event).await {
-				log::error!("[{}] handler error: {}", handle.get().name(), e);
+			let handler = handle.get();
+			if let Err(e) = handler.handle(&event).await {
+				log::error!("[{}] handler error: {}", handler.name(), e);
 			}
 		}
 		Ok(())

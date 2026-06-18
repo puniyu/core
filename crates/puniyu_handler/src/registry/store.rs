@@ -15,7 +15,7 @@ impl HandlerStore {
 	}
 	pub fn insert(&self, handle: HandlerHandle) -> Result<u64, Error> {
 		let mut map = self.0.write().expect("Failed to acquire lock");
-		if map.values().any(|v| *v == handle) {
+		if map.values().any(|v| v.get().name() == handle.get().name()) {
 			return Err(Error::Exists("Handler".to_string()));
 		}
 		let index = HANDLER_INDEX.fetch_add(1, Ordering::Relaxed);

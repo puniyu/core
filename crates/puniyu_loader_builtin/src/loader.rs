@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use puniyu_adapter_core::{Adapter, AdapterHandle};
 use puniyu_loader::{
-	ComponentSet, ComponentSource, DiscoveredAdapter, DiscoveredPlugin, DiscoveryMeta, LoadContext,
+	Components, ComponentSource, DiscoveredAdapter, DiscoveredPlugin, DiscoveryMeta, LoadContext,
 	Loader,
 };
 use puniyu_plugin_core::{Plugin, PluginHandle};
@@ -48,7 +48,7 @@ impl Loader for BuiltinLoader {
 		"builtin"
 	}
 
-	async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
+	async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<Components> {
 		let adapters = self
 			.adapters
 			.iter()
@@ -74,6 +74,6 @@ impl Loader for BuiltinLoader {
 			})
 			.collect();
 
-		Ok(ComponentSet { adapters, plugins })
+		Ok(Components { adapters, plugins })
 	}
 }

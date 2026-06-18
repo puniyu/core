@@ -236,16 +236,16 @@ impl App {
 		core_debug!("discovering components...");
 		let load_ctx = LoadContext { app_name: name, cwd_dir: working_dir };
 
-		let mut all_sets = Vec::new();
+		let mut loader_components = Vec::new();
 		for loader in loaders.into_iter() {
 			core_debug!("discovering from loader: {}", loader.name());
 			match loader.discover(&load_ctx).await {
-				Ok(set) => all_sets.push(set),
+				Ok(set) => loader_components.push(set),
 				Err(e) => core_error!("Loader {} discover failed: {}", loader.name(), e),
 			}
 		}
 
-		let resolved = resolve::resolve(all_sets)
+		let resolved = resolve::resolve(loader_components)
 			.map_err(|e| std::io::Error::other(format!("Failed to resolve components: {}", e)))?;
 
 		install::install(resolved).await?;

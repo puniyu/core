@@ -13,11 +13,11 @@ impl PluginStore {
 		Self::default()
 	}
 	pub fn insert(&self, handle: PluginHandle) -> Result<u64, Error> {
-		let index = PLUGIN_INDEX.fetch_add(1, Ordering::Relaxed);
 		let mut map = self.0.write().expect("Failed to acquire lock");
 		if map.values().any(|v| *v == handle) {
 			return Err(Error::Exists("Plugin".to_string()));
 		}
+		let index = PLUGIN_INDEX.fetch_add(1, Ordering::Relaxed);
 		map.insert(index, handle);
 		Ok(index)
 	}

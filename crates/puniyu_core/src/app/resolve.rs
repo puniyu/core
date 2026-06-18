@@ -34,7 +34,7 @@ impl ResolvedComponents {
 	}
 }
 
-pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<ResolvedComponents> {
+pub(crate) fn resolve(all_sets: Vec<Components>) -> puniyu_error::Result<ResolvedComponents> {
 	let config = puniyu_config::app_config();
 	let adapter_config = config.adapter();
 	let plugin_config = config.plugin();

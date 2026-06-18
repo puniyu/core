@@ -31,16 +31,21 @@ impl<'h> HandlerRegistry {
 	pub fn unregister_with_index(index: u64) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		map.remove(&index);
-		Ok(())
+		match map.remove(&index) {
+			Some(_) => Ok(()),
+			None => Err(Error::NotFound(index.to_string())),
+		}
 	}
 
 	/// 按处理器名称卸载处理器。
 	pub fn unregister_with_handler_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		map.retain(|_, handler| handler.get().name() != name);
-		Ok(())
+		let key = map.iter().find(|(_, h)| h.get().name() == name).map(|(k, _)| *k);
+		match key.and_then(|k| map.remove(&k)) {
+			Some(_) => Ok(()),
+			None => Err(Error::NotFound(name.to_string())),
+		}
 	}
 
 	/// 获取处理器（按索引或名称）。

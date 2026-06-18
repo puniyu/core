@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use std::sync::Arc;
 
-use puniyu_loader::{ComponentSet, LoadContext, Loader};
+use puniyu_loader::{Components, LoadContext, Loader};
 
 struct TestLoader;
 
@@ -11,8 +11,8 @@ impl Loader for TestLoader {
 		"test_loader"
 	}
 
-	async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<ComponentSet> {
-		Ok(ComponentSet { adapters: vec![], plugins: vec![] })
+	async fn discover(&self, _ctx: &LoadContext) -> puniyu_error::Result<Components> {
+		Ok(Components { adapters: vec![], plugins: vec![] })
 	}
 }
 

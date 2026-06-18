@@ -40,7 +40,7 @@ pub struct DiscoveredPlugin {
 }
 
 /// 组件集合
-pub struct ComponentSet {
+pub struct Components {
 	pub adapters: Vec<DiscoveredAdapter>,
 	pub plugins: Vec<DiscoveredPlugin>,
 }
