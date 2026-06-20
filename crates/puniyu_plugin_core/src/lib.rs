@@ -35,11 +35,6 @@ pub trait Plugin: Send + Sync + 'static {
 		vec![]
 	}
 
-	/// 插件命令前缀
-	fn prefix(&self) -> Option<&str> {
-		None
-	}
-
 	/// 任务列表
 	fn tasks(&self) -> Vec<Arc<dyn Task>> {
 		Vec::new()
@@ -76,7 +71,6 @@ pub trait Plugin: Send + Sync + 'static {
 impl PartialEq for dyn Plugin {
 	fn eq(&self, other: &Self) -> bool {
 		self.name() == other.name()
-			&& self.prefix() == other.prefix()
 			&& self.tasks() == other.tasks()
 			&& self.commands() == other.commands()
 			&& self.config() == other.config()

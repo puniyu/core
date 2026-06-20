@@ -76,6 +76,11 @@ pub trait Command: Send + Sync + 'static {
 		Vec::new()
 	}
 
+	/// 返回命令前缀，默认为 `None`（使用全局前缀）。
+	fn prefix(&self) -> Option<&str> {
+		None
+	}
+
 	/// 返回命令权限，默认为 [`Permission::All`]。
 	fn permission(&self) -> Permission {
 		Permission::All
@@ -92,6 +97,7 @@ impl PartialEq for dyn Command {
 			&& self.args() == other.args()
 			&& self.priority() == other.priority()
 			&& self.alias() == other.alias()
+			&& self.prefix() == other.prefix()
 			&& self.permission() == other.permission()
 	}
 }
