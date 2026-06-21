@@ -39,6 +39,14 @@ impl AdapterApi for MockAdapter {
 	fn account_info(&self) -> AccountInfo {
 		self.account.clone()
 	}
+
+	async fn call_api(
+		&self,
+		_action: &str,
+		_params: serde_json::Value,
+	) -> puniyu_error::Result<puniyu_common::Response<serde_json::Value>> {
+		unimplemented!("mock")
+	}
 }
 
 impl Adapter for MockAdapter {}

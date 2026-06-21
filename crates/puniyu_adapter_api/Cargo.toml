@@ -16,8 +16,10 @@ workspace = true
 [dependencies]
 anyhow = "1.0.102"
 async-trait.workspace = true
+serde_json.workspace = true
 puniyu_account.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_contact.workspace = true
 puniyu_error.workspace = true
 puniyu_message.workspace = true
+puniyu_common.workspace = true
