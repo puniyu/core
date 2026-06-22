@@ -1,5 +1,36 @@
 # 变更日志
 
+## [0.9.1](https://github.com/puniyu/core/compare/puniyu_server-v0.9.0...puniyu_server-v0.9.1)
+
+### ⛰️ 新功能
+
+
+- 引入AdapterHandle、BotHandle和CommandHandle统一资源管理 ([#286](https://github.com/puniyu/core/pull/286)) - ([baaeede](https://github.com/puniyu/core/commit/baaeede88979c150f4c97868226dd020aa10be3d))
+
+
+
+### 🐛 Bug 修复
+
+
+- Fix - ([d96349b](https://github.com/puniyu/core/commit/d96349be0084ed24c54fc4a0260efca00f84dd61))
+
+
+
+### 🚜 重构
+
+
+- *(common)* 将日志模块从core迁移到common库 - ([f456f63](https://github.com/puniyu/core/commit/f456f631b20e848e37d0380268745720a74e78a1))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter)* 添加API调用功能并重构响应结构 - ([0dc7250](https://github.com/puniyu/core/commit/0dc7250b21da1369d603c6bfb1f4c537aa065d9c))
+
+
+
+
 ## [0.9.0](https://github.com/puniyu/core/compare/puniyu_server-v0.8.17...puniyu_server-v0.9.0)
 
 ### 🚜 重构
