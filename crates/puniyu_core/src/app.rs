@@ -236,14 +236,22 @@ impl App {
 		core_debug!("discovering components...");
 		let load_ctx = LoadContext { app_name: name, cwd_dir: working_dir };
 
-		let mut all_sets = Vec::new();
+		let mut loader_task = tokio::task::JoinSet::new();
+		let load_ctx = Arc::new(load_ctx);
 		for loader in loaders.into_iter() {
 			core_debug!("discovering from loader: {}", loader.name());
-			match loader.discover(&load_ctx).await {
-				Ok(set) => all_sets.push(set),
-				Err(e) => core_error!("Loader {} discover failed: {}", loader.name(), e),
-			}
+			let ctx = Arc::clone(&load_ctx);
+			loader_task.spawn(async move {
+				match loader.discover(&ctx).await {
+					Ok(set) => Some(set),
+					Err(e) => {
+						core_error!("Loader {} discover failed: {}", loader.name(), e);
+						None
+					}
+				}
+			});
 		}
+		let all_sets: Vec<_> = loader_task.join_all().await.into_iter().flatten().collect();
 
 		let resolved = resolve::resolve(all_sets)
 			.map_err(|e| std::io::Error::other(format!("Failed to resolve components: {}", e)))?;
@@ -279,16 +287,25 @@ impl App {
 			(callback)().await;
 		}
 
+		let mut adapter_task = tokio::task::JoinSet::new();
 		for adapter in puniyu_adapter_core::AdapterRegistry::all() {
-			if let Err(e) = adapter.on_unload().await {
-				core_error!("Adapter on_unload error: {}", e);
-			}
+			adapter_task.spawn(async move {
+				let name = adapter.adapter_info().name.clone();
+				if let Err(e) = adapter.on_unload().await {
+					core_error!("{} on_unload error: {}", name, e);
+				}
+			});
 		}
+		let mut plugin_task = tokio::task::JoinSet::new();
 		for plugin in puniyu_plugin_core::PluginRegistry::all() {
-			if let Err(e) = plugin.on_unload().await {
-				core_error!("Plugin on_unload error: {}", e);
-			}
+			plugin_task.spawn(async move {
+				let name = plugin.name().to_string();
+				if let Err(e) = plugin.on_unload().await {
+					core_error!("{} on_unload error: {}", name, e);
+				}
+			});
 		}
+		tokio::join!(adapter_task.join_all(), plugin_task.join_all());
 
 		puniyu_dispatch::EventEmitter::stop();
 		if let Err(e) = server_runtime.shutdown().await {
