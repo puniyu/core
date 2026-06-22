@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.8.11](https://github.com/puniyu/core/compare/puniyu_path-v0.8.10...puniyu_path-v0.8.11)
+
+### 🚜 重构
+
+
+- *(common)* 将日志模块从core迁移到common库 - ([f456f63](https://github.com/puniyu/core/commit/f456f631b20e848e37d0380268745720a74e78a1))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter)* 添加API调用功能并重构响应结构 - ([0dc7250](https://github.com/puniyu/core/commit/0dc7250b21da1369d603c6bfb1f4c537aa065d9c))
+
+
+
+
 ## [0.8.10](https://github.com/puniyu/core/compare/puniyu_path-v0.8.9...puniyu_path-v0.8.10)
 
 ### 🚜 重构

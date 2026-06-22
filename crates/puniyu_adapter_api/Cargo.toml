@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_adapter_api"
-version = "0.9.0"
+version = "0.9.1"
 description = "puniyu 统一适配器 API trait 库，定义 AdapterApi 基础接口"
 authors.workspace = true
 license.workspace = true

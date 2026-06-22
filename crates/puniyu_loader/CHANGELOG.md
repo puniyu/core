@@ -1,5 +1,25 @@
 # 变更日志
 
+## [0.9.1](https://github.com/puniyu/core/compare/puniyu_loader-v0.9.0...puniyu_loader-v0.9.1)
+
+### ⛰️ 新功能
+
+
+- 引入AdapterHandle、BotHandle和CommandHandle统一资源管理 ([#286](https://github.com/puniyu/core/pull/286)) - ([baaeede](https://github.com/puniyu/core/commit/baaeede88979c150f4c97868226dd020aa10be3d))
+
+
+
+### 🚜 重构
+
+
+- *(command)* 添加命令前缀配置功能 - ([4d87ab5](https://github.com/puniyu/core/commit/4d87ab51f26c4902eb31c363ef75df78a196ade4))
+
+
+- *(loader)* 移除DiscoveryMeta中的loader_name字段 - ([050ef9d](https://github.com/puniyu/core/commit/050ef9dab2375c8c40b6fa8a7a52214ed2c250c1))
+
+
+
+
 ## [0.9.0](https://github.com/puniyu/core/compare/puniyu_loader-v0.8.18...puniyu_loader-v0.9.0)
 
 ### ⚙️ 杂项

@@ -1,5 +1,29 @@
 # 变更日志
 
+## [0.9.1](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.9.0...puniyu_command_parser-v0.9.1)
+
+### ⛰️ 新功能
+
+
+- 引入AdapterHandle、BotHandle和CommandHandle统一资源管理 ([#286](https://github.com/puniyu/core/pull/286)) - ([baaeede](https://github.com/puniyu/core/commit/baaeede88979c150f4c97868226dd020aa10be3d))
+
+
+
+### 🚜 重构
+
+
+- *(command)* 添加命令前缀配置功能 - ([4d87ab5](https://github.com/puniyu/core/commit/4d87ab51f26c4902eb31c363ef75df78a196ade4))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter)* 添加API调用功能并重构响应结构 - ([0dc7250](https://github.com/puniyu/core/commit/0dc7250b21da1369d603c6bfb1f4c537aa065d9c))
+
+
+
+
 ## [0.9.0](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.8.17...puniyu_command_parser-v0.9.0)
 
 ### ⚙️ 杂项

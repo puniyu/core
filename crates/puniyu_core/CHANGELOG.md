@@ -1,5 +1,45 @@
 # 变更日志
 
+## [0.9.1](https://github.com/puniyu/core/compare/v0.9.0...v0.9.1)
+
+### ⛰️ 新功能
+
+
+- 引入AdapterHandle、BotHandle和CommandHandle统一资源管理 ([#286](https://github.com/puniyu/core/pull/286)) - ([baaeede](https://github.com/puniyu/core/commit/baaeede88979c150f4c97868226dd020aa10be3d))
+
+
+
+### 🐛 Bug 修复
+
+
+- Fix - ([e28f37e](https://github.com/puniyu/core/commit/e28f37e593040cd44cdd6cd689536a032cf30d36))
+
+
+
+### 🚜 重构
+
+
+- *(command)* 添加命令前缀配置功能 - ([4d87ab5](https://github.com/puniyu/core/commit/4d87ab51f26c4902eb31c363ef75df78a196ade4))
+
+
+- *(common)* 将日志模块从core迁移到common库 - ([f456f63](https://github.com/puniyu/core/commit/f456f631b20e848e37d0380268745720a74e78a1))
+
+
+- *(loader)* 移除DiscoveryMeta中的loader_name字段 - ([050ef9d](https://github.com/puniyu/core/commit/050ef9dab2375c8c40b6fa8a7a52214ed2c250c1))
+
+
+
+### ⚙️ 杂项
+
+
+- *(adapter)* 添加API调用功能并重构响应结构 - ([0dc7250](https://github.com/puniyu/core/commit/0dc7250b21da1369d603c6bfb1f4c537aa065d9c))
+
+
+- *(app)* 并行执行组件发现和卸载任务以提升性能 - ([8ec79d4](https://github.com/puniyu/core/commit/8ec79d496c33690936c7600e597e3456f6d150f5))
+
+
+
+
 ## [0.9.0](https://github.com/puniyu/core/compare/v0.8.18...v0.9.0)
 
 ### 🚜 重构

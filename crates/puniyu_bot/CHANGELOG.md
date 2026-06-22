@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.9.1](https://github.com/puniyu/core/compare/puniyu_bot-v0.9.0...puniyu_bot-v0.9.1)
+
+### ⛰️ 新功能
+
+
+- 引入AdapterHandle、BotHandle和CommandHandle统一资源管理 ([#286](https://github.com/puniyu/core/pull/286)) - ([baaeede](https://github.com/puniyu/core/commit/baaeede88979c150f4c97868226dd020aa10be3d))
+
+
+
+
 ## [0.9.0](https://github.com/puniyu/core/compare/puniyu_bot-v0.8.17...puniyu_bot-v0.9.0)
 
 ### ⚙️ 杂项
