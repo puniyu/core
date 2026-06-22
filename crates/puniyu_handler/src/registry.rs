@@ -1,8 +1,8 @@
 mod store;
+use crate::Handler;
 use crate::HandlerId;
-use crate::handle::HandlerHandle;
 use puniyu_error::registry::Error;
-use std::sync::LazyLock;
+use std::sync::{Arc, LazyLock};
 use store::HandlerStore;
 
 static STORE: LazyLock<HandlerStore> = LazyLock::new(HandlerStore::new);
@@ -12,8 +12,8 @@ pub struct HandlerRegistry;
 
 impl<'h> HandlerRegistry {
 	/// 注册处理器。
-	pub fn register(handle: HandlerHandle) -> Result<u64, Error> {
-		STORE.insert(handle)
+	pub fn register(handler: Arc<dyn Handler>) -> Result<u64, Error> {
+		STORE.insert(handler)
 	}
 
 	/// 卸载处理器（按索引或名称）。
@@ -41,7 +41,7 @@ impl<'h> HandlerRegistry {
 	pub fn unregister_with_handler_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		let key = map.iter().find(|(_, h)| h.get().name() == name).map(|(k, _)| *k);
+		let key = map.iter().find(|(_, h)| h.name() == name).map(|(k, _)| *k);
 		match key.and_then(|k| map.remove(&k)) {
 			Some(_) => Ok(()),
 			None => Err(Error::NotFound(name.to_string())),
@@ -49,7 +49,7 @@ impl<'h> HandlerRegistry {
 	}
 
 	/// 获取处理器（按索引或名称）。
-	pub fn get<H>(handler: H) -> Option<HandlerHandle>
+	pub fn get<H>(handler: H) -> Option<Arc<dyn Handler>>
 	where
 		H: Into<HandlerId<'h>>,
 	{
@@ -60,21 +60,21 @@ impl<'h> HandlerRegistry {
 		}
 	}
 	/// 按索引获取处理器。
-	pub fn get_with_index(index: u64) -> Option<HandlerHandle> {
+	pub fn get_with_index(index: u64) -> Option<Arc<dyn Handler>> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
 		map.get(&index).cloned()
 	}
 
 	/// 按名称获取处理器。
-	pub fn get_with_handler_name(name: &str) -> Option<HandlerHandle> {
+	pub fn get_with_handler_name(name: &str) -> Option<Arc<dyn Handler>> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().find(|handler| handler.get().name() == name).cloned()
+		map.values().find(|handler| handler.name() == name).cloned()
 	}
 
 	/// 获取所有处理器。
-	pub fn all() -> Vec<HandlerHandle> {
+	pub fn all() -> Vec<Arc<dyn Handler>> {
 		STORE.all()
 	}
 }

@@ -18,9 +18,6 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
-mod handle;
-pub use handle::BotHandle;
-
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
 use puniyu_adapter_types::AdapterInfo;

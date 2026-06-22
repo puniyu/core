@@ -17,9 +17,6 @@ mod registry;
 #[doc(inline)]
 pub use registry::HandlerRegistry;
 
-mod handle;
-pub use handle::HandlerHandle;
-
 use async_trait::async_trait;
 use puniyu_error::Result;
 use puniyu_event::Event;

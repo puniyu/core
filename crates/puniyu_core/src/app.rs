@@ -47,7 +47,7 @@ pub struct AppBuilder {
 	logo: Option<Bytes>,
 	cwd_dir: PathBuf,
 	loaders: Vec<Arc<dyn Loader>>,
-	handlers: Vec<puniyu_handler::HandlerHandle>,
+	handlers: Vec<Arc<dyn puniyu_handler::Handler>>,
 	configs: Vec<Arc<dyn puniyu_config::Config>>,
 	on_start: Option<AsyncFn>,
 	on_exit: Option<AsyncFn>,
@@ -119,7 +119,7 @@ impl AppBuilder {
 
 	/// 添加处理器
 	pub fn with_handler<H: Handler + 'static>(mut self, handler: H) -> Self {
-		self.handlers.push(puniyu_handler::HandlerHandle::new(Arc::new(handler)));
+		self.handlers.push(Arc::new(handler));
 		self
 	}
 
