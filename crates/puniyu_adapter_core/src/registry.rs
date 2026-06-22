@@ -1,23 +1,20 @@
 mod store;
 
-use crate::Adapter;
+use crate::AdapterHandle;
 use crate::types::AdapterId;
 use puniyu_error::registry::Error;
-use std::sync::{Arc, LazyLock};
+use std::sync::LazyLock;
 use store::AdapterStore;
 
 static STORE: LazyLock<AdapterStore> = LazyLock::new(AdapterStore::new);
 
-/// 适配器注册表。
 pub struct AdapterRegistry;
 
 impl<'a> AdapterRegistry {
-	/// 注册适配器，并返回内部索引。
-	pub fn register(adapter: Arc<dyn Adapter>) -> Result<u64, Error> {
-		STORE.insert(adapter)
+	pub fn register(handle: AdapterHandle) -> Result<u64, Error> {
+		STORE.insert(handle)
 	}
 
-	/// 按索引或名称卸载适配器。
 	pub fn unregister<A>(adapter: A) -> Result<(), Error>
 	where
 		A: Into<AdapterId<'a>>,
@@ -29,7 +26,6 @@ impl<'a> AdapterRegistry {
 		}
 	}
 
-	/// 通过索引卸载适配器。
 	pub fn unregister_with_index(index: u64) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
@@ -40,19 +36,17 @@ impl<'a> AdapterRegistry {
 		Ok(())
 	}
 
-	/// 通过名称卸载适配器。
 	pub fn unregister_with_adapter_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		if !map.values().any(|v| v.adapter_info().name == name) {
+		if !map.values().any(|v| v.get().adapter_info().name == name) {
 			return Err(Error::NotFound("Adapter".to_string()));
 		}
-		map.retain(|_, v| v.adapter_info().name != name);
+		map.retain(|_, v| v.get().adapter_info().name != name);
 		Ok(())
 	}
 
-	/// 按索引或名称查询适配器。
-	pub fn get<A>(adapter: A) -> Option<Arc<dyn Adapter>>
+	pub fn get<A>(adapter: A) -> Option<AdapterHandle>
 	where
 		A: Into<AdapterId<'a>>,
 	{
@@ -63,22 +57,19 @@ impl<'a> AdapterRegistry {
 		}
 	}
 
-	/// 通过索引查询适配器。
-	pub fn get_with_index(index: u64) -> Option<Arc<dyn Adapter>> {
+	pub fn get_with_index(index: u64) -> Option<AdapterHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
 		map.get(&index).cloned()
 	}
 
-	/// 通过名称查询适配器。
-	pub fn get_with_adapter_name(name: &str) -> Option<Arc<dyn Adapter>> {
+	pub fn get_with_adapter_name(name: &str) -> Option<AdapterHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().find(|v| v.adapter_info().name == name).cloned()
+		map.values().find(|v| v.get().adapter_info().name == name).cloned()
 	}
 
-	/// 获取所有已注册适配器。
-	pub fn all() -> Vec<Arc<dyn Adapter>> {
+	pub fn all() -> Vec<AdapterHandle> {
 		STORE.all()
 	}
 }

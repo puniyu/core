@@ -54,5 +54,5 @@ pub trait Loader: Send + Sync + 'static {
 	/// 执行组件发现
 	///
 	/// 根据给定的上下文发现可用的适配器和插件。
-	async fn discover(&self, ctx: &LoadContext) -> Result<ComponentSet>;
+	async fn discover(&self, ctx: &LoadContext) -> Result<Components>;
 }

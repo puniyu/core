@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
-use puniyu_adapter_core::Adapter;
+use puniyu_adapter_core::{Adapter, AdapterHandle};
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
 use puniyu_bot::Bot;
 use puniyu_contact::{Contact, ContactType, contact_friend};
@@ -67,12 +67,10 @@ impl TestData {
 			name: "Puniyu".to_string(),
 			avatar: Bytes::new(),
 		};
-		let adapter: Arc<dyn AdapterApi> =
+		let adapter: Arc<dyn Adapter> =
 			Arc::new(TestOneBotApi { adapter_info: info, account_info: account });
-		let adapter_runtime = puniyu_runtime::AdapterRuntime::new(adapter);
-		let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime);
 		Self {
-			bot: Arc::new(Bot::new(bot_runtime)),
+			bot: Arc::new(Bot::new(AdapterHandle::new(adapter))),
 			friend_contact: contact_friend!(peer: "123456", name: "Alice"),
 			friend_sender: sender_friend!(user_id: "123456", nick: "Alice"),
 			elements: Vec::new(),

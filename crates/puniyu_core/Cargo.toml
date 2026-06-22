@@ -37,7 +37,6 @@ puniyu_contact.workspace = true
 puniyu_segment.workspace = true
 puniyu_version.workspace = true
 puniyu_sender.workspace = true
-puniyu_runtime.workspace = true
 
 puniyu_error = { workspace = true, features = ["registry"] }
 puniyu_command = { workspace = true, features = ["registry"] }
@@ -50,3 +49,6 @@ puniyu_adapter_core = { workspace = true, features = ["registry"] }
 puniyu_server = { workspace = true, features = ["registry"] }
 
 convert_case = { version = "0.11.0" }
+
+
+

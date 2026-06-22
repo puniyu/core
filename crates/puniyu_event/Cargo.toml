@@ -36,4 +36,3 @@ puniyu_adapter_core.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_common.workspace = true
 puniyu_message.workspace = true
-puniyu_runtime.workspace = true

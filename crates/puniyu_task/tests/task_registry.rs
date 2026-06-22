@@ -2,7 +2,7 @@
 
 use async_trait::async_trait;
 use puniyu_error::Result;
-use puniyu_task::{Task, TaskRegistry, init};
+use puniyu_task::{Task, TaskHandle, TaskRegistry, init};
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -51,17 +51,19 @@ async fn test_registry_lifecycle_and_error_paths() {
 	let plugin_a = (suffix % 1_000_000) as u64 + 10_000;
 	let plugin_b = plugin_a + 1;
 
-	let id_a = TaskRegistry::register(plugin_a, Arc::new(TestTask::new(shared_name)))
+	let id_a = TaskRegistry::register(plugin_a, TaskHandle::new(Arc::new(TestTask::new(shared_name))))
 		.await
 		.unwrap_or_else(|err| panic!("register plugin_a shared failed: {err}"));
-	let id_b = TaskRegistry::register(plugin_b, Arc::new(TestTask::new(shared_name)))
+	let id_b = TaskRegistry::register(plugin_b, TaskHandle::new(Arc::new(TestTask::new(shared_name))))
 		.await
 		.unwrap_or_else(|err| panic!("register plugin_b shared failed: {err}"));
-	let id_extra = TaskRegistry::register(plugin_a, Arc::new(TestTask::new(extra_name)))
-		.await
-		.unwrap_or_else(|err| panic!("register plugin_a extra failed: {err}"));
+	let id_extra =
+		TaskRegistry::register(plugin_a, TaskHandle::new(Arc::new(TestTask::new(extra_name))))
+			.await
+			.unwrap_or_else(|err| panic!("register plugin_a extra failed: {err}"));
 
-	let duplicate = TaskRegistry::register(plugin_a, Arc::new(TestTask::new(shared_name))).await;
+	let duplicate =
+		TaskRegistry::register(plugin_a, TaskHandle::new(Arc::new(TestTask::new(shared_name)))).await;
 	match duplicate {
 		Ok(_) => panic!("duplicate task in same plugin should fail"),
 		Err(err) => assert_eq!(err.to_string(), "exists: Task"),
@@ -70,7 +72,7 @@ async fn test_registry_lifecycle_and_error_paths() {
 	let by_index = TaskRegistry::get(id_a);
 	assert_eq!(by_index.len(), 1);
 	assert_eq!(by_index[0].plugin_id, plugin_a);
-	assert_eq!(by_index[0].builder.name(), shared_name);
+	assert_eq!(by_index[0].handle.get().name(), shared_name);
 
 	let by_name = TaskRegistry::get(shared_name);
 	assert_eq!(by_name.len(), 2);
@@ -79,8 +81,8 @@ async fn test_registry_lifecycle_and_error_paths() {
 
 	let by_plugin_a = TaskRegistry::get_with_plugin_id(plugin_a);
 	assert_eq!(by_plugin_a.len(), 2);
-	assert!(by_plugin_a.iter().any(|task| task.builder.name() == shared_name));
-	assert!(by_plugin_a.iter().any(|task| task.builder.name() == extra_name));
+	assert!(by_plugin_a.iter().any(|task| task.handle.get().name() == shared_name));
+	assert!(by_plugin_a.iter().any(|task| task.handle.get().name() == extra_name));
 
 	TaskRegistry::unregister(id_extra)
 		.await

@@ -3,19 +3,20 @@ use actix_web::dev::ServerHandle;
 use actix_web::middleware::{NormalizePath, TrailingSlash};
 use actix_web::{App, HttpServer, web};
 use puniyu_common::app::app_name;
-use puniyu_runtime::ServerRuntime;
 
 use crate::logger::server_info;
 use std::io;
 use std::net::IpAddr;
 use std::sync::{LazyLock, Mutex};
+use tokio::task::JoinHandle;
 
 struct ServerControl {
 	handle: ServerHandle,
+	join_handle: JoinHandle<io::Result<()>>,
 }
 
 static SERVER_CONTROL: LazyLock<Mutex<Option<ServerControl>>> = LazyLock::new(|| Mutex::new(None));
-pub fn start_server(host: IpAddr, port: u16) -> io::Result<ServerRuntime> {
+pub fn start_server(host: IpAddr, port: u16) -> io::Result<()> {
 	{
 		let guard = SERVER_CONTROL.lock().map_err(|e| io::Error::other(e.to_string()))?;
 		if guard.is_some() {
@@ -48,16 +49,17 @@ pub fn start_server(host: IpAddr, port: u16) -> io::Result<ServerRuntime> {
 	.bind((host, port))?;
 	let running_server = server.run();
 	let handle = running_server.handle();
-	let control = ServerControl { handle: handle.clone() };
-
-	SERVER_CONTROL.lock().map_err(|e| io::Error::other(e.to_string()))?.replace(control);
 
 	let join_handle = tokio::spawn(running_server);
-	Ok(ServerRuntime::new(handle, join_handle))
+	let control = ServerControl { handle, join_handle };
+
+	SERVER_CONTROL.lock().map_err(|e| io::Error::other(e.to_string()))?.replace(control);
+	Ok(())
 }
 
 pub async fn run_server(host: IpAddr, port: u16) -> io::Result<()> {
-	start_server(host, port)?.wait().await
+	start_server(host, port)?;
+	shutdown_server().await
 }
 
 pub async fn stop_server() -> io::Result<()> {
@@ -71,7 +73,21 @@ pub async fn stop_server() -> io::Result<()> {
 	Ok(())
 }
 
-pub async fn restart_server(host: IpAddr, port: u16) -> io::Result<ServerRuntime> {
+pub async fn shutdown_server() -> io::Result<()> {
+	let control = SERVER_CONTROL
+		.lock()
+		.map_err(|e| io::Error::other(e.to_string()))?
+		.take()
+		.ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Server not running"))?;
+
+	control.handle.stop(true).await;
+	control
+		.join_handle
+		.await
+		.map_err(|e| io::Error::other(format!("Server task join error: {}", e)))?
+}
+
+pub async fn restart_server(host: IpAddr, port: u16) -> io::Result<()> {
 	stop_server().await?;
 	start_server(host, port)
 }

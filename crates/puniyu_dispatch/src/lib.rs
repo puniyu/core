@@ -25,7 +25,7 @@ impl EventEmitter {
 	///
 	/// 停止后调用 [`EventEmitter::emit`] 将返回 [`Error::NotRunning`]。
 	pub fn stop() {
-		DispatchStore::stop();
+		DispatchStore::stop()
 	}
 
 	/// 返回事件发射器当前是否处于运行状态。
@@ -44,9 +44,9 @@ impl EventEmitter {
 		if !DispatchStore::is_running() {
 			return Err(Error::NotRunning);
 		}
-		let mut handlers = puniyu_handler::HandlerRegistry::all();
-		handlers.sort_by_key(|h| h.priority());
-		for handler in handlers {
+		let mut handles = puniyu_handler::HandlerRegistry::all();
+		handles.sort_by_key(|h| h.priority());
+		for handler in handles {
 			if let Err(e) = handler.handle(&event).await {
 				log::error!("[{}] handler error: {}", handler.name(), e);
 			}

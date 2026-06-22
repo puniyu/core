@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use puniyu_command::{Arg, Command, CommandAction, CommandRegistry};
+use puniyu_command::{Arg, Command, CommandAction, CommandHandle, CommandRegistry};
 use puniyu_command_parser::CommandParser;
 use std::sync::{Arc, Mutex, MutexGuard};
 
@@ -31,7 +31,8 @@ fn test_guard() -> MutexGuard<'static, ()> {
 
 fn register_test_command() {
 	let _ = CommandRegistry::unregister_with_command_name("hello");
-	CommandRegistry::register(0, Arc::new(TestCommand)).expect("failed to register test command");
+	CommandRegistry::register(0, CommandHandle::new(Arc::new(TestCommand)))
+		.expect("failed to register test command");
 }
 
 fn unregister_test_command() {

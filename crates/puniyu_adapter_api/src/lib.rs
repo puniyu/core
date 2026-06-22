@@ -25,17 +25,14 @@ use puniyu_message::Message;
 
 #[async_trait]
 pub trait AdapterApi: Any + Send + Sync {
-	/// 发送消息
 	async fn send_message(
 		&self,
 		contact: &ContactType<'_>,
 		message: &Message,
 	) -> Result<SendMsgType>;
 
-	/// 获取适配器信息
 	fn adapter_info(&self) -> AdapterInfo;
 
-	/// 获取账户信息
 	fn account_info(&self) -> AccountInfo;
 
 	/// 调用适配器 API

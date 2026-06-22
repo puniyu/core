@@ -7,8 +7,8 @@ pub(crate) struct ResolvedComponents {
 
 impl ResolvedComponents {
 	pub fn add_adapter(&mut self, a: DiscoveredAdapter) {
-		let name = a.instance.adapter_info().name.to_string();
-		if self.adapters.iter().any(|x| x.instance.adapter_info().name == name) {
+		let name = a.handle.get().adapter_info().name.to_string();
+		if self.adapters.iter().any(|x| x.handle.get().adapter_info().name == name) {
 			puniyu_common::core_warn!(
 				"duplicate adapter detected — keeping higher priority occurrence"
 			);
@@ -18,8 +18,8 @@ impl ResolvedComponents {
 	}
 
 	pub fn add_plugin(&mut self, p: DiscoveredPlugin) {
-		let name = p.instance.name().to_string();
-		if self.plugins.iter().any(|x| x.instance.name() == name) {
+		let name = p.handle.get().name().to_string();
+		if self.plugins.iter().any(|x| x.handle.get().name() == name) {
 			puniyu_common::core_warn!(
 				"duplicate plugin detected — keeping higher priority occurrence"
 			);
@@ -34,7 +34,7 @@ impl ResolvedComponents {
 	}
 }
 
-pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<ResolvedComponents> {
+pub(crate) fn resolve(all_sets: Vec<Components>) -> puniyu_error::Result<ResolvedComponents> {
 	let config = puniyu_config::app_config();
 	let adapter_config = config.adapter();
 	let plugin_config = config.plugin();
@@ -43,7 +43,7 @@ pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<Resol
 
 	for set in all_sets {
 		for adapter in set.adapters {
-			let name = adapter.instance.adapter_info().name.to_string();
+			let name = adapter.handle.get().adapter_info().name.to_string();
 			if is_enabled(&name, &adapter_config.enable_list(), &adapter_config.disable_list()) {
 				resolved.add_adapter(adapter);
 			} else {
@@ -51,7 +51,7 @@ pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<Resol
 			}
 		}
 		for plugin in set.plugins {
-			let name = plugin.instance.name().to_string();
+			let name = plugin.handle.get().name().to_string();
 			if is_enabled(&name, &plugin_config.enable_list(), &plugin_config.disable_list()) {
 				resolved.add_plugin(plugin);
 			} else {

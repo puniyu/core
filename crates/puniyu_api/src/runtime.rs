@@ -1,2 +1,2 @@
 #[doc(inline)]
-pub use puniyu_runtime::{AdapterRuntime, BotRuntime, ServerRuntime};
+pub use puniyu_bot::AdapterHandle;

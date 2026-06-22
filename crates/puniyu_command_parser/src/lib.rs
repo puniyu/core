@@ -117,8 +117,9 @@ impl CommandParser {
 		}
 
 		let command_info = &commands[0];
-		let arg_defs = command_info.builder.args();
-		let aliases = command_info.builder.alias();
+		let command = command_info.handle.get();
+		let arg_defs = command.args();
+		let aliases = command.alias();
 
 		let cmd = Self::build_command(&command_name, &aliases, &arg_defs);
 		let matches =

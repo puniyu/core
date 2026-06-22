@@ -47,7 +47,7 @@ pub struct AppBuilder {
 	logo: Option<Bytes>,
 	cwd_dir: PathBuf,
 	loaders: Vec<Arc<dyn Loader>>,
-	handlers: Vec<Arc<dyn Handler>>,
+	handlers: Vec<Arc<dyn puniyu_handler::Handler>>,
 	configs: Vec<Arc<dyn puniyu_config::Config>>,
 	on_start: Option<AsyncFn>,
 	on_exit: Option<AsyncFn>,
@@ -272,7 +272,7 @@ impl App {
 		let config = config.server();
 		let host = config.host();
 		let port = config.port();
-		let server_runtime = puniyu_server::start_server(host, port)?;
+		puniyu_server::start_server(host, port)?;
 
 		let duration_str = format_duration(start_time.elapsed());
 		core_info!(
@@ -287,28 +287,8 @@ impl App {
 			(callback)().await;
 		}
 
-		let mut adapter_task = tokio::task::JoinSet::new();
-		for adapter in puniyu_adapter_core::AdapterRegistry::all() {
-			adapter_task.spawn(async move {
-				let name = adapter.adapter_info().name.clone();
-				if let Err(e) = adapter.on_unload().await {
-					core_error!("{} on_unload error: {}", name, e);
-				}
-			});
-		}
-		let mut plugin_task = tokio::task::JoinSet::new();
-		for plugin in puniyu_plugin_core::PluginRegistry::all() {
-			plugin_task.spawn(async move {
-				let name = plugin.name().to_string();
-				if let Err(e) = plugin.on_unload().await {
-					core_error!("{} on_unload error: {}", name, e);
-				}
-			});
-		}
-		tokio::join!(adapter_task.join_all(), plugin_task.join_all());
-
 		puniyu_dispatch::EventEmitter::stop();
-		if let Err(e) = server_runtime.shutdown().await {
+		if let Err(e) = puniyu_server::shutdown_server().await {
 			core_error!("Server exited with error: {}", e);
 		}
 		core_info!(

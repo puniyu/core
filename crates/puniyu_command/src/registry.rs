@@ -2,10 +2,10 @@
 
 mod store;
 
-use crate::Command;
+use crate::handle::CommandHandle;
 use crate::types::{CommandId, CommandInfo};
 use puniyu_error::registry::Error;
-use std::sync::{Arc, LazyLock};
+use std::sync::LazyLock;
 use store::CommandStore;
 
 static STORE: LazyLock<CommandStore> = LazyLock::new(CommandStore::new);
@@ -15,8 +15,8 @@ pub struct CommandRegistry;
 
 impl<'c> CommandRegistry {
 	/// 注册命令，并返回内部索引。
-	pub fn register(plugin_id: u64, command: Arc<dyn Command>) -> Result<u64, Error> {
-		let command = CommandInfo { plugin_id, builder: command };
+	pub fn register(plugin_id: u64, handle: CommandHandle) -> Result<u64, Error> {
+		let command = CommandInfo { plugin_id, handle };
 		STORE.insert(command)
 	}
 
@@ -47,10 +47,10 @@ impl<'c> CommandRegistry {
 	pub fn unregister_with_command_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		if !map.values().any(|v| v.builder.name() == name) {
+		if !map.values().any(|v| v.handle.get().name() == name) {
 			return Err(Error::NotFound("Command".to_string()));
 		}
-		map.retain(|_, v| v.builder.name() != name);
+		map.retain(|_, v| v.handle.get().name() != name);
 		Ok(())
 	}
 
@@ -88,14 +88,14 @@ impl<'c> CommandRegistry {
 	pub fn get_with_command_name(name: &str) -> Vec<CommandInfo> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().filter(|v| v.builder.name() == name).cloned().collect()
+		map.values().filter(|v| v.handle.get().name() == name).cloned().collect()
 	}
 
 	/// 通过命令别名查询命令。
 	pub fn get_with_command_alias(alias: &str) -> Vec<CommandInfo> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().filter(|v| v.builder.alias().contains(&alias)).cloned().collect()
+		map.values().filter(|v| v.handle.get().alias().contains(&alias)).cloned().collect()
 	}
 
 	/// 通过插件 ID 查询所有命令。

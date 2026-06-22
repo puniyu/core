@@ -1,7 +1,8 @@
-use std::sync::{Arc, LazyLock};
+use std::sync::LazyLock;
 
 mod store;
-use crate::{Plugin, PluginId};
+use crate::PluginId;
+use crate::handle::PluginHandle;
 use puniyu_error::registry::Error;
 use store::PluginStore;
 
@@ -11,8 +12,8 @@ static STORE: LazyLock<PluginStore> = LazyLock::new(PluginStore::new);
 pub struct PluginRegistry;
 impl<'p> PluginRegistry {
 	/// 注册一个插件
-	pub fn register(plugin: Arc<dyn Plugin>) -> Result<u64, Error> {
-		STORE.insert(plugin)
+	pub fn register(handle: PluginHandle) -> Result<u64, Error> {
+		STORE.insert(handle)
 	}
 
 	/// 卸载一个插件
@@ -40,14 +41,14 @@ impl<'p> PluginRegistry {
 	pub fn unregister_with_plugin_name(name: &str) -> Result<(), Error> {
 		let raw = STORE.raw();
 		let mut map = raw.write().expect("Failed to acquire lock");
-		if !map.values().any(|v| v.name() == name) {
+		if !map.values().any(|v| v.get().name() == name) {
 			return Err(Error::NotFound("Plugin".to_string()));
 		}
-		map.retain(|_, v| v.name() != name);
+		map.retain(|_, v| v.get().name() != name);
 		Ok(())
 	}
 
-	pub fn get<P>(plugin: P) -> Option<Arc<dyn Plugin>>
+	pub fn get<P>(plugin: P) -> Option<PluginHandle>
 	where
 		P: Into<PluginId<'p>>,
 	{
@@ -58,19 +59,19 @@ impl<'p> PluginRegistry {
 		}
 	}
 
-	pub fn get_with_index(index: u64) -> Option<Arc<dyn Plugin>> {
+	pub fn get_with_index(index: u64) -> Option<PluginHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
 		map.get(&index).cloned()
 	}
 
-	pub fn get_with_plugin_name(name: &str) -> Option<Arc<dyn Plugin>> {
+	pub fn get_with_plugin_name(name: &str) -> Option<PluginHandle> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().find(|v| v.name() == name).cloned()
+		map.values().find(|v| v.get().name() == name).cloned()
 	}
 
-	pub fn all() -> Vec<Arc<dyn Plugin>> {
+	pub fn all() -> Vec<PluginHandle> {
 		STORE.all()
 	}
 }

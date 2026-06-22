@@ -16,7 +16,7 @@ impl<'c> BotContext<'c> {
 		Self { inner: bot }
 	}
 
-	pub fn api(&self) -> &dyn AdapterApi {
+	pub fn api(&self) -> std::sync::Arc<dyn AdapterApi> {
 		self.inner.api()
 	}
 
