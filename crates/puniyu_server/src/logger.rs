@@ -11,7 +11,7 @@ macro_rules! server_info {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::puniyu_common::corer_info!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::core_info!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
@@ -30,7 +30,7 @@ macro_rules! server_warn {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::puniyu_common::corer_warn!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::core_warn!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
@@ -49,7 +49,7 @@ macro_rules! server_error {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::puniyu_common::corer_error!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::core_error!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
@@ -67,7 +67,7 @@ macro_rules! server_debug {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::puniyu_common::corer_debug!!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::core_debug!!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
