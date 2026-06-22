@@ -16,7 +16,7 @@ use std::sync::Arc;
 use std::time::Instant;
 use tokio::{fs, signal};
 
-use crate::logger::{core_debug, core_error, core_info};
+use puniyu_common::{core_debug, core_error, core_info};
 
 type AsyncFn =
 	Box<dyn Fn() -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> + Send + Sync>;
@@ -236,16 +236,24 @@ impl App {
 		core_debug!("discovering components...");
 		let load_ctx = LoadContext { app_name: name, cwd_dir: working_dir };
 
-		let mut loader_components = Vec::new();
+		let mut loader_task = tokio::task::JoinSet::new();
+		let load_ctx = Arc::new(load_ctx);
 		for loader in loaders.into_iter() {
 			core_debug!("discovering from loader: {}", loader.name());
-			match loader.discover(&load_ctx).await {
-				Ok(set) => loader_components.push(set),
-				Err(e) => core_error!("Loader {} discover failed: {}", loader.name(), e),
-			}
+			let ctx = Arc::clone(&load_ctx);
+			loader_task.spawn(async move {
+				match loader.discover(&ctx).await {
+					Ok(set) => Some(set),
+					Err(e) => {
+						core_error!("Loader {} discover failed: {}", loader.name(), e);
+						None
+					}
+				}
+			});
 		}
+		let all_sets: Vec<_> = loader_task.join_all().await.into_iter().flatten().collect();
 
-		let resolved = resolve::resolve(loader_components)
+		let resolved = resolve::resolve(all_sets)
 			.map_err(|e| std::io::Error::other(format!("Failed to resolve components: {}", e)))?;
 
 		install::install(resolved).await?;
@@ -264,7 +272,7 @@ impl App {
 		let config = config.server();
 		let host = config.host();
 		let port = config.port();
-		let server_runtime = puniyu_server::start_server(host, port)?;
+		puniyu_server::start_server(host, port)?;
 
 		let duration_str = format_duration(start_time.elapsed());
 		core_info!(
@@ -279,14 +287,8 @@ impl App {
 			(callback)().await;
 		}
 
-		for handle in puniyu_plugin_core::PluginRegistry::all() {
-			if let Err(e) = handle.get().on_unload().await {
-				core_error!("Plugin on_unload error: {}", e);
-			}
-		}
-
 		puniyu_dispatch::EventEmitter::stop();
-		if let Err(e) = server_runtime.shutdown().await {
+		if let Err(e) = puniyu_server::shutdown_server().await {
 			core_error!("Server exited with error: {}", e);
 		}
 		core_info!(

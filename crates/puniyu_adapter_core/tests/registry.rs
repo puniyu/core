@@ -1,7 +1,7 @@
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
-use puniyu_adapter_api::{AdapterApi, AdapterHandle};
-use puniyu_adapter_core::{Adapter, AdapterRegistry};
+use puniyu_adapter_api::AdapterApi;
+use puniyu_adapter_core::{Adapter, AdapterHandle, AdapterRegistry};
 use puniyu_adapter_types::{AdapterInfo, SendMsgType};
 use puniyu_contact::ContactType;
 use puniyu_message::Message;
@@ -38,6 +38,14 @@ impl AdapterApi for MockAdapter {
 
 	fn account_info(&self) -> AccountInfo {
 		self.account.clone()
+	}
+
+	async fn call_api(
+		&self,
+		_action: &str,
+		_params: serde_json::Value,
+	) -> puniyu_error::Result<puniyu_common::Response<serde_json::Value>> {
+		unimplemented!("mock")
 	}
 }
 

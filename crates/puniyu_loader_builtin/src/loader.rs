@@ -8,13 +8,8 @@ use puniyu_loader::{
 };
 use puniyu_plugin_core::{Plugin, PluginHandle};
 
-struct BuiltinAdapter {
-	adapter: Arc<dyn Adapter>,
-	handle: AdapterHandle,
-}
-
 pub struct BuiltinLoader {
-	adapters: Vec<BuiltinAdapter>,
+	adapters: Vec<AdapterHandle>,
 	plugins: Vec<PluginHandle>,
 }
 
@@ -24,9 +19,7 @@ impl BuiltinLoader {
 	}
 
 	pub fn with_adapter<A: Adapter + 'static>(mut self, adapter: A) -> Self {
-		let arc: Arc<dyn Adapter> = Arc::new(adapter);
-		let handle = AdapterHandle::new(arc.clone());
-		self.adapters.push(BuiltinAdapter { adapter: arc, handle });
+		self.adapters.push(AdapterHandle::new(Arc::new(adapter)));
 		self
 	}
 
@@ -52,9 +45,8 @@ impl Loader for BuiltinLoader {
 		let adapters = self
 			.adapters
 			.iter()
-			.map(|a| DiscoveredAdapter {
-				adapter: a.adapter.clone(),
-				handle: a.handle.clone(),
+			.map(|h| DiscoveredAdapter {
+				handle: h.clone(),
 				meta: DiscoveryMeta {
 					source: ComponentSource::Builtin,
 					priority: 0,
@@ -66,7 +58,7 @@ impl Loader for BuiltinLoader {
 			.plugins
 			.iter()
 			.map(|p| DiscoveredPlugin {
-				instance: p.clone(),
+				handle: p.clone(),
 				meta: DiscoveryMeta {
 					source: ComponentSource::Builtin,
 					priority: 0,

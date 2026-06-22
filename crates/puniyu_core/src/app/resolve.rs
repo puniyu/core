@@ -7,9 +7,9 @@ pub(crate) struct ResolvedComponents {
 
 impl ResolvedComponents {
 	pub fn add_adapter(&mut self, a: DiscoveredAdapter) {
-		let name = a.adapter.adapter_info().name.to_string();
-		if self.adapters.iter().any(|x| x.adapter.adapter_info().name == name) {
-			crate::logger::core_warn!(
+		let name = a.handle.get().adapter_info().name.to_string();
+		if self.adapters.iter().any(|x| x.handle.get().adapter_info().name == name) {
+			puniyu_common::core_warn!(
 				"duplicate adapter detected — keeping higher priority occurrence"
 			);
 			return;
@@ -18,9 +18,9 @@ impl ResolvedComponents {
 	}
 
 	pub fn add_plugin(&mut self, p: DiscoveredPlugin) {
-		let name = p.instance.get().name().to_string();
-		if self.plugins.iter().any(|x| x.instance.get().name() == name) {
-			crate::logger::core_warn!(
+		let name = p.handle.get().name().to_string();
+		if self.plugins.iter().any(|x| x.handle.get().name() == name) {
+			puniyu_common::core_warn!(
 				"duplicate plugin detected — keeping higher priority occurrence"
 			);
 			return;
@@ -43,19 +43,19 @@ pub(crate) fn resolve(all_sets: Vec<Components>) -> puniyu_error::Result<Resolve
 
 	for set in all_sets {
 		for adapter in set.adapters {
-			let name = adapter.adapter.adapter_info().name.to_string();
+			let name = adapter.handle.get().adapter_info().name.to_string();
 			if is_enabled(&name, &adapter_config.enable_list(), &adapter_config.disable_list()) {
 				resolved.add_adapter(adapter);
 			} else {
-				crate::logger::core_warn!("adapter {} is disabled, skipping", name);
+				puniyu_common::core_warn!("adapter {} is disabled, skipping", name);
 			}
 		}
 		for plugin in set.plugins {
-			let name = plugin.instance.get().name().to_string();
+			let name = plugin.handle.get().name().to_string();
 			if is_enabled(&name, &plugin_config.enable_list(), &plugin_config.disable_list()) {
 				resolved.add_plugin(plugin);
 			} else {
-				crate::logger::core_warn!("plugin {} is disabled, skipping", name);
+				puniyu_common::core_warn!("plugin {} is disabled, skipping", name);
 			}
 		}
 	}

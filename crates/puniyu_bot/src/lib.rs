@@ -18,44 +18,46 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
+pub use puniyu_adapter_core::AdapterHandle;
+
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
 use puniyu_adapter_types::AdapterInfo;
 use puniyu_contact::{Contact, ContactType};
 use puniyu_logger::owo_colors::OwoColorize;
 use puniyu_message::Message;
-pub use puniyu_runtime::{AdapterRuntime, BotRuntime};
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Bot {
-	runtime: BotRuntime,
+	handle: AdapterHandle,
 	uin: String,
 }
 
 impl Bot {
-	pub fn new(runtime: BotRuntime) -> Self {
-		let uin = runtime.account_info().uin.clone();
-		Self { runtime, uin }
+	pub fn new(handle: AdapterHandle) -> Self {
+		let uin = handle.get().account_info().uin.clone();
+		Self { handle, uin }
 	}
 
 	pub fn self_id(&self) -> &str {
 		&self.uin
 	}
 
-	pub fn runtime(&self) -> &BotRuntime {
-		&self.runtime
+	pub fn handle(&self) -> &AdapterHandle {
+		&self.handle
 	}
 
-	pub fn api(&self) -> std::sync::Arc<dyn AdapterApi> {
-		self.runtime.api()
+	pub fn api(&self) -> Arc<dyn AdapterApi> {
+		self.handle.get()
 	}
 
 	pub fn adapter_info(&self) -> AdapterInfo {
-		self.runtime.adapter_info()
+		self.handle.get().adapter_info()
 	}
 
 	pub fn account_info(&self) -> AccountInfo {
-		self.runtime.account_info()
+		self.handle.get().account_info()
 	}
 
 	pub async fn send_message(
@@ -70,7 +72,7 @@ impl Bot {
 			ContactType::Guild(guild) => ("GuildMessage", &guild.peer()),
 		};
 		debug!("[{}:{}]\n{:#?}", format!("Send {}", msg_type).yellow(), user_id.green(), message);
-		self.runtime.api().send_message(contact, message).await
+		self.handle.get().send_message(contact, message).await
 	}
 }
 

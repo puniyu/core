@@ -3,7 +3,7 @@ use puniyu_loader::*;
 use puniyu_version::VERSION;
 
 use crate::app::resolve::ResolvedComponents;
-use crate::logger::{core_debug, core_error, core_info, core_warn};
+use puniyu_common::{core_debug, core_error, core_info, core_warn};
 
 pub(crate) async fn install(resolved: ResolvedComponents) -> std::io::Result<()> {
 	core_debug!("adapter loading...");
@@ -30,7 +30,7 @@ pub(crate) async fn install(resolved: ResolvedComponents) -> std::io::Result<()>
 }
 
 async fn install_adapter(discovered: DiscoveredAdapter) -> puniyu_error::Result {
-	let adapter = discovered.adapter;
+	let adapter = discovered.handle.get();
 	let name = adapter.adapter_info().name.to_string();
 	let core_version = adapter.core_version();
 
@@ -62,7 +62,7 @@ async fn install_adapter(discovered: DiscoveredAdapter) -> puniyu_error::Result 
 }
 
 async fn install_plugin(discovered: DiscoveredPlugin) -> puniyu_error::Result {
-	let plugin = discovered.instance.get();
+	let plugin = discovered.handle.get();
 	let name = plugin.name().to_string();
 	let core_version = plugin.core_version();
 
@@ -82,7 +82,7 @@ async fn install_plugin(discovered: DiscoveredPlugin) -> puniyu_error::Result {
 		std::io::Error::other(format!("Failed to on_load plugin {}: {:?}", name, e))
 	})?;
 
-	let index = puniyu_plugin_core::PluginRegistry::register(discovered.instance)
+	let index = puniyu_plugin_core::PluginRegistry::register(discovered.handle)
 		.unwrap_or_else(|e| panic!("Failed to register plugin {}: {}", name, e));
 	let source = SourceType::Plugin(index);
 

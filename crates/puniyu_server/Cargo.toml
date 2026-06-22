@@ -32,7 +32,6 @@ futures.workspace = true
 clap = { workspace = true, optional = true, features = ["derive", "help"] }
 const-str = { workspace = true, optional = true }
 puniyu_error.workspace = true
-puniyu_runtime.workspace = true
 mime = "0.3.17"
 infer = "0.19.0"
 

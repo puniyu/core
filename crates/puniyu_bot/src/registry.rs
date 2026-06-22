@@ -16,38 +16,26 @@ impl BotRegistry {
 		STORE.insert(bot)
 	}
 
-	/// 按索引或 UIN 从注册表移除机器人。
-	pub fn unregister<'b>(bot_id: impl Into<BotId<'b>>) -> Result<(), Error> {
+	/// 按索引或 UIN 从注册表移除机器人，返回旧实例供清理。
+	pub fn unregister<'b>(bot_id: impl Into<BotId<'b>>) -> Result<Vec<Arc<Bot>>, Error> {
 		match bot_id.into() {
-			BotId::Index(id) => Self::unregister_with_index(id),
+			BotId::Index(id) => Self::unregister_with_index(id).map(|b| vec![b]),
 			BotId::SelfId(id) => Self::unregister_with_bot_id(id.as_ref()),
 		}
 	}
 
-	/// 按注册表索引移除机器人。
-	pub fn unregister_with_index(index: u64) -> Result<(), Error> {
-		if STORE.remove(index).is_none() {
-			return Err(Error::NotFound("Bot".to_string()));
-		}
-		Ok(())
+	/// 按注册表索引移除机器人，返回旧实例供清理。
+	pub fn unregister_with_index(index: u64) -> Result<Arc<Bot>, Error> {
+		STORE.remove(index).ok_or_else(|| Error::NotFound("Bot".to_string()))
 	}
 
-	/// 按机器人 UIN 移除所有匹配的机器人。
-	pub fn unregister_with_bot_id(bot_id: &str) -> Result<(), Error> {
-		let indices = {
-			let raw = STORE.raw();
-			let map = raw.read().expect("Failed to acquire lock");
-			map.iter()
-				.filter_map(|(k, v)| if v.account_info().uin == bot_id { Some(*k) } else { None })
-				.collect::<Vec<u64>>()
-		};
-		if indices.is_empty() {
+	/// 按机器人 UIN 移除所有匹配的机器人，返回旧实例供清理。
+	pub fn unregister_with_bot_id(bot_id: &str) -> Result<Vec<Arc<Bot>>, Error> {
+		let removed = STORE.remove_by_uin(bot_id);
+		if removed.is_empty() {
 			return Err(Error::NotFound("Bot".to_string()));
 		}
-		for idx in indices {
-			STORE.remove(idx);
-		}
-		Ok(())
+		Ok(removed)
 	}
 
 	/// 按索引或 UIN 查询机器人。
@@ -62,14 +50,14 @@ impl BotRegistry {
 	pub fn get_with_index(index: u64) -> Option<Arc<Bot>> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.get(&index).cloned()
+		map.get(&index).map(|h| h.get())
 	}
 
 	/// 按机器人 UIN 查询第一个匹配的机器人。
 	pub fn get_with_bot_id(self_id: &str) -> Option<Arc<Bot>> {
 		let raw = STORE.raw();
 		let map = raw.read().expect("Failed to acquire lock");
-		map.values().find(|bot| bot.account_info().uin == self_id).cloned()
+		map.values().find(|h| h.get().account_info().uin == self_id).map(|h| h.get())
 	}
 
 	/// 返回所有已注册的机器人。

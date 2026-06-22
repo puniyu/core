@@ -11,11 +11,13 @@ macro_rules! server_info {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::log::info!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::corer_info!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
 }
+
+pub(crate) use server_info;
 
 macro_rules! server_warn {
     ($($arg:tt)*) => {
@@ -28,11 +30,13 @@ macro_rules! server_warn {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::log::warn!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::corer_warn!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
 }
+
+pub(crate) use server_warn;
 
 macro_rules! server_error {
     ($($arg:tt)*) => {
@@ -45,11 +49,12 @@ macro_rules! server_error {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::log::error!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::corer_error!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
 }
+pub(crate) use server_error;
 
 macro_rules! server_debug {
     ($($arg:tt)*) => {
@@ -62,11 +67,9 @@ macro_rules! server_debug {
             {
                 use ::puniyu_logger::owo_colors::OwoColorize;
                 let prefix = "Server".fg_rgb::<132,112,255>();
-                ::log::debug!("[{}] {}", prefix, format!($($arg)*))
+                ::puniyu_common::corer_debug!!("[{}] {}", prefix, format!($($arg)*))
             }
         }
     };
 }
-pub(crate) use {
-	server_debug as debug, server_error as error, server_info as info, server_warn as warn,
-};
+pub(crate) use server_debug;

@@ -1,4 +1,4 @@
-use crate::logger::info;
+use crate::logger::server_info;
 use actix_web::{
 	Error,
 	dev::{Service, ServiceRequest, ServiceResponse, Transform},
@@ -61,7 +61,7 @@ where
 			let response = fut.await?;
 			let duration = start.elapsed();
 
-			info!(
+			server_info!(
 				"{} | {} | {} | {}ms | {}",
 				method,
 				path,

@@ -27,10 +27,10 @@ puniyu_command_types.workspace = true
 puniyu_event.workspace = true
 puniyu_message.workspace = true
 puniyu_config.workspace = true
-puniyu_runtime.workspace = true
 
 [dev-dependencies]
 async-trait.workspace = true
+serde_json.workspace = true
 puniyu_adapter_api.workspace = true
 puniyu_adapter_core.workspace = true
-puniyu_runtime.workspace = true
+puniyu_common.workspace = true

@@ -1,7 +1,5 @@
-use puniyu_adapter_api::AdapterHandle;
-use puniyu_adapter_core::Adapter;
+use puniyu_adapter_core::AdapterHandle;
 use puniyu_plugin_core::PluginHandle;
-use std::sync::Arc;
 
 /// 加载器上下文
 pub struct LoadContext {
@@ -25,9 +23,7 @@ pub struct DiscoveryMeta {
 
 /// 已发现的适配器。
 pub struct DiscoveredAdapter {
-	/// 适配器实例（完整 Adapter trait）
-	pub adapter: Arc<dyn Adapter>,
-	/// 适配器句柄（用于注册表和热重载）
+	/// 适配器句柄
 	pub handle: AdapterHandle,
 	/// 发现元信息
 	pub meta: DiscoveryMeta,
@@ -35,7 +31,7 @@ pub struct DiscoveredAdapter {
 
 /// 已发现的插件。
 pub struct DiscoveredPlugin {
-	pub instance: PluginHandle,
+	pub handle: PluginHandle,
 	pub meta: DiscoveryMeta,
 }
 

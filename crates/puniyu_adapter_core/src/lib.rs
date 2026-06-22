@@ -10,7 +10,8 @@ mod types;
 #[doc(inline)]
 pub use types::*;
 
-pub use puniyu_adapter_api::AdapterHandle;
+mod handle;
+pub use handle::AdapterHandle;
 
 use puniyu_adapter_api::AdapterApi;
 use puniyu_config::Config;
@@ -82,6 +83,14 @@ mod tests {
 
 		fn account_info(&self) -> AccountInfo {
 			self.account.clone()
+		}
+
+		async fn call_api(
+			&self,
+			_action: &str,
+			_params: serde_json::Value,
+		) -> puniyu_error::Result<puniyu_common::Response<serde_json::Value>> {
+			unimplemented!("mock")
 		}
 	}
 

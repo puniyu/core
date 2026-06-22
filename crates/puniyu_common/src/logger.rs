@@ -1,5 +1,4 @@
-#![allow(unused_macros, unused_imports)]
-
+#[macro_export]
 macro_rules! core_trace {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
@@ -7,8 +6,8 @@ macro_rules! core_trace {
 		::log::trace!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-pub(crate) use core_trace;
 
+#[macro_export]
 macro_rules! core_debug {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
@@ -16,8 +15,8 @@ macro_rules! core_debug {
 		::log::debug!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-pub(crate) use core_debug;
 
+#[macro_export]
 macro_rules! core_info {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
@@ -25,8 +24,8 @@ macro_rules! core_info {
 		::log::info!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-pub(crate) use core_info;
 
+#[macro_export]
 macro_rules! core_warn {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
@@ -34,8 +33,8 @@ macro_rules! core_warn {
 		::log::warn!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-pub(crate) use core_warn;
 
+#[macro_export]
 macro_rules! core_error {
 	($($arg:tt)+) => {{
 		use ::puniyu_logger::owo_colors::OwoColorize;
@@ -43,5 +42,3 @@ macro_rules! core_error {
 		::log::error!("[{}] {}", prefix, format_args!($($arg)+))
 	}};
 }
-pub(crate) use core_error;
-pub use puniyu_logger::owo_colors;

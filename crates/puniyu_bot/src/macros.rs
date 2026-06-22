@@ -6,7 +6,7 @@ macro_rules! register_bot {
 		let bot: ::std::sync::Arc<$crate::Bot> = $bot;
 		$crate::BotRegistry::register(bot)
 	}};
-	(runtime: $runtime:expr $(,)?) => {{ $crate::BotRegistry::register(::std::sync::Arc::new($crate::Bot::new($runtime))) }};
+	(handle: $handle:expr $(,)?) => {{ $crate::BotRegistry::register(::std::sync::Arc::new($crate::Bot::new($handle))) }};
 }
 
 /// 按索引或 UIN 注销机器人。

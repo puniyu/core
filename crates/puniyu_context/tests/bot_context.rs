@@ -4,8 +4,7 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_api::AdapterApi;
-use puniyu_adapter_api::AdapterHandle;
-use puniyu_adapter_core::Adapter;
+use puniyu_adapter_core::{Adapter, AdapterHandle};
 use puniyu_adapter_types::{AdapterInfo, AdapterPlatform, AdapterProtocol, SendMsgType};
 use puniyu_bot::Bot;
 use puniyu_contact::ContactType;
@@ -32,6 +31,13 @@ impl AdapterApi for TestOneBotApi {
 	fn account_info(&self) -> AccountInfo {
 		self.account_info.clone()
 	}
+	async fn call_api(
+		&self,
+		_action: &str,
+		_params: serde_json::Value,
+	) -> puniyu_error::Result<puniyu_common::Response<serde_json::Value>> {
+		unimplemented!("mock")
+	}
 }
 
 impl Adapter for TestOneBotApi {}
@@ -43,10 +49,8 @@ fn make_bot_with_account(uin: &str, name: &str, avatar: Bytes) -> Arc<Bot> {
 		.protocol(AdapterProtocol::Console)
 		.build();
 	let account = AccountInfo { uin: uin.to_string(), name: name.to_string(), avatar };
-	let adapter: Arc<dyn AdapterApi> = Arc::new(TestOneBotApi { adapter_info: info, account_info: account });
-	let adapter_runtime = puniyu_runtime::AdapterRuntime::new(AdapterHandle::new(adapter));
-	let bot_runtime = puniyu_runtime::BotRuntime::new(adapter_runtime);
-	Arc::new(Bot::new(bot_runtime))
+	let adapter: Arc<dyn Adapter> = Arc::new(TestOneBotApi { adapter_info: info, account_info: account });
+	Arc::new(Bot::new(AdapterHandle::new(adapter)))
 }
 
 #[test]

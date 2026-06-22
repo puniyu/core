@@ -11,15 +11,14 @@
 //!
 //! 每个 API 实例自包含适配器信息（[`AdapterApi::adapter_info`]）与账号信息（[`AdapterApi::account_info`]），
 //! 实现 `OneBotAdapterApi` 后自动获得 `AdapterApi` 实现。
-
-mod handle;
-pub use handle::AdapterHandle;
+//!
 
 use std::any::Any;
 
 use async_trait::async_trait;
 use puniyu_account::AccountInfo;
 use puniyu_adapter_types::{AdapterInfo, SendMsgType};
+use puniyu_common::Response;
 use puniyu_contact::ContactType;
 use puniyu_error::Result;
 use puniyu_message::Message;
@@ -35,11 +34,14 @@ pub trait AdapterApi: Any + Send + Sync {
 	fn adapter_info(&self) -> AdapterInfo;
 
 	fn account_info(&self) -> AccountInfo;
-}
 
-impl dyn AdapterApi + 'static {
-	/// 转换到指定协议适配器
-	pub fn as_protocol<T: 'static>(&self) -> Option<&T> {
-		(self as &dyn Any).downcast_ref::<T>()
-	}
+	/// 调用适配器 API
+	/// 
+	/// ## 参数
+	/// - action: 以协议开头格式为协议_action, 例如onebot_send_msg
+	async fn call_api(
+		&self,
+		action: &str,
+		params: serde_json::Value,
+	) -> Result<Response<serde_json::Value>>;
 }

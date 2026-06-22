@@ -1,21 +1,21 @@
-use crate::AdapterApi;
+use crate::Adapter;
 use std::sync::{Arc, RwLock};
 
 #[derive(Clone)]
 pub struct AdapterHandle {
-	inner: Arc<RwLock<Arc<dyn AdapterApi>>>,
+	inner: Arc<RwLock<Arc<dyn Adapter>>>,
 }
 
 impl AdapterHandle {
-	pub fn new(adapter: Arc<dyn AdapterApi>) -> Self {
+	pub fn new(adapter: Arc<dyn Adapter>) -> Self {
 		Self { inner: Arc::new(RwLock::new(adapter)) }
 	}
 
-	pub fn get(&self) -> Arc<dyn AdapterApi> {
+	pub fn get(&self) -> Arc<dyn Adapter> {
 		self.inner.read().expect("AdapterHandle lock poisoned").clone()
 	}
 
-	pub fn set(&self, adapter: Arc<dyn AdapterApi>) -> Arc<dyn AdapterApi> {
+	pub fn set(&self, adapter: Arc<dyn Adapter>) -> Arc<dyn Adapter> {
 		let mut guard = self.inner.write().expect("AdapterHandle lock poisoned");
 		std::mem::replace(&mut *guard, adapter)
 	}

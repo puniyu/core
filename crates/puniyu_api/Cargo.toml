@@ -36,7 +36,6 @@ puniyu_adapter_api.workspace = true
 puniyu_adapter_core.workspace = true
 puniyu_adapter_types.workspace = true
 puniyu_command_parser.workspace = true
-puniyu_runtime.workspace = true
 puniyu_error.workspace = true
 
 async-trait.workspace = true

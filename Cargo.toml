@@ -62,7 +62,6 @@ puniyu_config = { version = "0.8.11", path = "./crates/puniyu_config" }
 puniyu_adapter_core = { version = "0.9.0", path = "./crates/puniyu_adapter_core" }
 puniyu_adapter_types = { version = "0.9.0", path = "./crates/puniyu_adapter_types" }
 puniyu_adapter_api = { version = "0.9.0", path = "./crates/puniyu_adapter_api" }
-puniyu_runtime = { version = "0.9.0", path = "./crates/puniyu_runtime" }
 
 puniyu_bot = { version = "0.9.0", path = "./crates/puniyu_bot" }
 

@@ -1,7 +1,6 @@
 mod app;
 mod common;
 
-pub mod logger;
 pub use app::App;
 
 pub use puniyu_api::account;
