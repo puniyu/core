@@ -1,7 +1,5 @@
 mod app;
 mod common;
-#[cfg(feature = "log")]
-pub mod logger;
 pub use app::App;
 
 pub use puniyu_api::account;

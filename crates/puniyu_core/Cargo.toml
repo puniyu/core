@@ -50,9 +50,3 @@ puniyu_adapter_core = { workspace = true, features = ["registry"] }
 puniyu_server = { workspace = true, features = ["registry"] }
 
 convert_case = { version = "0.11.0" }
-
-[features]
-default = ["log"]
-log = []
-
-

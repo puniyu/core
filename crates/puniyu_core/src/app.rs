@@ -16,7 +16,7 @@ use std::sync::Arc;
 use std::time::Instant;
 use tokio::{fs, signal};
 
-use crate::logger::{core_debug, core_error, core_info};
+use puniyu_common::{core_debug, core_error, core_info};
 
 type AsyncFn =
 	Box<dyn Fn() -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> + Send + Sync>;

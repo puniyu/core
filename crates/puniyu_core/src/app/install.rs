@@ -5,7 +5,7 @@ use puniyu_loader::*;
 use puniyu_version::VERSION;
 
 use crate::app::resolve::ResolvedComponents;
-use crate::logger::{core_debug, core_error, core_info, core_warn};
+use puniyu_common::{core_debug, core_error, core_info, core_warn};
 
 /// 安装已解析的组件
 pub(crate) async fn install(resolved: ResolvedComponents) -> std::io::Result<()> {

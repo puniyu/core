@@ -5,7 +5,7 @@ use actix_web::{App, HttpServer, web};
 use puniyu_common::app::app_name;
 use puniyu_runtime::ServerRuntime;
 
-use crate::logger::info;
+use crate::logger::server_info;
 use std::io;
 use std::net::IpAddr;
 use std::sync::{LazyLock, Mutex};
@@ -23,7 +23,7 @@ pub fn start_server(host: IpAddr, port: u16) -> io::Result<ServerRuntime> {
 		}
 	}
 
-	info!("Server running on {}:{}", host, port);
+	server_info!("Server running on {}:{}", host, port);
 
 	let server = HttpServer::new(|| {
 		let app = App::new()

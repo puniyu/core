@@ -1910,6 +1910,7 @@ version = "0.9.0"
 dependencies = [
  "http 1.4.2",
  "puniyu_error",
+ "puniyu_logger",
  "puniyu_semver",
  "puniyu_system_info",
  "serde",

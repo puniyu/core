@@ -9,7 +9,7 @@ impl ResolvedComponents {
 	pub fn add_adapter(&mut self, a: DiscoveredAdapter) {
 		let name = a.instance.adapter_info().name.to_string();
 		if self.adapters.iter().any(|x| x.instance.adapter_info().name == name) {
-			crate::logger::core_warn!(
+			puniyu_common::core_warn!(
 				"duplicate adapter detected — keeping higher priority occurrence"
 			);
 			return;
@@ -20,7 +20,7 @@ impl ResolvedComponents {
 	pub fn add_plugin(&mut self, p: DiscoveredPlugin) {
 		let name = p.instance.name().to_string();
 		if self.plugins.iter().any(|x| x.instance.name() == name) {
-			crate::logger::core_warn!(
+			puniyu_common::core_warn!(
 				"duplicate plugin detected — keeping higher priority occurrence"
 			);
 			return;
@@ -47,7 +47,7 @@ pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<Resol
 			if is_enabled(&name, &adapter_config.enable_list(), &adapter_config.disable_list()) {
 				resolved.add_adapter(adapter);
 			} else {
-				crate::logger::core_warn!("adapter {} is disabled, skipping", name);
+				puniyu_common::core_warn!("adapter {} is disabled, skipping", name);
 			}
 		}
 		for plugin in set.plugins {
@@ -55,7 +55,7 @@ pub(crate) fn resolve(all_sets: Vec<ComponentSet>) -> puniyu_error::Result<Resol
 			if is_enabled(&name, &plugin_config.enable_list(), &plugin_config.disable_list()) {
 				resolved.add_plugin(plugin);
 			} else {
-				crate::logger::core_warn!("plugin {} is disabled, skipping", name);
+				puniyu_common::core_warn!("plugin {} is disabled, skipping", name);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ toml.workspace = true
 serde.workspace = true
 puniyu_system_info.workspace = true
 puniyu_semver.workspace = true
+puniyu_logger.workspace = true
 
 puniyu_error = { workspace = true, features = ["config"] }
 

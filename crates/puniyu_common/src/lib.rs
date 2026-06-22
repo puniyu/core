@@ -8,3 +8,4 @@ pub use time::uptime;
 pub mod app;
 mod response;
 pub use response::Response;
+mod logger;
