@@ -34,15 +34,15 @@ impl ResolvedComponents {
 	}
 }
 
-pub(crate) fn resolve(all_sets: Vec<Components>) -> puniyu_error::Result<ResolvedComponents> {
+pub(crate) fn resolve(components: Vec<Components>) -> puniyu_error::Result<ResolvedComponents> {
 	let config = puniyu_config::app_config();
 	let adapter_config = config.adapter();
 	let plugin_config = config.plugin();
 
 	let mut resolved = ResolvedComponents { adapters: Vec::new(), plugins: Vec::new() };
 
-	for set in all_sets {
-		for adapter in set.adapters {
+	for component in components {
+		for adapter in component.adapters {
 			let name = adapter.handle.get().adapter_info().name.to_string();
 			if is_enabled(&name, &adapter_config.enable_list(), &adapter_config.disable_list()) {
 				resolved.add_adapter(adapter);
@@ -50,7 +50,7 @@ pub(crate) fn resolve(all_sets: Vec<Components>) -> puniyu_error::Result<Resolve
 				puniyu_common::core_warn!("adapter {} is disabled, skipping", name);
 			}
 		}
-		for plugin in set.plugins {
+		for plugin in component.plugins {
 			let name = plugin.handle.get().name().to_string();
 			if is_enabled(&name, &plugin_config.enable_list(), &plugin_config.disable_list()) {
 				resolved.add_plugin(plugin);

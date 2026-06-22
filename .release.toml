@@ -184,7 +184,6 @@ name = "puniyu_bot"
 changelog_include = [
     "puniyu_account",
     "puniyu_adapter_types",
-    "puniyu_runtime",
     "puniyu_error",
 ]
 
@@ -192,14 +191,6 @@ changelog_include = [
 name = "puniyu_config"
 changelog_include = ["puniyu_path", "puniyu_common", "puniyu_error"]
 
-[[package]]
-name = "puniyu_runtime"
-changelog_include = [
-    "puniyu_adapter_types",
-    "puniyu_contact",
-    "puniyu_message",
-    "puniyu_error",
-]
 
 [[package]]
 name = "puniyu_event"
@@ -229,7 +220,6 @@ changelog_include = ["puniyu_error"]
 name = "puniyu_context"
 changelog_include = [
     "puniyu_account",
-    "puniyu_runtime",
     "puniyu_adapter_types",
     "puniyu_bot",
     "puniyu_sender",
@@ -293,7 +283,6 @@ name = "puniyu_adapter_core"
 version_group = "adapter"
 changelog_include = [
     "puniyu_adapter_types",
-    "puniyu_runtime",
     "puniyu_config",
     "puniyu_error",
     "puniyu_server",
