@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.9.2](https://github.com/puniyu/core/compare/v0.9.1...v0.9.2)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_command, puniyu_plugin_core, puniyu_api, puniyu_loader, puniyu_loader_builtin
+
+
+
 ## [0.9.1](https://github.com/puniyu/core/compare/v0.9.0...v0.9.1)
 
 ### ⛰️ 新功能
