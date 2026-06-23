@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.9.2](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.9.1...puniyu_command_parser-v0.9.2)
+
+### 🚜 重构
+
+
+- *(puniyu_command_parser)* 移除clap依赖并重构命令解析器 - ([1d5a445](https://github.com/puniyu/core/commit/1d5a4456ea248f6debef524a236862374bfa545d))
+
+
+
+
 ## [0.9.1](https://github.com/puniyu/core/compare/puniyu_command_parser-v0.9.0...puniyu_command_parser-v0.9.1)
 
 ### ⛰️ 新功能

@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_loader_builtin"
-version = "0.9.1"
+version = "0.9.2"
 description = "Puniyu 内置加载器，用于在编译期注册 adapter 和 plugin"
 authors.workspace = true
 license.workspace = true
