@@ -18,7 +18,6 @@ shlex = "2.0"
 
 thiserror.workspace = true
 
-clap = { workspace = true, features = ["string", "error-context"] }
 puniyu_command = { workspace = true, features = ["registry"] }
 
 [dev-dependencies]

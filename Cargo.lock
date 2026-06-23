@@ -1954,7 +1954,6 @@ name = "puniyu_command_parser"
 version = "0.9.1"
 dependencies = [
  "async-trait",
- "clap",
  "puniyu_command",
  "puniyu_context",
  "puniyu_error",

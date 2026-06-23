@@ -7,8 +7,11 @@ pub enum Error {
 	#[error("Empty input")]
 	EmptyInput,
 	/// 参数值无效。
-	#[error("Invalid value for argument {arg_name}, expected {expected_type}")]
-	InvalidValue { arg_name: String, expected_type: String },
+	#[error("Invalid value for argument {arg_name}, expected {expected_type}, got: {raw_value}")]
+	InvalidValue { arg_name: String, expected_type: String, raw_value: String },
+	/// 未知命令。
+	#[error("Unknown command: {name}")]
+	UnknownCommand { name: String },
 	/// 未知参数。
 	#[error("Unknown argument: {arg_name}")]
 	UnknownArgument { arg_name: String },
