@@ -19,6 +19,20 @@ impl<T> std::ops::Deref for Response<T> {
 }
 
 
+impl<T> From<puniyu_common::Response<T>> for Response<T> {
+	fn from(value: puniyu_common::Response<T>) -> Self {
+		Self {
+			inner: value,
+		}
+	}
+}
+
+impl<T> From<Response<T>> for puniyu_common::Response<T> {
+	fn from(value: Response<T>) -> Self {
+		value.inner
+	}
+}
+
 impl<T: Serialize> Responder for Response<T> {
 	type Body = BoxBody;
 

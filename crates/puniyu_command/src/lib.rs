@@ -55,7 +55,7 @@ use puniyu_context::MessageContext;
 
 /// 命令行为接口。
 #[async_trait]
-pub trait Command: Send + Sync + 'static {
+pub trait Command: Send + Sync {
 	/// 返回命令名称。
 	fn name(&self) -> &str;
 

@@ -10,7 +10,6 @@ mod handle;
 pub use handle::PluginHandle;
 
 use async_trait::async_trait;
-use log::info;
 use puniyu_config::Config;
 use puniyu_error::Result;
 use puniyu_semver::Version;
@@ -18,7 +17,7 @@ use puniyu_server::ServerFunction;
 use std::sync::Arc;
 
 #[async_trait]
-pub trait Plugin: Send + Sync + 'static {
+pub trait Plugin: Send + Sync {
 	/// 插件名称
 	fn name(&self) -> &str;
 	/// 插件版本
@@ -58,13 +57,11 @@ pub trait Plugin: Send + Sync + 'static {
 
 	/// 插件加载时回调
 	async fn on_load(&self) -> Result {
-		info!("plugin: {} v{} loaded", self.name(), self.version());
 		Ok(())
 	}
 
 	/// 插件卸载时回调
 	async fn on_unload(&self) -> Result {
-		info!("plugin: {} v{} unloaded", self.name(), self.version());
 		Ok(())
 	}
 }

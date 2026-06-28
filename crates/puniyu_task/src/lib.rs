@@ -86,16 +86,16 @@ use puniyu_error::Result;
 /// }
 /// ```
 #[async_trait]
-pub trait Task: Send + Sync + 'static {
+pub trait Task: Send + Sync {
 	/// 获取任务名称
-	fn name(&self) -> &'static str;
+	fn name(&self) -> &str;
 
 	/// 获取 Cron 表达式
 	///
 	/// # Cron 格式
 	///
 	/// 使用 6 位格式：`秒 分 时 日 月 周`
-	fn cron(&self) -> &'static str;
+	fn cron(&self) -> &str;
 
 	/// 执行任务
 	async fn execute(&self) -> Result;

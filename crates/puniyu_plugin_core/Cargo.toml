@@ -14,7 +14,6 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-log.workspace = true
 async-trait.workspace = true
 const-str.workspace = true
 puniyu_error.workspace = true
