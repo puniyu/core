@@ -1,5 +1,22 @@
 # 变更日志
 
+## [0.9.2](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.9.1...puniyu_adapter_core-v0.9.2)
+
+### 🚜 重构
+
+
+- *(core)* 移除未使用的log依赖并优化trait定义 - ([00df4ca](https://github.com/puniyu/core/commit/00df4cae4fad7f0e4e1fbf8798ff158019fc542b))
+
+
+
+### ⚙️ 杂项
+
+
+- *(core)* 导出puniyu_loader模块 - ([548eb55](https://github.com/puniyu/core/commit/548eb5518cd22e2567a32976621cabbb6bc15a74))
+
+
+
+
 ## [0.9.1](https://github.com/puniyu/core/compare/puniyu_adapter_core-v0.9.0...puniyu_adapter_core-v0.9.1)
 
 ### ⛰️ 新功能

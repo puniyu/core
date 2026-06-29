@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_plugin_core"
-version = "0.9.2"
+version = "0.9.3"
 description = "puniyu 插件核心库, 统一插件定义、API 聚合与注册表管理流程"
 authors.workspace = true
 license.workspace = true

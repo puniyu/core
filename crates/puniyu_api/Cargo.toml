@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_api"
-version = "0.9.2"
+version = "0.9.3"
 description = "puniyu API 模块"
 authors.workspace = true
 license.workspace = true
