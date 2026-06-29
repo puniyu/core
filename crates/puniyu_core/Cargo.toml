@@ -43,7 +43,6 @@ puniyu_command = { workspace = true, features = ["registry"] }
 puniyu_task = { workspace = true, features = ["registry"] }
 puniyu_plugin_core = { workspace = true, features = ["registry"] }
 puniyu_loader.workspace = true
-puniyu_loader_builtin.workspace = true
 puniyu_handler = { workspace = true, features = ["registry"] }
 puniyu_adapter_core = { workspace = true, features = ["registry"] }
 puniyu_server = { workspace = true, features = ["registry"] }

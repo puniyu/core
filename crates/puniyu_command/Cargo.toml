@@ -15,7 +15,6 @@ workspace = true
 
 [dependencies]
 async-trait.workspace = true
-clap.workspace = true
 puniyu_command_types.workspace = true
 puniyu_context.workspace = true
 puniyu_error.workspace = true

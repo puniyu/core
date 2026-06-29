@@ -3,6 +3,7 @@ mod common;
 
 pub use app::App;
 
+pub use puniyu_loader as loader;
 pub use puniyu_api::account;
 pub use puniyu_api::adapter;
 pub use puniyu_api::bot;

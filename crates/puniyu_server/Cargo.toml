@@ -29,11 +29,12 @@ bytes.workspace = true
 tokio = { workspace = true, features = ["full"] }
 actix-web.workspace = true
 futures.workspace = true
-clap = { workspace = true, optional = true, features = ["derive", "help"] }
 const-str = { workspace = true, optional = true }
 puniyu_error.workspace = true
 mime = "0.3.17"
 infer = "0.19.0"
+
+clap = { version = "4.5", optional = true, features = ["derive"] }
 
 [features]
 default = ["cli"]
