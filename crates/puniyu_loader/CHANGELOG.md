@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.9.3](https://github.com/puniyu/core/compare/puniyu_loader-v0.9.2...puniyu_loader-v0.9.3)
+
+### 🚜 重构
+
+
+- *(core)* 移除未使用的log依赖并优化trait定义 - ([00df4ca](https://github.com/puniyu/core/commit/00df4cae4fad7f0e4e1fbf8798ff158019fc542b))
+
+
+
+
 ## [0.9.2](https://github.com/puniyu/core/compare/puniyu_loader-v0.9.1...puniyu_loader-v0.9.2)
 
 ### ⚙️ 杂项

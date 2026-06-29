@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.10](https://github.com/puniyu/core/compare/puniyu_task-v0.8.9...puniyu_task-v0.8.10)
+
+### 🚜 重构
+
+
+- *(core)* 移除未使用的log依赖并优化trait定义 - ([00df4ca](https://github.com/puniyu/core/commit/00df4cae4fad7f0e4e1fbf8798ff158019fc542b))
+
+
+
+
 ## [0.8.9](https://github.com/puniyu/core/compare/puniyu_task-v0.8.8...puniyu_task-v0.8.9)
 
 ### ⛰️ 新功能

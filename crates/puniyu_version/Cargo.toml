@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_version"
-version = "0.9.1"
+version = "0.9.3"
 description = "version for puniyu"
 authors.workspace = true
 license.workspace = true
