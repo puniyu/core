@@ -1,5 +1,15 @@
 # 变更日志
 
+## [0.8.13](https://github.com/puniyu/core/compare/puniyu_config-v0.8.12...puniyu_config-v0.8.13)
+
+### 🚜 重构
+
+
+- *(config)* 重构配置注册逻辑以提高代码可读性 - ([5a56593](https://github.com/puniyu/core/commit/5a565932c38b3b35fbd19dbb23761ced31018cfc))
+
+
+
+
 ## [0.8.12](https://github.com/puniyu/core/compare/puniyu_config-v0.8.11...puniyu_config-v0.8.12)
 
 ### 🚜 重构
