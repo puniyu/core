@@ -20,7 +20,7 @@ impl ConfigRegistry {
 		let name = config.name();
 		let file_path = dir.join(format!("{}.toml", name));
 
-		let merged = Self::merge_with_file(&dir, name, &config.to_value());
+		let index = Self::register_entry(name, file_path.clone(), config.to_value())?;
 
 		if let Some(parent) = file_path.parent()
 			&& let Err(e) = fs::create_dir_all(parent)
@@ -29,21 +29,15 @@ impl ConfigRegistry {
 		}
 		if let Err(e) = fs::write(
 			&file_path,
-			toml::to_string_pretty(&merged).expect("Failed to serialize config"),
+			toml::to_string_pretty(
+				&Self::get_with_index(index).expect("just-registered index should exist"),
+			)
+			.expect("Failed to serialize config"),
 		) {
 			config_error!("Failed to write config file: {}", e);
 		}
 
-		match STORE.insert(name.to_string(), file_path, merged) {
-			Ok(index) => {
-				config_debug!("{} config registered", name);
-				Ok(index)
-			}
-			Err(e) => {
-				config_error!("Failed to register config: {}", e);
-				Err(e)
-			}
-		}
+		Ok(index)
 	}
 
 	pub fn register_entry(
@@ -51,13 +45,19 @@ impl ConfigRegistry {
 		path: std::path::PathBuf,
 		value: Value,
 	) -> Result<u64, Error> {
-		match STORE.insert(name.to_string(), path, value) {
+		let dir = path.parent();
+		let merged = match dir {
+			Some(dir) => Self::merge_with_file(dir, name, &value),
+			None => value,
+		};
+
+		match STORE.insert(name.to_string(), path, merged) {
 			Ok(index) => {
 				config_debug!("{} config registered", name);
 				Ok(index)
 			}
 			Err(e) => {
-				config_error!("Failed to register config entry: {}", e);
+				config_error!("Failed to register config: {}", e);
 				Err(e)
 			}
 		}
