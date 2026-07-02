@@ -1,5 +1,4 @@
-use bytes::Bytes;
-use puniyu_adapter_types::{AdapterPlatform, AdapterProtocol, Avatar, MessageType, adapter_info};
+use puniyu_adapter_types::{AdapterPlatform, AdapterProtocol, adapter_info};
 use puniyu_semver::Version;
 
 #[test]
@@ -28,23 +27,9 @@ fn adapter_info_named_macro_applies_custom_fields() {
 	assert_eq!(info.secret.as_deref(), Some("token"));
 }
 
-#[test]
-fn message_type_from_converts_string_and_sequence() {
-	assert!(matches!(MessageType::from("12345"), MessageType::Id(id) if id == "12345"));
-	assert!(matches!(MessageType::from(String::from("abc")), MessageType::Id(id) if id == "abc"));
-	assert!(matches!(MessageType::from(42_u64), MessageType::Seq(42)));
-}
 
 #[test]
 fn adapter_platform_supports_display_and_parse() {
 	assert_eq!(AdapterPlatform::QQ.to_string(), "qq");
 	assert_eq!("telegram".parse::<AdapterPlatform>().unwrap(), AdapterPlatform::Telegram);
-}
-
-#[test]
-fn avatar_exposes_original_bytes() {
-	let bytes = Bytes::from_static(b"avatar");
-	let avatar = Avatar::new(&bytes);
-
-	assert_eq!(avatar.bytes(), &bytes);
 }

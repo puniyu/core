@@ -15,7 +15,6 @@ workspace = true
 
 [dependencies]
 serde.workspace = true
-bytes.workspace = true
 strum.workspace = true
 jiff.workspace = true
 bon.workspace = true
