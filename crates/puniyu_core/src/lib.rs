@@ -1,35 +1,10 @@
-mod app;
-mod common;
-
-pub use app::App;
-
-pub use puniyu_loader as loader;
-pub use puniyu_api::account;
-pub use puniyu_api::adapter;
-pub use puniyu_api::bot;
-pub use puniyu_api::command;
-pub use puniyu_api::config;
-pub use puniyu_api::contact;
-pub use puniyu_api::context;
-pub use puniyu_api::dispatch;
-pub use puniyu_api::element;
-pub use puniyu_api::event;
-pub use puniyu_api::handler;
-pub use puniyu_api::message;
-pub use puniyu_api::path;
-pub use puniyu_api::plugin;
-pub use puniyu_api::result;
-pub use puniyu_api::runtime;
-pub use puniyu_api::segment;
-pub use puniyu_api::sender;
-pub use puniyu_api::server;
-pub use puniyu_api::task;
-pub use puniyu_api::{app_name, app_version};
-pub use puniyu_api::{pkg_name, pkg_version};
-pub use puniyu_semver::Version;
-
-pub use actix_web;
-pub use puniyu_api::async_trait;
-pub use puniyu_api::inventory;
-pub use puniyu_api::tokio;
-pub use puniyu_api::toml;
+#[doc(inline)]
+pub use puniyu_core_contact as contact;
+#[doc(inline)]
+pub use puniyu_core_sender as sender;
+#[doc(inline)]
+pub use puniyu_core_semver as semver;
+#[doc(inline)]
+pub use puniyu_core_version as version;
+#[doc(inline)]
+pub use puniyu_core_element as element;

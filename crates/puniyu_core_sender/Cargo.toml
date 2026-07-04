@@ -1,5 +1,5 @@
 [package]
-name = "puniyu_core"
+name = "puniyu_core_sender"
 version = "0.9.5"
 authors.workspace = true
 license.workspace = true
@@ -13,9 +13,9 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-puniyu_core_contact.workspace = true
-puniyu_core_sender.workspace = true
-puniyu_core_semver.workspace = true
-puniyu_core_version.workspace = true
-puniyu_core_element.workspace = true
+serde.workspace = true
+strum.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
 
