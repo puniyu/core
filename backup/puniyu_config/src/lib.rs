@@ -45,7 +45,7 @@ mod registry;
 
 pub use registry::ConfigRegistry;
 
-/// 配置 trait
+/// 配置
 pub trait Config: Send + Sync {
 	/// 配置名称（对应文件名，不含扩展名）
 	fn name(&self) -> &str;

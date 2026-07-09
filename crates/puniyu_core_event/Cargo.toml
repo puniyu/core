@@ -1,5 +1,5 @@
 [package]
-name = "puniyu_core"
+name = "puniyu_core_event"
 version = "0.9.5"
 authors.workspace = true
 license.workspace = true
@@ -13,10 +13,10 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+serde.workspace = true
+
+puniyu_core_bot.workspace = true
 puniyu_core_contact.workspace = true
 puniyu_core_sender.workspace = true
-puniyu_core_semver.workspace = true
 puniyu_core_element.workspace = true
-puniyu_core_bot.workspace = true
-puniyu_core_event.workspace = true
-puniyu_core_config.workspace = true
+

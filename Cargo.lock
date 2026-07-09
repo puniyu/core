@@ -3,10 +3,29 @@
 version = 4
 
 [[package]]
-name = "const-str"
-version = "1.1.0"
+name = "borsh"
+version = "1.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18f12cc9948ed9604230cdddc7c86e270f9401ccbe3c2e98a4378c5e7632212f"
+checksum = "2f3f6da4992df95bbcd9af42a6c7dcb994498fc9048230405f3b36ff7cd3f145"
+dependencies = [
+ "bytes",
+ "cfg_aliases",
+]
+
+[[package]]
+name = "bytes"
+version = "1.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ae3f5d315924270530207e2a68396c3cc547f6dca3fbdca317cfb1a51edb593"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cfg_aliases"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
 name = "convert_case"
@@ -41,12 +60,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "heck"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
-
-[[package]]
 name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -71,21 +84,33 @@ dependencies = [
 name = "puniyu_core"
 version = "0.9.5"
 dependencies = [
+ "puniyu_core_bot",
+ "puniyu_core_config",
  "puniyu_core_contact",
  "puniyu_core_element",
+ "puniyu_core_event",
  "puniyu_core_semver",
  "puniyu_core_sender",
- "puniyu_core_version",
+]
+
+[[package]]
+name = "puniyu_core_bot"
+version = "0.9.5"
+dependencies = [
+ "bytes",
+]
+
+[[package]]
+name = "puniyu_core_config"
+version = "0.9.5"
+dependencies = [
+ "serde",
+ "smol_str",
 ]
 
 [[package]]
 name = "puniyu_core_contact"
 version = "0.9.5"
-dependencies = [
- "serde",
- "serde_json",
- "strum",
-]
 
 [[package]]
 name = "puniyu_core_element"
@@ -93,6 +118,17 @@ version = "0.9.5"
 dependencies = [
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "puniyu_core_event"
+version = "0.9.5"
+dependencies = [
+ "puniyu_core_bot",
+ "puniyu_core_contact",
+ "puniyu_core_element",
+ "puniyu_core_sender",
+ "serde",
 ]
 
 [[package]]
@@ -108,19 +144,6 @@ dependencies = [
 [[package]]
 name = "puniyu_core_sender"
 version = "0.9.5"
-dependencies = [
- "serde",
- "serde_json",
- "strum",
-]
-
-[[package]]
-name = "puniyu_core_version"
-version = "0.9.5"
-dependencies = [
- "const-str",
- "puniyu_core_semver",
-]
 
 [[package]]
 name = "quote"
@@ -190,24 +213,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "strum"
-version = "0.28.0"
+name = "smol_str"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9628de9b8791db39ceda2b119bbe13134770b56c138ec1d3af810d045c04f9bd"
+checksum = "4aaa7368fcf4852a4c2dd92df0cace6a71f2091ca0a23391ce7f3a31833f1523"
 dependencies = [
- "strum_macros",
-]
-
-[[package]]
-name = "strum_macros"
-version = "0.28.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab85eea0270ee17587ed4156089e10b9e6880ee688791d45a905f5b1ca36f664"
-dependencies = [
- "heck",
- "proc-macro2",
- "quote",
- "syn",
+ "borsh",
+ "serde_core",
 ]
 
 [[package]]

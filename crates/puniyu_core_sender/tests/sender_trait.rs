@@ -1,15 +1,13 @@
 use puniyu_core_sender::Sender;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum TestSex {
 	Male,
 	Female,
 	Unknown,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct TestSender {
 	user_id: String,
 	name: Option<String>,
@@ -96,28 +94,4 @@ fn sex_is_copy_and_independent() {
 	let copied: TestSex = s.sex();
 	let _still_owned = s;
 	assert_eq!(copied, TestSex::Female);
-}
-
-#[test]
-fn sex_serialize_roundtrip() {
-	let sex = TestSex::Female;
-	let json = serde_json::to_string(&sex).unwrap();
-	assert_eq!(json, "\"female\"");
-	let decoded: TestSex = serde_json::from_str(&json).unwrap();
-	assert_eq!(decoded, sex);
-}
-
-#[test]
-fn sex_serialize_all_variants() {
-	assert_eq!(serde_json::to_string(&TestSex::Male).unwrap(), "\"male\"");
-	assert_eq!(serde_json::to_string(&TestSex::Female).unwrap(), "\"female\"");
-	assert_eq!(serde_json::to_string(&TestSex::Unknown).unwrap(), "\"unknown\"");
-}
-
-#[test]
-fn sex_deserialize_from_str() {
-	let male: TestSex = serde_json::from_str("\"male\"").unwrap();
-	assert_eq!(male, TestSex::Male);
-	let unknown: TestSex = serde_json::from_str("\"unknown\"").unwrap();
-	assert_eq!(unknown, TestSex::Unknown);
 }

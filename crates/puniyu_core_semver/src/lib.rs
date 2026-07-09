@@ -53,7 +53,7 @@ pub struct Version {
 }
 
 impl Version {
-	/// 创建一个新的版本号。
+	/// 创建一个新的版本号
 	pub const fn new(major: u64, minor: u64, patch: u64) -> Self {
 		Self { major, minor, patch }
 	}
@@ -70,6 +70,7 @@ impl From<semver::Version> for Version {
 }
 
 impl From<Version> for semver::Version {
+	#[inline]
 	fn from(v: Version) -> Self {
 		semver::Version::new(v.major, v.minor, v.patch)
 	}
@@ -77,7 +78,7 @@ impl From<Version> for semver::Version {
 
 impl FromStr for Version {
 	type Err = semver::Error;
-
+	#[inline]
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		semver::Version::from_str(s).map(Into::into)
 	}

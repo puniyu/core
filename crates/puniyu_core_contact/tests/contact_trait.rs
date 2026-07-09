@@ -1,15 +1,13 @@
 use puniyu_core_contact::Contact;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum TestScene {
 	Friend,
 	Group,
 	Guild,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct TestContact {
 	scene: TestScene,
 	peer: String,
@@ -88,28 +86,4 @@ fn scene_is_copy_and_independent() {
 	let copied: TestScene = c.scene();
 	let _still_owned = c;
 	assert_eq!(copied, TestScene::Friend);
-}
-
-#[test]
-fn scene_serialize_roundtrip() {
-	let scene = TestScene::Friend;
-	let json = serde_json::to_string(&scene).unwrap();
-	assert_eq!(json, "\"friend\"");
-	let decoded: TestScene = serde_json::from_str(&json).unwrap();
-	assert_eq!(decoded, scene);
-}
-
-#[test]
-fn scene_serialize_all_variants() {
-	assert_eq!(serde_json::to_string(&TestScene::Friend).unwrap(), "\"friend\"");
-	assert_eq!(serde_json::to_string(&TestScene::Group).unwrap(), "\"group\"");
-	assert_eq!(serde_json::to_string(&TestScene::Guild).unwrap(), "\"guild\"");
-}
-
-#[test]
-fn scene_deserialize_from_str() {
-	let friend: TestScene = serde_json::from_str("\"friend\"").unwrap();
-	assert_eq!(friend, TestScene::Friend);
-	let guild: TestScene = serde_json::from_str("\"guild\"").unwrap();
-	assert_eq!(guild, TestScene::Guild);
 }

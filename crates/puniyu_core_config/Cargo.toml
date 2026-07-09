@@ -1,5 +1,5 @@
 [package]
-name = "puniyu_core_version"
+name = "puniyu_core_config"
 version = "0.9.5"
 authors.workspace = true
 license.workspace = true
@@ -9,10 +9,9 @@ repository.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 
-[dependencies]
-const-str.workspace = true
-
-puniyu_core_semver.workspace = true
-
 [lints]
 workspace = true
+
+[dependencies]
+serde.workspace = true
+smol_str.workspace = true

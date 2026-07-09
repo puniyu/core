@@ -1,10 +1,6 @@
-use serde::{Deserialize, Serialize};
-
-use std::{fmt::Debug, hash::Hash};
-
 pub trait Contact: Send + Sync {
 	/// 联系人所属的场景
-	type Scene: Copy + PartialEq + Eq + Hash + Debug + Serialize + for<'de> Deserialize<'de>;
+	type Scene: Copy + PartialEq + Eq;
 
 	/// 获取场景类型
 	///
@@ -41,38 +37,13 @@ impl<T: Contact + ?Sized> Contact for &T {
 	}
 }
 
-impl<T: Copy + PartialEq + Eq + Hash + Debug + Serialize + for<'de> Deserialize<'de>> PartialEq
-	for dyn Contact<Scene = T>
-{
+impl<T: Copy + PartialEq + Eq> PartialEq for dyn Contact<Scene = T> {
 	fn eq(&self, other: &Self) -> bool {
 		self.scene() == other.scene() && self.peer() == other.peer() && self.name() == other.name()
 	}
 }
 
-impl<T: Copy + PartialEq + Eq + Hash + Debug + Serialize + for<'de> Deserialize<'de>> Eq
+impl<T: Copy + PartialEq + Eq> Eq
 	for dyn Contact<Scene = T>
 {
-}
-
-impl<T: Copy + PartialEq + Eq + Hash + Debug + Serialize + for<'de> Deserialize<'de>> Hash
-	for dyn Contact<Scene = T>
-{
-	fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-		self.scene().hash(state);
-		self.peer().hash(state);
-		self.name().hash(state);
-	}
-}
-
-impl<T: Copy + PartialEq + Eq + Hash + Debug + Serialize + for<'de> Deserialize<'de>> Debug
-	for dyn Contact<Scene = T>
-{
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let scene = self.scene();
-		f.debug_struct("Contact")
-			.field("scene", &scene)
-			.field("peer", &self.peer())
-			.field("name", &self.name())
-			.finish()
-	}
 }

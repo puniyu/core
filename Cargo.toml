@@ -43,10 +43,12 @@ puniyu_logger = { version = "0.7.2" }
 puniyu_system_info = { version = "1.5.6" }
 
 puniyu_core_semver = { version = "0.9.5", path = "./crates/puniyu_core_semver" }
-puniyu_core_version = { version = "0.9.5", path = "./crates/puniyu_core_version" }
 puniyu_core_contact = { version = "0.9.5", path = "./crates/puniyu_core_contact" }
 puniyu_core_sender = { version = "0.9.5", path = "./crates/puniyu_core_sender" }
 puniyu_core_element = { version = "0.9.5", path = "./crates/puniyu_core_element" }
+puniyu_core_bot = { version = "0.9.5", path = "./crates/puniyu_core_bot" }
+puniyu_core_event = { version = "0.9.5", path = "./crates/puniyu_core_event" }
+puniyu_core_config = { version = "0.9.5", path = "./crates/puniyu_core_config" }
 
 # puniyu_error = { version = "0.8.8", path = "./crates/puniyu_error", default-features = false }
 # puniyu_semver = { version = "0.9.0", path = "./crates/puniyu_semver" }
