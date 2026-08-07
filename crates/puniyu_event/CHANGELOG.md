@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.9.3](https://github.com/puniyu/core/compare/puniyu_event-v0.9.2...puniyu_event-v0.9.3)
+
+### ⚙️ 杂项
+
+
+- Updated the following local packages: puniyu_adapter_types, puniyu_adapter_core, puniyu_adapter_api, puniyu_adapter_api, puniyu_bot
+
+
+
 ## [0.9.2](https://github.com/puniyu/core/compare/puniyu_event-v0.9.1...puniyu_event-v0.9.2)
 
 ### ⚙️ 杂项
