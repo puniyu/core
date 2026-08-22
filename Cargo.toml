@@ -39,7 +39,7 @@ cargo_metadata = { version = "0.23.1" }
 const-str = { version = "1.1.0" }
 bytes = { version = "1.11.0", features = ["serde"] }
 
-puniyu_logger = { version = "0.7.2" }
+puniyu_logger = { version = "0.8.0" }
 puniyu_system_info = { version = "1.5.6" }
 
 puniyu_error = { version = "0.8.8", path = "./crates/puniyu_error", default-features = false }
