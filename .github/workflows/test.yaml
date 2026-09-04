@@ -26,7 +26,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@1404bf3e4b92ed03767a3e89f110d482a8944c9d # main
+        uses: puniyu/setup-rust@87cc312ca34e602fd6c23b4340562fdd2ed7716d # main
         with:
           tools: just
           cache: true
