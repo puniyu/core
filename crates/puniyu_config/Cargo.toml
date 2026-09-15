@@ -14,7 +14,7 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-sugar_path = { version = "2.0.1", features = ["cached_current_dir"] }
+sugar_path = { version = "3.0.0", features = ["cached_current_dir"] }
 
 log.workspace = true
 toml.workspace = true
