@@ -27,4 +27,4 @@ puniyu_path.workspace = true
 puniyu_common.workspace = true
 
 puniyu_error = { workspace = true, features = ["config", "registry"] }
-notify-debouncer-full = { version = "0.7.0", features = ["flume"] }
+notify-debouncer-full = { version = "0.8.0", features = ["flume"] }
